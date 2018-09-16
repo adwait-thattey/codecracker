@@ -1,5 +1,5 @@
-# ase1_prj
-![Project Club IIITS Featured Badge](https://img.shields.io/badge/Project%20Club%20IIITS-Featured-brightgreen.svg)   
+# ase1_prj   ![Project Club IIITS Featured Badge](https://img.shields.io/badge/Project%20Club%20IIITS-Featured-brightgreen.svg)
+   
 
 [![CircleCI](https://circleci.com/gh/coder-dude/ase1_prj.svg?style=svg)](https://circleci.com/gh/coder-dude/ase1_prj)
 
