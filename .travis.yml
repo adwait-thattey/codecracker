@@ -1,2 +1,13 @@
 language: python
-sudo: enabled
+
+python:
+  - 3.6
+
+env:
+  - DJANGO=2.1.2
+
+install:
+  - pip3 install -r requirements.txt
+
+script:
+  - python manage.py test
