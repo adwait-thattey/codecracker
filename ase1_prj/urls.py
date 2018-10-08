@@ -24,7 +24,7 @@ urlpatterns = [
 
     path('', include('main_page.urls')),
     path('admin/', admin.site.urls),
-    # path('registration/', include('registration.urls')),
+    path('registration/', include('registration.urls')),
 
 ]
 
