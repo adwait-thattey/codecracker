@@ -19,6 +19,11 @@ main {
   transition: 0.5s;
 }
 
+#logo{
+  font-family:Agency FB;
+  letter-spacing:.10em;
+}
+
 #mobile-view{
   background-color: rgba(0,96,100,1);
 }
@@ -41,6 +46,10 @@ main {
   background-color: rgba(0,0,0,0.9);
 }
 
+#f p{
+  color: rgba(255, 255, 255, 0.8);
+}
+
 #fd a{
   color: rgba(255, 255, 255, 0.5);
 }
@@ -61,4 +70,5 @@ main {
 
 #f2{
   background-color: rgba(0,96,100,1);
+  text-align: center;
 }
