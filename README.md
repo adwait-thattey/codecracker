@@ -1,7 +1,7 @@
 # ASE 1 Project
    
 
-Circle CI : [![CircleCI](https://circleci.com/gh/adwait-thattey/ase1_prj.svg?style=svg)](https://circleci.com/gh/adwait-thattey/ase1_prj)   
+Circle CI : Yet to configre 
 
 Travis CI : [![Build Status](https://travis-ci.com/adwait-thattey/ase1_prj.svg?branch=master)](https://travis-ci.com/adwait-thattey/ase1_prj)   
 
