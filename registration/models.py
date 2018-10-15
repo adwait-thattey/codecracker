@@ -60,7 +60,7 @@ class GoogleAuth(models.Model):
 
     google_id = models.CharField(max_length=250)
 
-    google__salt = models.CharField(max_length=250)
+    salt = models.CharField(max_length=250)
 
 
 class EmailConfirmation(models.Model):
