@@ -10,6 +10,9 @@ from django.db.models import signals
 class Institute(models.Model):
     name = models.CharField(verbose_name="Name Of Institute", max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 def phone_number_validator(phone_number):
     try:
@@ -24,7 +27,7 @@ def phone_number_validator(phone_number):
         raise ValidationError("Length of phone number must be either 10 or 11")
 
 
-class MoreUserData(models.Model):
+class UserProfile(models.Model):
     DESIGNATION_CHOICES = (
         ('STU', 'Student'),
         ('PROF', 'Professor'),
@@ -43,7 +46,9 @@ class MoreUserData(models.Model):
                                     )
 
     institute = models.ForeignKey(to=Institute,
-                                  on_delete=models.PROTECT
+                                  on_delete=models.PROTECT,
+                                  blank=True,
+                                  null=True,
                                   )
 
     designation = models.CharField(verbose_name="Designation Of User",
@@ -52,23 +57,34 @@ class MoreUserData(models.Model):
                                    default="STU"
                                    )
 
+    def __str__(self):
+        return self.user.get_full_name() + "<" + self.user.username + ">"
+
 
 class GoogleAuth(models.Model):
     user = models.OneToOneField(to=DefaultUser,
-                                on_delete=models.CASCADE
+                                on_delete=models.CASCADE,
+                                primary_key=True
                                 )
 
-    google_id = models.CharField(max_length=250)
+    google_id = models.CharField(max_length=250, null=True, blank=True, unique=True)
 
-    salt = models.CharField(max_length=250)
+    salt = models.CharField(max_length=250, null=True, blank=True, unique=True)
+
+    def __str__(self):
+        return self.user.get_full_name() + "<" + self.user.username + ">"
 
 
 class EmailConfirmation(models.Model):
     user = models.OneToOneField(to=DefaultUser,
-                                on_delete=models.CASCADE
+                                on_delete=models.CASCADE,
+                                primary_key=True
                                 )
 
     email_confirmed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.get_full_name() + "<" + self.user.username + ">"
 
 
 @receiver(signals.post_save, sender=DefaultUser)
@@ -85,3 +101,10 @@ def set_email_confirmed_false(sender, instance, created, **kwargs):
             instance.emailconfirmation.email_confirmed = True
 
         instance.emailconfirmation.save()
+
+
+@receiver(signals.post_save, sender=DefaultUser)
+def create_profile_and_oauth(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+        GoogleAuth.objects.create(user=instance)
