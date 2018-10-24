@@ -19,6 +19,10 @@ main {
   transition: 0.5s;
 }
 
+#float{
+  color:rgba(255, 255, 255, 1);
+}
+
 #logo{
   font-family:Agency FB;
   letter-spacing:.10em;
