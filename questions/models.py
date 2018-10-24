@@ -23,6 +23,10 @@ class Catagory(models.Model):
 
     description = models.TextField()
 
+    @property
+    def q_count(self):
+        return self.question_set.count()
+
     def __str__(self):
         return self.name
 
@@ -87,7 +91,7 @@ class TestCase(models.Model):
                                                                 message="Only text files are allowed as input and outpur")],
                              )
 
-    output = models.FileField(verbose_name="File Containing Expected Input",
+    output = models.FileField(verbose_name="File Containing Expected Output",
                               upload_to=get_testcase_output_upload_path,
                               validators=[FileExtensionValidator(['txt'],
                                                                  message="Only text files are allowed as input and output")],
@@ -96,6 +100,9 @@ class TestCase(models.Model):
     points = models.PositiveIntegerField(verbose_name="Points",
                                          help_text="The number of points that user will get if he/she completes this \
                                          test case successfully. The total points lateron will be calculated as a percentage of 100")
+
+    def __str__(self):
+        return str(self.id)
 
 
 def get_code_upload_url(instance, filename):
@@ -122,7 +129,10 @@ class Submission(models.Model):
 
     code = models.FileField(upload_to=get_code_upload_url)
 
-    total_score = models.FloatField(default=0, editable=False, validators=[MinValueValidator(0.0, "The score can not be negative"), MaxValueValidator(100.0, "Total Score must be calculated as a percentage of 100")])
+    total_score = models.FloatField(default=0, editable=False,
+                                    validators=[MinValueValidator(0.0, "The score can not be negative"),
+                                                MaxValueValidator(100.0,
+                                                                  "Total Score must be calculated as a percentage of 100")])
 
     time_stamp = models.DateTimeField(auto_now_add=True)
 
@@ -151,3 +161,6 @@ class Result(models.Model):
                                     help_text="False means code did not pass the TC.True means it passes",
                                     editable=False
                                     )
+
+    def __str__(self):
+        return str(self.id)
