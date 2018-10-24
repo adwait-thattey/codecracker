@@ -14,6 +14,7 @@
           direction: 'bottom',
           hoverEnabled: false,
         });
+        $('.tooltipped').tooltip();
       });
     </script>
     <title>Coding-Portal</title>
@@ -39,12 +40,12 @@
       <div class="fixed-action-btn right click-to-toggle hide-on-large-only" style="right:auto; top:0;" >
         <a class="btn-flat btn-large cyan darken-4"><i class="material-icons" id="float">menu</i></a>
         <ul>
-          <li><a class="btn-floating  purple lighten-3"><i class="material-icons">home</i></a></li>
-          <li><a class="btn-floating pink lighten-1"><i class="material-icons">question_answer</i></a></li>
-          <li><a class="btn-floating deep-purple lighten-1"><i class="material-icons">publish</i></a></li>
-          <li><a class="btn-floating blue lighten-1"><i class="material-icons">people</i></a></li>
-          <li><a class="btn-floating lime lighten-1"><i class="material-icons">person</i></a></li>
-          <li><a class="btn-floating orange darken-2"><i class="material-icons">format_list_bulleted</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Sign Up"><i class="material-icons">person_add</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Login"><i class="material-icons">person</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="About Us"><i class="material-icons">people</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Post"><i class="material-icons">publish</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Questions"><i class="material-icons">question_answer</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Home"><i class="material-icons">home</i></a></li>
         </ul>
       </div>
     </header>
