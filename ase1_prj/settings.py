@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'main_page',
     'registration',
     'testers',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
