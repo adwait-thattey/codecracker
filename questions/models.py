@@ -3,7 +3,9 @@ from django.core.validators import MinLengthValidator, RegexValidator, FileExten
     MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User as DefaultUser
+
 import os
+import pathlib
 
 
 def image_upload_url(instance, filename):
@@ -90,6 +92,7 @@ class TestCase(models.Model):
                              validators=[FileExtensionValidator(['txt'],
                                                                 message="Only text files are allowed as input and outpur")],
                              )
+    # TODO input is reserved keyword
 
     output = models.FileField(verbose_name="File Containing Expected Output",
                               upload_to=get_testcase_output_upload_path,
@@ -106,7 +109,8 @@ class TestCase(models.Model):
 
 
 def get_code_upload_url(instance, filename):
-    return os.path.join("users", str(instance.user.id), "submissions", str(instance.question.unique_code), filename)
+    return os.path.join("users", str(instance.user.id), "submissions", str(instance.question.unique_code),
+                        "code_" + str(filename))
 
 
 class Submission(models.Model):
@@ -149,18 +153,46 @@ class Submission(models.Model):
         }
 
         code_filename, code_fileextension = os.path.splitext(str(self.code))
-        print(code_fileextension)
+        # print(code_fileextension)
         if code_fileextension.lower() != extension_dict[self.language]:
             raise ValidationError("Please choose a valid file corresponding to the language chosen ")
 
 
+def get_error_upload_url(instance, filename):
+    return os.path.join("users", str(instance.submission.user.id), "submissions",
+                        str(instance.submission.question.unique_code), str(instance.testcase.id), "error.txt")
+
+
 class Result(models.Model):
-    testcase = models.ForeignKey(to=TestCase, on_delete=models.CASCADE)
-    submission = models.ForeignKey(to=Submission, on_delete=models.CASCADE)
-    pass_fail = models.BooleanField(default=False,
-                                    help_text="False means code did not pass the TC.True means it passes",
-                                    editable=False
-                                    )
+    testcase = models.ForeignKey(to=TestCase,
+                                 on_delete=models.CASCADE)
+
+    submission = models.ForeignKey(to=Submission,
+                                   on_delete=models.CASCADE)
+
+    pass_fail = models.PositiveIntegerField(default=0,
+                                            help_text="0 : Unknown Result, 1:Correct Answer, \
+                                    2: Timeout, 3:Runtime Error",
+                                            editable=False,
+                                            validators=[MaxValueValidator(3)]
+                                            )
+    # error_file = models.FileField(upload_to=get_error_upload_url, blank=True)
+    errors = models.TextField(blank=True)
+
+    class Meta:
+        unique_together = ['testcase', 'submission']
 
     def __str__(self):
         return str(self.id)
+
+    # def save(self, *args, **kwargs):
+    #
+    #     if not self.error_file:
+    #         self.error_file = get_error_upload_url(self, "error.txt")
+    #         self.error_file
+    #     super().save(*args, **kwargs)
+    #
+    #     # error_file = pathlib.Path(self.error_file.path)
+    #     # if not error_file.is_file():
+    #     #     f = open(self.error_file.path, mode="w")
+    #     #     f.close()
