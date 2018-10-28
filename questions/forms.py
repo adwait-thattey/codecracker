@@ -18,4 +18,4 @@ class SubmissionForm(forms.ModelForm):
 class TestCaseForm(forms.ModelForm):
     class Meta:
         model = TestCase
-        fields = ['input', 'output']
+        fields = ['input_file', 'output_file']

@@ -55,7 +55,9 @@ class Question(models.Model):
                                       blank=True
                                       )
 
-    time_limit = models.DurationField(verbose_name="Time Limit",
+    time_limit = models.FloatField(verbose_name="Time Limit",
+                                   validators=[MinValueValidator(0), MaxValueValidator(10, "We currently do not allow any\
+                                    code that runs for more than 10 secs")],
                                       help_text="This is approx the time limit that will be required to run a python code \
                                       for the problem. This limit will be automatically reduced for other languages \
                                       like C which take much lesser time for similar implementation"
@@ -65,6 +67,7 @@ class Question(models.Model):
                                    max_length=15,
                                    validators=[MinLengthValidator(3), unique_code_validator],
                                    unique=True,
+                                   db_index=True,
                                    help_text="A unique code for your question. between 3-15 characters. May contain only \
                                    lowercase characters and numbers. For example if the question name is 'Sorting Array', \
                                    you may name the code SORTARR")
@@ -87,18 +90,18 @@ class TestCase(models.Model):
                                  on_delete=models.CASCADE
                                  )
 
-    input = models.FileField(verbose_name="File Containing Input",
-                             upload_to=get_testcase_input_upload_path,
-                             validators=[FileExtensionValidator(['txt'],
+    input_file = models.FileField(verbose_name="File Containing Input",
+                                  upload_to=get_testcase_input_upload_path,
+                                  validators=[FileExtensionValidator(['txt'],
                                                                 message="Only text files are allowed as input and outpur")],
-                             )
+                                  )
     # TODO input is reserved keyword
 
-    output = models.FileField(verbose_name="File Containing Expected Output",
-                              upload_to=get_testcase_output_upload_path,
-                              validators=[FileExtensionValidator(['txt'],
+    output_file = models.FileField(verbose_name="File Containing Expected Output",
+                                   upload_to=get_testcase_output_upload_path,
+                                   validators=[FileExtensionValidator(['txt'],
                                                                  message="Only text files are allowed as input and output")],
-                              )
+                                   )
 
     points = models.PositiveIntegerField(verbose_name="Points",
                                          help_text="The number of points that user will get if he/she completes this \
@@ -172,9 +175,9 @@ class Result(models.Model):
 
     pass_fail = models.PositiveIntegerField(default=0,
                                             help_text="0 : Unknown Result, 1:Correct Answer, \
-                                    2: Timeout, 3:Runtime Error",
+                                    2: Timeout, 3:Runtime Error, 4:Wrong Answer, 5:In progress",
                                             editable=False,
-                                            validators=[MaxValueValidator(3)]
+                                            validators=[MaxValueValidator(5)]
                                             )
     # error_file = models.FileField(upload_to=get_error_upload_url, blank=True)
     errors = models.TextField(blank=True)
