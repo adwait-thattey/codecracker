@@ -1,5 +1,8 @@
 import threading
 import subprocess
+
+from django.db import connection
+
 from .models import TestCase
 import os
 
@@ -30,30 +33,57 @@ class RunAndAssert(threading.Thread):
         self.output = os.path.join(dir, "output.txt")
         self.result_code = -1
 
-    def runcode(self):
-        fi = open(self.code, mode="r")
+    def run_code(self):
+        fi = open(self.result.testcase.input_file.path, mode="r")
         fo = open(self.output, mode="w")
         fe = open(self.error, mode="w")
 
         try:
-            code_result = subprocess.run(["python3", self.code], stdin=fi, stdout=fo, stderr=fe, timeout=1)
-            if code_result.returncode!=0:
+            code_result = subprocess.run(["python3", self.code], stdin=fi, stdout=fo, stderr=fe,
+                                         timeout=self.result.submission.question.time_limit)
+
+            fe.close()
+            if os.stat(self.error).st_size == 0:
+                self.result_code = 0
+            else:
                 self.result_code = -1
 
         except subprocess.TimeoutExpired:
             self.result_code = -5
 
-        #TODO Set timeout
+        # TODO Set timeout
 
         fi.close()
         fo.close()
-        fe.close()
+
+    def assert_output(self):
+        exp_output = self.result.testcase.output_file.path
+
+        f1 = open(exp_output, mode="r")
+        f2 = open(self.output, mode="r")
+
+        result = False
+        if f1.read() == f2.read():
+            result = True
+
+        f1.close()
+        f2.close()
+
+        return result
 
     def run(self):
-        self.runcode()
+
+        self.result.pass_fail = 5
+        self.result.save()
+
+        self.run_code()
+        result = self.assert_output()
 
         if self.result_code == 0:
-            self.result.pass_fail = 1
+            if result:
+                self.result.pass_fail = 1
+            else:
+                self.result.pass_fail = 4
 
         elif self.result_code == -1:
             fe = open(self.error, mode="r")
@@ -68,3 +98,10 @@ class RunAndAssert(threading.Thread):
             raise ValueError("Unknown value of result_code")
 
         self.result.save()
+
+        self.teardown()
+
+    def teardown(self):
+        os.remove(self.output)
+        os.remove(self.error)
+        connection.close()
