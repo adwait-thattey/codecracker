@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 # Create your views here.
 def signup(request):
     if request.method == "POST":
-        new_user_form = forms.RegisterForm(request.POST)
+        new_user_form = RegisterForm(request.POST)
         
         if new_user_form.is_valid():
             new_user = User.objects.create_user(
@@ -27,6 +27,6 @@ def signup(request):
             return render(request, 'registration/register.html', {"signup_form": new_user_form})
 
     else:
-        new_form = forms.RegisterForm()
+        new_form = RegisterForm()
         return render(request, 'registration/register.html', {"signup_form": new_form})
 
