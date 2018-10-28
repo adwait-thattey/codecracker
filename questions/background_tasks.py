@@ -14,31 +14,57 @@ def run_in_background(func):
 
 
 class RunAndAssert(threading.Thread):
-    def __init__(self, thread_id, testcase, code_file ):
+    def __init__(self, thread_id, result_instance):
         super().__init__()
+        self.result = result_instance
         self.id = thread_id
-        self.code = code_file
-        self.testcase = testcase
-        dir = os.path.dirname(code_file)
-        self.error = os.path.join(dir, str(testcase.id), "error.txt")
-        self.output = os.path.join(dir, str(testcase.id), "output.txt")
-        self.result_code = -1
+        self.code = result_instance.submission.code.path
+        # self.self.result.testcase = self.result.testcase
+        dir = os.path.dirname(self.code)
+        dir = os.path.join(dir, str(self.result.testcase.id))
 
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+
+        self.error = os.path.join(dir, "error.txt")
+        self.output = os.path.join(dir, "output.txt")
+        self.result_code = -1
 
     def runcode(self):
         fi = open(self.code, mode="r")
         fo = open(self.output, mode="w")
         fe = open(self.error, mode="w")
 
-        code_result = subprocess.run(["python3", self.code], stdin=fi, stdout=fo, stderr=fe)
+        try:
+            code_result = subprocess.run(["python3", self.code], stdin=fi, stdout=fo, stderr=fe, timeout=1)
+            if code_result.returncode!=0:
+                self.result_code = -1
 
-        self.result_code = code_result.returncode
+        except subprocess.TimeoutExpired:
+            self.result_code = -5
 
-        if code_result.returncode == 0:
-            print(str(self.id) + "completed successful execution")
-        else:
-            print(str(self.id) + "ran into an error")
+        #TODO Set timeout
 
         fi.close()
         fo.close()
         fe.close()
+
+    def run(self):
+        self.runcode()
+
+        if self.result_code == 0:
+            self.result.pass_fail = 1
+
+        elif self.result_code == -1:
+            fe = open(self.error, mode="r")
+            self.result.pass_fail = 3
+            self.result.errors = fe.read()
+            fe.close()
+
+        elif self.result_code == -5:
+            self.result.pass_fail = 2
+
+        else:
+            raise ValueError("Unknown value of result_code")
+
+        self.result.save()
