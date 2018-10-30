@@ -26,44 +26,44 @@
 {% endblock title %}
 
 {% block internal_styles %}
-{#    <style>#}
+    {#    <style>#}
 
-        {#html {#}
-        {#    font-family: "Nunito";#}
-        {#}#}
+    {#html {#}
+    {#    font-family: "Nunito";#}
+    {#}#}
 
-        {#h1, h2, h3, h4, h5, h6 {#}
-        {#    font-family: "Raleway";#}
-        {#}#}
+    {#h1, h2, h3, h4, h5, h6 {#}
+    {#    font-family: "Raleway";#}
+    {#}#}
 
-        {#.card-title {#}
-        {#    font-weight: bolder;#}
-        {#}#}
+    {#.card-title {#}
+    {#    font-weight: bolder;#}
+    {#}#}
 
-        {#.background-image {#}
-        {#    background: url("https://static.pexels.com/photos/30732/pexels-photo-30732.jpg");#}
-        {#    background-position: center;#}
-        {#    background-size: cover;#}
-        {#    display: block;#}
-        {#    left: 0;#}
-        {#    position: fixed;#}
-        {#    right: 0;#}
-        {#    z-index: 1;#}
-        {#    height: 100%;#}
-        {#}#}
+    {#.background-image {#}
+    {#    background: url("https://static.pexels.com/photos/30732/pexels-photo-30732.jpg");#}
+    {#    background-position: center;#}
+    {#    background-size: cover;#}
+    {#    display: block;#}
+    {#    left: 0;#}
+    {#    position: fixed;#}
+    {#    right: 0;#}
+    {#    z-index: 1;#}
+    {#    height: 100%;#}
+    {#}#}
 
-        {#.title h3 {#}
-        {#    margin: 0;#}
-        {#    padding: 40px 0;#}
-        {#    position: relative;#}
-        {#    z-index: 2;#}
-        {#}#}
+    {#.title h3 {#}
+    {#    margin: 0;#}
+    {#    padding: 40px 0;#}
+    {#    position: relative;#}
+    {#    z-index: 2;#}
+    {#}#}
 
-        {#.card {#}
-        {#    top: 40px;#}
-        {#    position: relative;#}
-        {#    z-index: 2;#}
-        {#}#}
+    {#.card {#}
+    {#    top: 40px;#}
+    {#    position: relative;#}
+    {#    z-index: 2;#}
+    {#}#}
     {#</style> #}
 
 {% endblock %}
@@ -72,63 +72,62 @@
 
 {% block main_content %}
 
-<section>
+    <section>
 
-    <div class="row">
-        <div class="col s12 l4 offset-l4">
-            <div class="card grey lighten-3">
-                <div class="card-content">
-                    <h4 class="card-title center-align">Login</h4>
-                    {% if form.non_field_errors %}
-                        <span class="red-text">{{ form.non_field_errors }}</span>
-                    {% endif %}
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">account_circle</i>
-                                {{ form.username|add_class:"validate" }}
-                                <label for="{{ form.username.id_for_label }}">Username</label>
-                                {% if form.username.help_text %}
-                                    <span class="helper-text" data-error="wrong"
-                                          data-success="right">{{ form.username.help_text }}</span>
-                                {% endif %}
-                                {% if form.username.errors %}
-                                    <span class="helper-text red-text"
-                                          style="font-size:large">{{ form.username.errors }}</span>
-                                {% endif %}
+        <div class="row">
+            <div class="col s12 l4 offset-l4">
+                <div class="card grey lighten-3">
+                    <div class="card-content">
+                        <h4 class="card-title center-align">Login</h4>
+                        {% if form.non_field_errors %}
+                            <span class="red-text">{{ form.non_field_errors }}</span>
+                        {% endif %}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">account_circle</i>
+                                    {{ form.username|add_class:"validate" }}
+                                    <label for="{{ form.username.id_for_label }}">Username</label>
+                                    {% if form.username.help_text %}
+                                        <span class="helper-text" data-error="wrong"
+                                              data-success="right">{{ form.username.help_text }}</span>
+                                    {% endif %}
+                                    {% if form.username.errors %}
+                                        <span class="helper-text red-text"
+                                              style="font-size:large">{{ form.username.errors }}</span>
+                                    {% endif %}
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">vpn_key</i>
-                                {{ form.password|add_class:"validate" }}
-                                <label for="{{ form.password.id_for_label }}">Password</label>
-
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">vpn_key</i>
+                                    {{ form.password|add_class:"validate" }}
+                                    <label for="{{ form.password.id_for_label }}">Password</label>
+                                    {% if form.password.help_text %}
+                                        <span class="helper-text" data-error="wrong"
+                                              data-success="right">{{ form.password.help_text }}</span>
+                                    {% endif %}
+                                    {% if form.password.errors %}
+                                        <span class="helper-text red-text"
+                                              style="font-size:large">{{ form.password.errors }}</span>
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <!--
-                          <div class="row">
-                          <div class="input-field col s12 ">
-                              <input type="checkbox" class="filled-in" id="remember-me" />
-                              <label for="remember-me">Remember me</label>
 
-                         </div>
-                        </div>
-                          -->
 
-                        <div class="row center-align">
-                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </form>
+                            <div class="row center-align">
+                                <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
 
 {% endblock %}
