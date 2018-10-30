@@ -28,6 +28,10 @@
           </nav>
         </div>
     <div class="container">
+         {% if form.non_field_errors %}
+               <span class="red-text">{{ signup_form.non_field_errors }}</span>
+         {% endif %}
+
     <form class="col s14" id="register_form" method="POST" action="{% url 'signup' %}">
 
       {% csrf_token %}
