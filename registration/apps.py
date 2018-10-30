@@ -1,5 +1,5 @@
-from django.apps import AppConfig
+#from django.apps import AppConfig
 
 
-class RegistrationConfig(AppConfig):
-    name = 'registration'
+#class RegistrationConfig(AppConfig):
+    #name = 'registration'

@@ -1,5 +1,9 @@
+
 from django.contrib import admin
 from .models import Institute, UserProfile, GoogleAuth, EmailConfirmation
+
+#from django.contrib import admin
+
 
 # Register your models here.
 

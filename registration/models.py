@@ -5,6 +5,9 @@ from django.dispatch import receiver
 from django.db.models import signals
 
 
+#from django.db import models
+
+
 # Create your models here.
 
 class Institute(models.Model):
