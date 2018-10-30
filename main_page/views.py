@@ -17,3 +17,6 @@ def home(request):
 
 def redirect_to_home(request):
     return redirect('home')
+
+def nav(request):
+    return render(request, 'main_page/nav.html')
