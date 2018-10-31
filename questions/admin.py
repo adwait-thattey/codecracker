@@ -28,10 +28,10 @@ admin.site.register(Question, QuestionAdmin)
 
 class SubmissionAdmin(admin.ModelAdmin):
     date_hierarchy = 'time_stamp'
-    list_display = ['question', 'user', 'language', 'total_score', 'time_stamp']
+    list_display = ['id','question', 'user', 'language', 'total_score', 'time_stamp']
     list_filter = ['question__unique_code', 'user__username', 'language']
-    sortable_by = ['question', 'user', 'language', 'total_score', 'time_stamp']
-    search_fields = ['question__title', 'question__unique_code', 'language']
+    sortable_by = ['id', 'question', 'user', 'language', 'total_score', 'time_stamp']
+    search_fields = ['id','question__title', 'question__unique_code', 'language']
 
 
 admin.site.register(Submission, SubmissionAdmin)
