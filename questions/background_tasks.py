@@ -16,6 +16,9 @@ def run_in_background(func):
     return decorator
 
 
+
+
+
 class RunAndAssert(threading.Thread):
     def __init__(self, thread_id, result_instance):
         super().__init__()
@@ -98,6 +101,9 @@ class RunAndAssert(threading.Thread):
             raise ValueError("Unknown value of result_code")
 
         self.result.save()
+
+        if self.result.pass_fail ==1:
+            recalc_score(self.result.submission)
 
         self.teardown()
 
