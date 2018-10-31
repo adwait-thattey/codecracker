@@ -207,6 +207,5 @@ class Result(models.Model):
 
 @receiver(post_save, sender=Result)
 def recalc_points(instance, *args, **kwargs):
-    print("Hello")
     if instance.pass_fail == 1:
         instance.submission.recalc_score()

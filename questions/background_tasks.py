@@ -102,9 +102,6 @@ class RunAndAssert(threading.Thread):
 
         self.result.save()
 
-        if self.result.pass_fail ==1:
-            recalc_score(self.result.submission)
-
         self.teardown()
 
     def teardown(self):
