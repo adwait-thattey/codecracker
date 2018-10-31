@@ -68,6 +68,12 @@
 
 {% endblock %}
 
+{% block custom_includes %}
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="27851569207-eqmaeljgm7s5alnhadeo24nulq894e68.apps.googleusercontent.com.apps.googleusercontent.com">
+{% endblock %}
+
+
 <body>
 
 {% block main_content %}
@@ -117,11 +123,15 @@
                             </div>
 
 
-                            <div class="row center-align">
-                                <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-                                    <i class="material-icons right">send</i>
-                                </button>
-                            </div>
+                                <span class="row right-align" >
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </span>
+                                <h4 class="card-title center-align">Login using Google</h4>
+                         <span class="g-signin2"   data-onsuccess="onSignIn"></span>
+
+
                         </form>
                     </div>
                 </div>
@@ -135,6 +145,7 @@
 {#<script src="//static.codepen.io/assets/common/stopExecutionOnTimeout-41c52890748cd7143004e05d3c5f786c66b19939c4500ce446314d1748483e13.js"></script>#}
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+
 
 {# TODO Replace with min.js in production #}
 {#<script src="https://materializecss.com/js/prism.js"></script>#}
