@@ -70,7 +70,8 @@
 
 {% block custom_includes %}
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="27851569207-eqmaeljgm7s5alnhadeo24nulq894e68.apps.googleusercontent.com.apps.googleusercontent.com">
+    <meta name="google-signin-client_id"
+          content="27851569207-eqmaeljgm7s5alnhadeo24nulq894e68.apps.googleusercontent.com.apps.googleusercontent.com">
 {% endblock %}
 
 
@@ -122,15 +123,19 @@
                                 </div>
                             </div>
 
-
-                                <span class="row right-align" >
+                            <div class="center">
+                                <span class="row">
                                     <button class="btn waves-effect waves-light" type="submit" name="action">Submit
                                         <i class="material-icons right">send</i>
                                     </button>
                                 </span>
+                            </div>
+                            <div class="center">
                                 <h4 class="card-title center-align">Login using Google</h4>
-                         <span class="g-signin2"   data-onsuccess="onSignIn"></span>
-
+                            </div>
+                            <div class="center" style="width: 40%; margin:auto;">
+                                <span class="g-signin2" data-onsuccess="onSignIn"></span>
+                            </div>
 
                         </form>
                     </div>
