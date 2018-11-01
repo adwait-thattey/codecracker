@@ -138,11 +138,15 @@ class Submission(models.Model):
 
     code = models.FileField(upload_to=get_code_upload_url)
 
-    total_score = models.FloatField(default=0, editable=False,
-                                    validators=[MinValueValidator(0.0, "The score can not be negative"),
-                                                MaxValueValidator(100.0,
-                                                                  "Total Score must be calculated as a percentage of 100")])
-
+    total_score = models.DecimalField(default=0,
+                                      editable=False,
+                                      max_digits=6,
+                                      decimal_places=2,
+                                      validators=[MinValueValidator(0.0, "The score can not be negative"),
+                                                  MaxValueValidator(100.0,
+                                                                    "Total Score must be calculated as a percentage of 100")
+                                                  ]
+                                      )
     time_stamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -203,6 +207,12 @@ class Result(models.Model):
     def __str__(self):
         return str(self.id)
 
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "pass_fail": self.pass_fail,
+            "errors": self.errors
+        }
 
 
 @receiver(post_save, sender=Result)
