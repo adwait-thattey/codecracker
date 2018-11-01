@@ -20,12 +20,25 @@ def run_in_background(func):
 
 
 class RunAndAssert(threading.Thread):
-    def __init__(self, thread_id, result_instance):
+    def __init__(self, thread_id, result_instance, code_file=None):
+        """
+
+        :param thread_id: Give an id to the thread
+        :param result_instance: An instance of the result model
+        :param code_file: Provide this file if you are doing any pre-processing on user \
+        submitted code. For ex. If user is giving code in c++, compile it in pre-processing\
+         and pass the a.out file here.
+
+        """
         super().__init__()
         self.result = result_instance
         self.id = thread_id
-        self.code = result_instance.submission.code.path
-        # self.self.result.testcase = self.result.testcase
+
+        if code_file is None:
+            self.code = result_instance.submission.code.path
+        else:
+            self.code = code_file
+
         dir = os.path.dirname(self.code)
         dir = os.path.join(dir, str(self.result.testcase.id))
 
@@ -42,6 +55,7 @@ class RunAndAssert(threading.Thread):
         fe = open(self.error, mode="w")
 
         try:
+            #TODO Add support for ore languages
             code_result = subprocess.run(["python3", self.code], stdin=fi, stdout=fo, stderr=fe,
                                          timeout=self.result.submission.question.time_limit)
 
