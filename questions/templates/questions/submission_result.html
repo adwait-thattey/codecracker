@@ -19,8 +19,8 @@
     score_box = document.getElementById('score-box');
     var interval_id = 0;
 
-    function result_card(label, result, link="", linkurl="") {
-        return "<h3>Result Card " + label + " <br> Result : " + result + " <br><a href='" +linkurl + "'>" + link + "</a>"
+    function result_card(label, result, error) {
+        return "<h3>Result Card " + label + " <br> Result : " + result + " <br>" + error
     }
 
     function get_result() {
@@ -37,7 +37,7 @@
             completion_check = 0;
             for (result of data.results) {
 
-                result_box.innerHTML += result_card(result.id, result.pass_fail);
+                result_box.innerHTML += result_card(result.id, result.pass_fail, result.errors);
                 if (result.pass_fail == 5){
                     completion_check = 1;
                 }

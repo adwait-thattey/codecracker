@@ -2,10 +2,22 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from questions.models import Question, Submission
+from questions.models import Question, Submission, Result
 from .forms import SubmissionForm
 
+from .background_tasks import RunAndAssert
+
+
 # Create your views here.
+def start_code_run_sequence(submission):
+    # WARNING DO NOT MAKE THIS ASYNC PROCESS. THE RESULT WILL NOT RENDER IN RESULTS PAGE
+    for testcase in submission.question.testcase_set.all():
+        R = Result.objects.create(testcase=testcase, submission=submission)
+        thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
+        thread_temp.start()
+
+
+
 @login_required
 def submit_solution(request, question_unique_id):
     # question
@@ -19,29 +31,26 @@ def submit_solution(request, question_unique_id):
             submission.question = question
             submission.save()
 
-            return redirect('questions:submission-result', question.unique_code, submission.id )
+            start_code_run_sequence(submission)
+            return redirect('questions:submission-result', question.unique_code, submission.id)
 
-    submission_form = SubmissionForm()
-    return render(request, "questions/submit_solution.html", {"form":submission_form})
+    else:
+        submission_form = SubmissionForm()
+    return render(request, "questions/submit_solution.html", {"form": submission_form})
 
 
 def submission_result(request, question_unique_id, submission_id):
     submission = get_object_or_404(Submission, id=submission_id)
 
-    return render(request, "questions/submission_result.html", {"submission":submission})
+    return render(request, "questions/submission_result.html", {"submission": submission})
+
 
 def ajax_get_submission_results(request):
     submission_id = request.GET.get("submission_code", None)
     if submission_id:
         submission = get_object_or_404(Submission, id=submission_id)
-        submission_results = list()
-        for r in submission.result_set.all():
-                d = {
-                    "id": str(r.id),
-                    "pass_fail": str(r.pass_fail)
-                }
 
-                submission_results.append(d)
+        submission_results = [r.as_dict() for r in submission.result_set.all()]
 
         total_score = submission.total_score
 
@@ -53,6 +62,3 @@ def ajax_get_submission_results(request):
         return JsonResponse(data)
     else:
         raise Http404("Invalid request!")
-
-
-
