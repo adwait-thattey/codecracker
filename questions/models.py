@@ -50,6 +50,11 @@ class Question(models.Model):
                              max_length=80
                              )
 
+    short_description = models.TextField(verbose_name="Short Description",
+                                         max_length=250,
+                                         help_text="A short description whch describes your question. This will be visible when \
+                                         user hovers on your question the all questions page"
+                                         )
     description = models.TextField(verbose_name="Description")
 
     catagory = models.ManyToManyField(verbose_name="Catagories",
@@ -58,6 +63,7 @@ class Question(models.Model):
                                       )
 
     time_limit = models.FloatField(verbose_name="Time Limit",
+                                   default=2.0,
                                    validators=[MinValueValidator(0), MaxValueValidator(10, "We currently do not allow any\
                                     code that runs for more than 10 secs")],
                                    help_text="This is approx the time limit that will be required to run a python code \
