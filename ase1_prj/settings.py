@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'registration',
     'testers',
     'questions',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+LOGIN_URL = 'registration:login'

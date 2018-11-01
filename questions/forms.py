@@ -6,7 +6,7 @@ from questions.models import Question, Submission, TestCase
 class PostQuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['title', 'description', 'time_limit', 'unique_code']
+        fields = ['title', 'short_description', 'description', 'time_limit', 'unique_code']
 
 
 class SubmissionForm(forms.ModelForm):
