@@ -17,3 +17,10 @@ script:
   - python manage.py check
   - python manage.py test
 
+notifications:
+  email:
+    recipients:
+      - coderdude1999@gmail.com
+
+    on_success: change
+    on_failure: always
