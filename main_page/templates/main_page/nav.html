@@ -1,5 +1,6 @@
 {% block custom_loaders %}
-{% load static %}
+    {% load static %}
+    {% load widget_tweaks %}
 {% endblock %}
 
 <!DOCTYPE html>
@@ -13,7 +14,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     {%  endblock common_includes %}
-  
+
+  {% block fonts %}
+  {% endblock fonts %}
+
   {% block custom_includes %}
   
   {% endblock %}
