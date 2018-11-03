@@ -19,4 +19,8 @@ script:
 
 notifications:
   email:
-    - coderdude1999@gmail.com
+    recipients:
+      - coderdude1999@gmail.com
+
+    on_success: change
+    on_failure: always
