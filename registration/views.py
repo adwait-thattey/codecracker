@@ -10,7 +10,6 @@ from django.template.loader import render_to_string
 from .tokens import account_confirmation_token
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
-from .models import EmailConfirmation
 # Create your views here.
 def signup(request):
     if request.method == "POST":
@@ -30,18 +29,17 @@ def signup(request):
             current_site = get_current_site(request)
             mail_subject = 'Activate your account.'
             message = render_to_string('registration/email.html', {
-                'user': user,
+                'user': new_user,
                 'domain': current_site.domain,
-                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
-                'token':account_confirmation_token.make_token(user),
+                'uid':urlsafe_base64_encode(force_bytes(new_user.pk)).decode(),
+                'token':account_confirmation_token.make_token(new_user),
             })
-            to_email = form.cleaned_data.get('email')
+            to_email = new_user_form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
             return HttpResponse('Please confirm your email address to complete the registration')
         else:
             return render(request, 'registration/register.html', {"signup_form": new_user_form})
-
     else:
         new_form = RegisterForm()
         return render(request, 'registration/register.html', {"signup_form": new_form})
@@ -49,14 +47,13 @@ def signup(request):
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
+        new_user = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
-    if user is not None and account_confirmation_token.check_token(user, token):
-        user.emailconfirmation.email_confirmed = True
-        user.emailconfirmation.save()
-        login(request, user, backend = "django.contrib.auth.backends.ModelBackend")
-
+        new_user = None
+    if new_user is not None and account_confirmation_token.check_token(new_user, token):
+        new_user.emailconfirmation.email_confirmed = True
+        new_user.emailconfirmation.save()
+        login(request, new_user, backend = "django.contrib.auth.backends.ModelBackend")
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
