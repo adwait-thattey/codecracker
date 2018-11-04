@@ -3,9 +3,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 from questions.models import Question, Submission, Result
-from .forms import SubmissionForm
+from .forms import SubmissionForm, TestCaseForm
 
 from .background_tasks import RunAndAssert
+
+from django.forms import formset_factory
 
 
 # Create your views here.
@@ -15,7 +17,6 @@ def start_code_run_sequence(submission):
         R = Result.objects.create(testcase=testcase, submission=submission)
         thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
         thread_temp.start()
-
 
 
 @login_required
@@ -62,3 +63,33 @@ def ajax_get_submission_results(request):
         return JsonResponse(data)
     else:
         raise Http404("Invalid request!")
+
+
+@login_required
+def create_testcases(request, question_unique_id):
+    question = get_object_or_404(Question, unique_code=question_unique_id)
+    if question.author != request.user:
+        raise Http404("Requested Page not found!")
+
+    TestCaseFormSet = formset_factory(form=TestCaseForm)
+
+    if request.method == "POST":
+        test_case_forms = TestCaseFormSet(request.POST, request.FILES)
+
+        if test_case_forms.is_valid():
+            for form in test_case_forms:
+                if form.is_valid():
+                    testcase = form.save(commit=False)
+                    testcase.question = question
+                    testcase.save()
+            raise Http404("Saved")
+
+
+    else:
+        test_case_forms = TestCaseFormSet()
+
+    return render(request, "questions/create_test_cases.html", context={"test_case_form_set": test_case_forms})
+
+
+def edit_testcases(request):
+    return None

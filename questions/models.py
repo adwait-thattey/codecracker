@@ -85,12 +85,16 @@ class Question(models.Model):
 
 
 def get_testcase_input_upload_path(instance, filename):
-    return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.id), "input.txt")
-
+    if filename:
+        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.id), "input.txt")
+    else:
+        return None
 
 def get_testcase_output_upload_path(instance, filename):
-    return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.id), "output.txt")
-
+    if filename:
+        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.id), "output.txt")
+    else:
+        return None
 
 class TestCase(models.Model):
     question = models.ForeignKey(verbose_name="Question",
@@ -102,6 +106,7 @@ class TestCase(models.Model):
                                   upload_to=get_testcase_input_upload_path,
                                   validators=[FileExtensionValidator(['txt'],
                                                                      message="Only text files are allowed as input and outpur")],
+                                  help_text="Upload a .txt file that contains the input for this test case"
                                   )
     # TODO input is reserved keyword
 
@@ -109,9 +114,11 @@ class TestCase(models.Model):
                                    upload_to=get_testcase_output_upload_path,
                                    validators=[FileExtensionValidator(['txt'],
                                                                       message="Only text files are allowed as input and output")],
+                                   help_text="Upload a .txt file that contains the expected output for the above given input"
                                    )
 
     points = models.PositiveIntegerField(verbose_name="Points",
+                                         null=False,blank=False,default=10,
                                          help_text="The number of points that user will get if he/she completes this \
                                          test case successfully. The total points later-on will be calculated as a percentage of 100")
 
