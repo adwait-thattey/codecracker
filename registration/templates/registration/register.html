@@ -26,17 +26,9 @@
 
 {% block main_content %}
     <section>
-        <div class="row">
-
-          <nav>
-            <div class="nav-wrapper">
-              <div class="col s12 valign-wrapper">
-                <h3 class="brand-logo center ">Register</h3>
-              </div>
-            </div>
-          </nav>
-        </div>
     <div class="container">
+      <div class="card grey lighten-3">
+        <div class="card-content">
          {% if form.non_field_errors %}
                <span class="red-text">{{ signup_form.non_field_errors }}</span>
          {% endif %}
@@ -44,6 +36,7 @@
     <form class="col s14" id="register_form" method="POST" action="">
 
       {% csrf_token %}
+      <h4 class="center">Register</h4>
       <div class="row">
 
         <div class="input-field col s12 m6">
@@ -154,7 +147,8 @@
                     </div>
                 </div>
             </form>
-
+            </div>
+          </div>
         </div>
 
         {% comment %}{{ signup_form.non_field_errors }}
