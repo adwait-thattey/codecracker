@@ -22,7 +22,7 @@ class IndexTest(TestCase):
     def test_anonymous_ping(self):
         response = self.client.get('/index')
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
 
 class HomeTest(TestCase):
