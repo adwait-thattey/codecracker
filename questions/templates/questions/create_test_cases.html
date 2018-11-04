@@ -27,6 +27,7 @@
         <div>
             {{ test_case_form_set.management_form }}
             {% for test_case_form in test_case_form_set %}
+                {{ test_case_form.id }}
                 <div class="link-formset">
                     <div class="center-align">
                         <span class="center-align flow-text">Test Case #<span
@@ -36,18 +37,23 @@
                         <div class="row">
                             <div>
                                 <div class="btn col l2 m3 s4">
-                                    {{ test_case_form.input_file }}
+                                    <input type="file" id="{{ test_case_form.input_file.id_for_label }}" name="{{ test_case_form.input_file.id_for_label|slice:"3:" }}" maxlength="100" required>
+                                    {# The slice:3 filter is applied to remove the first 3 characters that are id_#}
+                                    {#                                    {{ test_case_form.input_file }}#}
                                     <span>Input File</span>
                                 </div>
                             </div>
                             <div>
                                 <div class="file-path-wrapper col l10 m9 s8">
-                                    <input class="file-path validate" required>
+                                    <input class="file-path validate">
                                     {% if test_case_form.input_file.errors %}
                                         <span class="helper-text"
                                               style="color: red; font-weight: bolder">{{ test_case_form.input_file.errors }}</span>
                                     {% endif %}
                                     <span class="helper-text">{{ test_case_form.input_file.help_text }}</span>
+                                    {% if test_case_form.input_file.value.url %}
+                                    <span class="helper-text">Currently : <a href="{{ test_case_form.input_file.value.url }}">{{ test_case_form.input_file.value }}</a></span>
+                                    {% endif %}
                                 </div>
                             </div>
 
@@ -59,17 +65,21 @@
                     <div class="input-field file-field">
                         <div class="row">
                             <div class="btn col l2 m3 s4">
-                                {{ test_case_form.output_file }}
+                                <input type="file" id="{{ test_case_form.output_file.id_for_label }}" name="{{ test_case_form.output_file.id_for_label|slice:"3:" }}" maxlength="100" required>
+                                {# The slice:3 filter is applied to remove the first 3 characters that are id_#}
+{#                                {{ test_case_form.output_file }}#}
                                 <span>Output File</span>
                             </div>
                             <div class="file-path-wrapper col l10 m9 s8">
-                                <input class="file-path validate" required>
+                                <input class="file-path validate">
                                 {% if test_case_form.output_file.errors %}
                                     <span class="helper-text"
                                           style="color: red; font-weight: bolder">{{ test_case_form.output_file.errors }}</span>
                                 {% endif %}
                                 <span class="helper-text">{{ test_case_form.output_file.help_text }}</span>
-
+                                {% if test_case_form.output_file.value.url %}
+                                <span class="helper-text">Currently : <a href="{{ test_case_form.output_file.value.url }}">{{ test_case_form.output_file.value }}</a></span>
+                                {% endif %}
                             </div>
 
 
@@ -84,6 +94,7 @@
                                   style="color: red; font-weight: bolder">{{ test_case_form.points.errors }}</span>
                         {% endif %}
                         <span class="helper-text">{{ test_case_form.points.help_text }}</span>
+
                     </div>
 
 

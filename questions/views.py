@@ -2,12 +2,12 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from questions.models import Question, Submission, Result
+from questions.models import Question, Submission, Result, TestCase
 from .forms import SubmissionForm, TestCaseForm
 
 from .background_tasks import RunAndAssert
 
-from django.forms import formset_factory
+from django.forms import modelformset_factory
 
 
 # Create your views here.
@@ -71,22 +71,26 @@ def create_testcases(request, question_unique_id):
     if question.author != request.user:
         raise Http404("Requested Page not found!")
 
-    TestCaseFormSet = formset_factory(form=TestCaseForm)
+    TestCaseFormSet = modelformset_factory(TestCase, fields=('input_file', 'output_file', 'points'))
+
+    test_case_forms = TestCaseFormSet(queryset=TestCase.objects.filter(question=question))
 
     if request.method == "POST":
         test_case_forms = TestCaseFormSet(request.POST, request.FILES)
 
         if test_case_forms.is_valid():
-            for form in test_case_forms:
-                if form.is_valid():
-                    testcase = form.save(commit=False)
-                    testcase.question = question
-                    testcase.save()
+            instances = test_case_forms.save(commit=False)
+            for i in instances:
+                i.question = question
+                i.save()
             raise Http404("Saved")
+            # for form in test_case_forms:
+            #     if form.is_valid():
+            #         testcase = form.save(commit=False)
+            #         testcase.question = question
+            #         testcase.save()
 
 
-    else:
-        test_case_forms = TestCaseFormSet()
 
     return render(request, "questions/create_test_cases.html", context={"test_case_form_set": test_case_forms})
 
