@@ -80,6 +80,7 @@ def create_testcases(request, question_unique_id):
 
         if test_case_forms.is_valid():
             instances = test_case_forms.save(commit=False)
+
             for i in instances:
                 i.question = question
                 i.save()
@@ -90,6 +91,8 @@ def create_testcases(request, question_unique_id):
             #         testcase.question = question
             #         testcase.save()
 
+        else:
+            print(test_case_forms.errors)
 
 
     return render(request, "questions/create_test_cases.html", context={"test_case_form_set": test_case_forms})
