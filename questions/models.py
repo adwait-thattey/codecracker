@@ -57,10 +57,12 @@ class Question(models.Model):
                                          )
     description = models.TextField(verbose_name="Description")
 
-    catagory = models.ManyToManyField(verbose_name="Catagories",
-                                      to=Catagory,
-                                      blank=True
-                                      )
+    catagory = models.ForeignKey(verbose_name="Catagories",
+                                 to=Catagory,
+                                 null=True,
+                                 blank=True,
+                                 on_delete=models.CASCADE
+                                 )
 
     time_limit = models.FloatField(verbose_name="Time Limit",
                                    default=2.0,
