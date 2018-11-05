@@ -22,6 +22,7 @@
 
 
 <section>
+
     <div class="row">
         <div class="col l7 offset-l1 s12 m8 ">
             <div class="card green lighten-5">
@@ -91,11 +92,13 @@
             </div>
         </div>
 
+
         <div class="hide-on-small-only">
             <div class="col l3 m4">
 
                 <div class="card teal lighten-5">
-                    <div class="card-content">
+                    <div class="card-content" style="font-size: medium; padding: 20px;">
+                    Author: <br>
                     Difficulty: <br>
                     No. of views: <br>
                     No. of submissions: <br>
@@ -108,9 +111,14 @@
                         Try Solving
                     </span>
 
-                        Language: <br>
+                        Language: 
+                        <a class='dropdown-trigger btn-small' href='#' data-target='dropdown1'>Drop Me!</a> 
+                            <ul id='dropdown1' class='dropdown-content'>
+                                <li><a href="#!">Python 2</a></li>
+                                <li><a href="#!">Python 3</a></li>
+                            </ul>
                         <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload"> <br></span>
-                        File input:
+                        <br><br> File input:
                         <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
                         </button>
                         <input type="submit" value="Submit">
@@ -123,23 +131,42 @@
 
         <div class="hide-on-med-and-up">
             <div class="col s12">
-
-
-
                 <div class="card teal lighten-5">
-                    Language: <br>
-                    File input: <input
-                        type="submit" value=Upload"><br>
-                    <input type="submit" value="Submit">
+                    <div class="card-content">
+                    <span class="card-title center">
+                        Try Solving
+                    </span>
+
+                        Language: <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a> 
+                            <ul id='dropdown1' class='dropdown-content'>
+                                <li><a href="#!">one</a></li>
+                                <li><a href="#!">two</a></li>
+                                <li class="divider" tabindex="-1"></li>
+                                <li><a href="#!">three</a></li>
+                                <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+                                <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+                            </ul>
+                        <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload"> <br></span>
+                        <br><br> File input:
+                        <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
+                        </button>
+                        <input type="submit" value="Submit">
+                    </div>
                 </div>
-
-
             </div>
         </div>
 
     </div>
     <div class="row">
-        <div id="disqus_thread" class="col l7 offset-l1 s12 m8"></div>
+        <div class="col l7 offset-l1 s12 m8">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title center hide-on-large-only"> Discussion </span>
+                    <span class="card-title hide-on-med-and-down"> Discussion </span>
+                    <div id="disqus_thread" ></div>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
 
@@ -162,11 +189,11 @@
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
         Disqus.</a></noscript>
 
-    <div>Count:<a href="#disqus_thread"></a></div>
-    <script id="dsq-count-scr" src="//codinghub-iiits.disqus.com/count.js" async></script>
 
 
 </section>
+
+</body>
 
 
 <script type="text/javascript" src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
