@@ -57,6 +57,16 @@ class Question(models.Model):
                                          )
     description = models.TextField(verbose_name="Description")
 
+    input_format = models.TextField(verbose_name="Input format"),
+
+    constraints = models.TextField(verbose_name="Constraints"),
+
+    output_format = models.TextField(verbose_name="Output format"),
+
+    sample_input = models.TextField(verbose_name="Sample input"),
+
+    sample_output = models.TextField(verbose_name="Sample output"),
+
     catagory = models.ForeignKey(verbose_name="Catagories",
                                  to=Catagory,
                                  null=True,
