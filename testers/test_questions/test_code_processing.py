@@ -16,6 +16,7 @@ class CodeRunTest(TestCase):
                                         password="Hello World")
 
         self.question = models.Question(author=self.user,
+                                        number = 1,
                                         title="Sample Title",
                                         description="Test Description",
                                         time_limit=3.0,

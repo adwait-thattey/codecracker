@@ -50,7 +50,8 @@ class Question(models.Model):
                              max_length=80
                              )
 
-    short_description = models.TextField(verbose_name="Short Description",
+    short_description = models.TextField(verbose_name="Short Description"
+                                         ,
                                          max_length=250,
                                          help_text="A short description whch describes your question. This will be visible when \
                                          user hovers on your question the all questions page"
@@ -90,17 +91,22 @@ def get_testcase_input_upload_path(instance, filename):
     else:
         return None
 
+
 def get_testcase_output_upload_path(instance, filename):
     if filename:
-        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.id), "output.txt")
+        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.id),
+                            "output.txt")
     else:
         return None
+
 
 class TestCase(models.Model):
     question = models.ForeignKey(verbose_name="Question",
                                  to=Question,
                                  on_delete=models.CASCADE
                                  )
+
+    number = models.IntegerField(verbose_name = "Number : ", validators=[MinValueValidator(1), MaxValueValidator(10)])
 
     input_file = models.FileField(verbose_name="File Containing Input",
                                   upload_to=get_testcase_input_upload_path,
@@ -118,7 +124,7 @@ class TestCase(models.Model):
                                    )
 
     points = models.PositiveIntegerField(verbose_name="Points",
-                                         null=False,blank=False,default=10,
+                                         null=False, blank=False, default=10,
                                          help_text="The number of points that user will get if he/she completes this \
                                          test case successfully. The total points later-on will be calculated as a percentage of 100")
 

@@ -16,17 +16,8 @@ class SubmissionForm(forms.ModelForm):
 
 
 class TestCaseForm(forms.ModelForm):
+    id = forms.IntegerField()
+
     class Meta:
         model = TestCase
-        fields = ['input_file', 'output_file', 'points']
-
-    def clean(self):
-        cleaned_data = super().clean()
-        input_file = str(cleaned_data.get('input_file'))
-        output_file = str(cleaned_data.get('output_file'))
-
-        if not input_file or input_file=="None":
-            self.add_error('input_file', 'This field is required')
-
-        if not output_file or output_file=="None":
-            self.add_error('output_file', 'This field is required')
+        fields = ['number', 'input_file', 'output_file', 'points']
