@@ -49,7 +49,7 @@
                             <span class="helper-text">{{ test_case_form.input_file.help_text }}</span>
                             {% if test_case_form.input_file.value.url %}
                                 <span class="helper-text">Currently : <a
-                                        href="{{ test_case_form.input_file.value.url }}">{{ test_case_form.input_file.value }}</a></span>
+                                        href="{{ test_case_form.input_file.value.url }}" target="_blank">{{ test_case_form.input_file.value }}</a></span>
                             {% endif %}
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                         <span class="helper-text">{{ test_case_form.output_file.help_text }}</span>
                         {% if test_case_form.output_file.value.url %}
                             <span class="helper-text">Currently : <a
-                                    href="{{ test_case_form.output_file.value.url }}">{{ test_case_form.output_file.value }}</a></span>
+                                    href="{{ test_case_form.output_file.value.url }}" target="_blank" >{{ test_case_form.output_file.value }}</a></span>
                         {% endif %}
                     </div>
                     <div style="display: none">
