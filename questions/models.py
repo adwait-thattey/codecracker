@@ -9,6 +9,8 @@ from django.db.models.signals import post_save, post_delete
 import os
 import pathlib
 
+from questions.utils import run_in_background
+
 
 def image_upload_url(instance, filename):
     return os.path.join("catgories", str(instance.id), "logo", filename)
@@ -132,7 +134,6 @@ class TestCase(models.Model):
         unique_together = ['question', 'number']
         ordering = ['question', 'number']
 
-
     def __str__(self):
         return str(self.id)
 
@@ -239,16 +240,29 @@ class Result(models.Model):
         }
 
 
+@run_in_background
+def recalc_question_all_submissions_async(question):
+    for submission in question.submission_set.all():
+        submission.recalc_score()
+
+    from django.db import connection
+
+    connection.close()
+
+
 @receiver(post_save, sender=Result)
 def recalc_points(instance, *args, **kwargs):
     if instance.pass_fail == 1:
         instance.submission.recalc_score()
 
+
 @receiver(post_delete, sender=TestCase)
 def recalc_number(instance, *args, **kwargs):
-        question = instance.question
-        start = 1
-        for testcase in question.testcase_set.order_by('number'):
-            testcase.number = start
-            testcase.save()
-            start += 1
+    question = instance.question
+    start = 1
+    for testcase in question.testcase_set.order_by('number'):
+        testcase.number = start
+        testcase.save()
+        start += 1
+
+    recalc_question_all_submissions_async(question)
