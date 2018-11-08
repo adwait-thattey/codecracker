@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TestCases</title>
+</head>
+<body>
+<div class="container">
+<center>
+    <h2>Test Cases for <a href="{% url 'home' %}">{{ question.title }}</a></h2>
+</center>
+{#    TODO Put Question view link here#}
+
+    {% for testcase in testcases %}
+        <div>
+        Testcase #{{ testcase.number }}<br>
+        <a href="{{ testcase.input_file.url }}">View Input File</a><br>
+        <a href="{{ testcase.output_file.url }}">View Output File</a><br>
+        Points : {{ testcase.points }}<br>
+
+        <a href="{% url 'questions:testcase-edit' question.unique_code testcase.number %}">Edit Test Case</a>
+        <a href="{% url 'home' %}">View Test Case Stats</a>
+{#        TODO Change this to stats page#}
+        <br><br>
+        </div>
+    {% empty %}
+        This question does not have any test cases yet.
+
+    {% endfor %}
+
+{% if testcases|length < 10 %}
+<a href="{% url 'questions:testcase-create' question.unique_code %}">Create a test case</a>
+{% endif %}
+
+</div>
+</body>
+</html>

@@ -45,10 +45,10 @@ class TestCaseAdmin(admin.ModelAdmin):
     def questioncode(self, obj):
         return obj.question.unique_code
 
-    list_display = ['id', 'questionname', 'questioncode', 'points']
+    list_display = ['id', 'questionname', 'questioncode','number', 'points']
     list_filter = ['question__title', 'question__unique_code']
-    sortable_by = ['id', 'question__title', 'question__unique_code', 'points']
-    search_fields = ['id', 'question__title', 'question__unique_code']
+    sortable_by = ['id', 'question__title', 'question__unique_code','number', 'points']
+    search_fields = ['id', 'question__title', 'number','question__unique_code']
 
 
 admin.site.register(TestCase, TestCaseAdmin)

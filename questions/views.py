@@ -131,3 +131,34 @@ def edit_testcase(request, question_unique_id, test_case_number):
 
     return render(request, "questions/edit_test_case.html",
                   {"test_case_form": test_case_form, "new_case_number": test_case.number})
+
+
+def view_testcases(request, question_unique_id):
+    question = get_object_or_404(Question, unique_code=question_unique_id)
+
+    if question.author != request.user:
+        raise PermissionDenied("You do not have the permission to view this question's meta data")
+
+    testcases = question.testcase_set.all()
+
+    return render(request, "questions/testcases_view.html", {"testcases": testcases, "question":question})
+
+
+def redirect_to_view_testcases(request, question_unique_id):
+    return redirect('questions:testcase-view', question_unique_id)
+
+
+def delete_test_case(request, question_unique_id, test_case_number):
+    question = get_object_or_404(Question, unique_code=question_unique_id)
+    if question.author != request.user:
+        raise PermissionDenied("You do not have the permission to delete this question's meta data")
+
+    test_case_q_set = question.testcase_set.filter(number=int(test_case_number))
+    if test_case_q_set.exists():
+        test_case = test_case_q_set[0]
+    else:
+        raise Http404("This Test Case Does Not exist!")
+
+    test_case.delete()
+
+    return redirect('questions:testcase-view', question_unique_id)

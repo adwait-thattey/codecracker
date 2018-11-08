@@ -4,7 +4,7 @@ from django.core.validators import MinLengthValidator, RegexValidator, FileExten
 from django.db import models
 from django.contrib.auth.models import User as DefaultUser
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 
 import os
 import pathlib
@@ -106,7 +106,7 @@ class TestCase(models.Model):
                                  on_delete=models.CASCADE
                                  )
 
-    number = models.IntegerField(verbose_name = "Number : ", validators=[MinValueValidator(1), MaxValueValidator(10)])
+    number = models.IntegerField(verbose_name="Number : ", validators=[MinValueValidator(1), MaxValueValidator(10)])
 
     input_file = models.FileField(verbose_name="File Containing Input",
                                   upload_to=get_testcase_input_upload_path,
@@ -127,6 +127,11 @@ class TestCase(models.Model):
                                          null=False, blank=False, default=10,
                                          help_text="The number of points that user will get if he/she completes this \
                                          test case successfully. The total points later-on will be calculated as a percentage of 100")
+
+    class Meta:
+        unique_together = ['question', 'number']
+        ordering = ['question', 'number']
+
 
     def __str__(self):
         return str(self.id)
@@ -238,3 +243,12 @@ class Result(models.Model):
 def recalc_points(instance, *args, **kwargs):
     if instance.pass_fail == 1:
         instance.submission.recalc_score()
+
+@receiver(post_delete, sender=TestCase)
+def recalc_number(instance, *args, **kwargs):
+        question = instance.question
+        start = 1
+        for testcase in question.testcase_set.order_by('number'):
+            testcase.number = start
+            testcase.save()
+            start += 1
