@@ -1,4 +1,4 @@
-from questions.forms import PostQuestionForm, SubmissionForm, TestCaseForm
+from questions.forms import PostQuestionForm, SubmissionForm, TestCaseCreateForm
 from questions.models import Question, Submission, TestCase
 from django.contrib.auth.models import User
 from django.test import TestCase

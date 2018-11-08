@@ -1,9 +1,9 @@
 from django.http import JsonResponse, Http404
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-
+from django.core.exceptions import PermissionDenied
 from questions.models import Question, Submission, Result, TestCase
-from .forms import SubmissionForm, TestCaseForm
+from .forms import SubmissionForm, TestCaseCreateForm
 
 from .background_tasks import RunAndAssert
 
@@ -66,37 +66,58 @@ def ajax_get_submission_results(request):
 
 
 @login_required
-def create_testcases(request, question_unique_id):
+def create_testcase(request, question_unique_id):
     question = get_object_or_404(Question, unique_code=question_unique_id)
     if question.author != request.user:
-        raise Http404("Requested Page not found!")
+        raise PermissionDenied("You do not have the permission to edit this question's meta data")
 
-    TestCaseFormSet = modelformset_factory(TestCase, fields=('input_file', 'output_file', 'points'))
-
-    test_case_forms = TestCaseFormSet(queryset=TestCase.objects.filter(question=question))
+    num_test_cases = question.testcase_set.count()
+    print(num_test_cases)
+    if num_test_cases >= 10:
+        return HttpResponse("Currently we do not support more than 10 test cases for 1 question.")
 
     if request.method == "POST":
-        test_case_forms = TestCaseFormSet(request.POST, request.FILES)
+        test_case_form = TestCaseCreateForm(request.POST, request.FILES)
 
-        if test_case_forms.is_valid():
-            instances = test_case_forms.save(commit=False)
-
-            for i in instances:
-                i.question = question
-                i.save()
-            raise Http404("Saved")
-            # for form in test_case_forms:
-            #     if form.is_valid():
-            #         testcase = form.save(commit=False)
-            #         testcase.question = question
-            #         testcase.save()
-
-        else:
-            print(test_case_forms.errors)
+        if test_case_form.is_valid():
+            test_case = test_case_form.save(commit=False)
+            test_case.question = question
+            test_case.number = num_test_cases + 1
+            test_case.save()
+            return redirect('home')
 
 
-    return render(request, "questions/create_test_cases.html", context={"test_case_form_set": test_case_forms})
+
+    else:
+        test_case_form = TestCaseCreateForm()
+
+    return render(request, "questions/create_test_case.html",
+                  {"test_case_form": test_case_form, "new_case_number": num_test_cases + 1})
 
 
-def edit_testcases(request):
-    return None
+def edit_testcase(request, question_unique_id, test_case_number):
+    question = get_object_or_404(Question, unique_code=question_unique_id)
+    if question.author != request.user:
+        raise PermissionDenied("You do not have the permission to edit this question's meta data")
+
+    test_case_q_set = question.testcase_set.filter(number=int(test_case_number))
+    if test_case_q_set.exists():
+        test_case = test_case_q_set[0]
+    else:
+        raise Http404("This Test Case Does Not exist!")
+
+    if request.method == "POST":
+        test_case_form = TestCaseCreateForm(request.POST, request.FILES, instance=test_case)
+
+        if test_case_form.is_valid():
+            test_case = test_case_form.save(commit=False)
+            test_case.save()
+            return redirect('home')
+
+
+
+    else:
+        test_case_form = TestCaseCreateForm(instance=test_case)
+
+    return render(request, "questions/edit_test_case.html",
+                  {"test_case_form": test_case_form, "new_case_number": test_case.number})

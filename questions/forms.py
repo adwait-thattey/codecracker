@@ -15,9 +15,10 @@ class SubmissionForm(forms.ModelForm):
         fields = ['language', 'code']
 
 
-class TestCaseForm(forms.ModelForm):
-    id = forms.IntegerField()
+class TestCaseCreateForm(forms.ModelForm):
 
     class Meta:
         model = TestCase
-        fields = ['number', 'input_file', 'output_file', 'points']
+        fields = ['input_file', 'output_file', 'points']
+
+
