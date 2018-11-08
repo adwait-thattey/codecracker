@@ -84,7 +84,17 @@ def create_testcase(request, question_unique_id):
             test_case.question = question
             test_case.number = num_test_cases + 1
             test_case.save()
-            return redirect('home')
+
+            add_another = request.POST.get("add-another", 0)
+            try:
+                add_another = int(add_another)
+            except ValueError:
+                add_another = 0
+
+            if add_another == 1:
+                return redirect('questions:testcase-create', question_unique_id)
+            else:
+                return redirect('home')
 
 
 
