@@ -89,14 +89,14 @@ class Question(models.Model):
 
 def get_testcase_input_upload_path(instance, filename):
     if filename:
-        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.id), "input.txt")
+        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.number), "input.txt")
     else:
         return None
 
 
 def get_testcase_output_upload_path(instance, filename):
     if filename:
-        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.id),
+        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.number),
                             "output.txt")
     else:
         return None
@@ -130,6 +130,7 @@ class TestCase(models.Model):
                                          help_text="The number of points that user will get if he/she completes this \
                                          test case successfully. The total points later-on will be calculated as a percentage of 100")
 
+    last_edited_on = models.DateTimeField(verbose_name="Last Edited On", editable=False, auto_now=True)
     class Meta:
         unique_together = ['question', 'number']
         ordering = ['question', 'number']
