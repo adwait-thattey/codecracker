@@ -94,7 +94,7 @@ def create_testcase(request, question_unique_id):
             if add_another == 1:
                 return redirect('questions:testcase-create', question_unique_id)
             else:
-                return redirect('home')
+                return redirect('questions:testcase-view', question_unique_id)
 
 
 
@@ -122,7 +122,7 @@ def edit_testcase(request, question_unique_id, test_case_number):
         if test_case_form.is_valid():
             test_case = test_case_form.save(commit=False)
             test_case.save()
-            return redirect('home')
+            return redirect('questions:testcase-view', question_unique_id)
 
 
 

@@ -67,21 +67,21 @@
                         <div class="card-action">
                             <div class="row center valign-wrapper no-padding" style="margin: 0;">
                                 <div class="col s3 center">
-                                    <a class="btn-floating btn waves-effect waves-light green darken-4 tooltipped"
+					<a href="javascript:void(0);" class="btn-floating btn waves-effect waves-light green darken-4 tooltipped"
                                        data-position="top" data-tooltip="View Stats"><i class="material-icons">assessment</i></a>
                                 </div>
                                 <div class="col s3">
-                                    <a class="btn-floating btn waves-effect waves-light purple darken-4 tooltipped"
+					<a href="javascript:void(0);" class="btn-floating btn waves-effect waves-light purple darken-4 tooltipped"
                                        data-position="top" data-tooltip="Re-Run all Submissions"><i
                                             class="material-icons">replay</i></a>
                                 </div>
                                 <div class="col s3">
-                                    <a class="btn-floating btn waves-effect waves-light cyan darken-4 tooltipped"
+					<a href="{% url 'questions:testcase-edit' question.unique_code testcase.number %}" class="btn-floating btn waves-effect waves-light cyan darken-4 tooltipped"
                                        data-position="top" data-tooltip="Edit TestCase"><i
                                             class="material-icons">edit</i></a>
                                 </div>
                                 <div class="col s3">
-                                    <a class="btn-floating btn waves-effect waves-light red accent-4 tooltipped"
+					<a href="{% url 'questions:delete-testcase' question.unique_code testcase.number %}" class="btn-floating btn waves-effect waves-light red accent-4 tooltipped"
                                        data-position="top" data-tooltip="Delete TestCase"><i
                                             class="material-icons">delete_forever</i></a>
                                 </div>
