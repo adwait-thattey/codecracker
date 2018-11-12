@@ -89,7 +89,8 @@ class Question(models.Model):
 
 def get_testcase_input_upload_path(instance, filename):
     if filename:
-        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.number), "input.txt")
+        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.number),
+                            "input.txt")
     else:
         return None
 
@@ -131,6 +132,7 @@ class TestCase(models.Model):
                                          test case successfully. The total points later-on will be calculated as a percentage of 100")
 
     last_edited_on = models.DateTimeField(verbose_name="Last Edited On", editable=False, auto_now=True)
+
     class Meta:
         unique_together = ['question', 'number']
         ordering = ['question', 'number']
@@ -229,6 +231,17 @@ class Result(models.Model):
 
     class Meta:
         unique_together = ['testcase', 'submission']
+
+    STATUS_DICT = {0: 'Unknown Result', 1: 'Correct Answer', 2: 'Timeout', 3: 'Runtime Error', 4: 'Wrong Answer',
+                   5: 'In progress'}
+
+    @classmethod
+    def ret_status_dict(cls):
+        return cls.STATUS_DICT
+
+    def result_status(self):
+
+        return self.STATUS_DICT[self.pass_fail]
 
     def __str__(self):
         return str(self.id)
