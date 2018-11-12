@@ -116,3 +116,25 @@ class RunAndAssert(threading.Thread):
         os.remove(self.output)
         os.remove(self.error)
         connection.close()
+
+
+class LimitThreads(threading.Thread):
+    def __init__(self, thread_id, thread_list):
+        """
+
+        :param thread_id:
+        :param thread_list:
+        """
+
+        super().__init__()
+        self.thread_id = thread_id
+        self.thread_list = thread_list
+
+
+    def run(self):
+        print("chunk start")
+        for thr in self.thread_list:
+            thr.start()
+            thr.join()
+
+        print("chunk end")
