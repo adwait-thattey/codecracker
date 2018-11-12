@@ -60,7 +60,7 @@ class Question(models.Model):
                                          )
     description = models.TextField(verbose_name="Description")
 
-    catagory = models.ManyToManyField(verbose_name="Catagories",
+    catagories = models.ManyToManyField(verbose_name="Catagories",
                                       to=Catagory,
                                       blank=True
                                       )
@@ -175,7 +175,12 @@ class Submission(models.Model):
                                                                     "Total Score must be calculated as a percentage of 100")
                                                   ]
                                       )
-    time_stamp = models.DateTimeField(auto_now_add=True)
+    submitted_on = models.DateTimeField(auto_now_add=True)
+
+    last_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['submitted_on']
 
     def __str__(self):
         return str(self.id)
@@ -240,7 +245,6 @@ class Result(models.Model):
         return cls.STATUS_DICT
 
     def result_status(self):
-
         return self.STATUS_DICT[self.pass_fail]
 
     def __str__(self):
