@@ -21,7 +21,8 @@
 </head>
 <body>
 <script>
-    var cur_rerun_number = 0
+    var cur_rerun_number = 0;
+    var cur_delete_number = 0;
 </script>
 <header>
     <nav>
@@ -94,10 +95,12 @@
                                             class="material-icons">edit</i></a>
                                 </div>
                                 <div class="col s3">
-                                    <a href="{% url 'questions:delete-testcase' question.unique_code testcase.number %}"
-                                       class="btn-floating btn waves-effect waves-light red accent-4 tooltipped"
-                                       data-position="top" data-tooltip="Delete TestCase"><i
-                                            class="material-icons">delete_forever</i></a>
+                                    <a href="javascript:void(0);"
+                                       class="btn-floating btn waves-effect waves-light red accent-4 tooltipped modal-trigger"
+                                       data-position="top" data-tooltip="Delete TestCase" data-target="delete-modal"
+                                       onclick="cur_delete_number={{ testcase.number }};document.getElementById('delete-modal-success-button').href='{% url 'questions:delete-testcase' question.unique_code testcase.number %}' "><i
+                                            class="material-icons">delete_forever</i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -142,11 +145,60 @@
 
         </div>
         <div class="modal-footer" id="rerun-conf-modal-footer-after-success" style="display: none">
-            <a href="javascript:void(0);" class="modal-close waves-effect btn btn-large blue darken-4 hoverable">Close</a>
+            <a href="javascript:void(0);"
+               class="modal-close waves-effect btn btn-large blue darken-4 hoverable">Close</a>
         </div>
 
     </div>
 </section>
+<section>
+    <div id="delete-modal" class="modal bottom-sheet modal-fixed-footer">
+        <div class="modal-content">
+            <div class="title red-text text-accent-4 center-align flow-text"
+                 style="font-weight: bolder; font-size: 5vh;">
+                WARNING!
+            </div>
+            <div class="red-text flow-text center-align text-accent-4" style="font-weight: bold" id="delete-modal-irreversible-action">
+                THIS ACTION CAN NOT BE REVERSED
+            </div>
+            <div class="flow-text center-align" id="delete-modal-content">
+                You are about to delete this test case. <br>
+                Any points gained by any person for this test case will be lost. <br>
+                Doing this will cause points of all submissions (for this question) to be re-calculated.<br>
+                This operation could take some time. <br>
+
+            </div>
+
+            <div class="center" style="display: none" id="delete-modal-loader">
+                <div class="preloader-wrapper medium active">
+                    <div class="spinner-layer spinner-red-only accent-4">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" id="delete-modal-footer">
+            <a href="#" class="modal-close waves-effect btn btn-large green darken-4 hoverable">Back</a>
+            <a href="javascript:void(0);" class="waves-effect btn btn-large red accent-4 hoverable"
+               onclick="delete_testcase()">Delete</a>
+
+        </div>
+        <div class="modal-footer" id="delete-modal-footer-after-success" style="display: none">
+            <a href="javascript:void(0);" id="delete-modal-success-button"
+               class="waves-effect btn btn-large blue darken-4 hoverable">Close</a>
+        </div>
+
+    </div>
+</section>
+
 {#<script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>#}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
@@ -178,7 +230,7 @@
                     'test_case_number': cur_rerun_number,
                 },
                 success: function (result) {
-                    if (result.success === true){
+                    if (result.success === true) {
                         document.getElementById('rerun-conf-modal-loader').style.display = 'none';
                         document.getElementById('rerun-conf-modal-footer-after-success').style.display = 'block';
                         document.getElementById('rerun-conf-modal-content').innerText = "We are running all the submissions again. You will be notified once done.";
@@ -194,6 +246,20 @@
                 }
             });
         }, 2000);
+    }
+
+    function delete_testcase() {
+        document.getElementById('delete-modal-loader').style.display = 'block';
+        document.getElementById('delete-modal-footer').style.display = 'none';
+        document.getElementById('delete-modal-irreversible-action').style.display = 'none';
+        document.getElementById('delete-modal-content').innerHTML = "";
+
+        setTimeout(function () {
+            document.getElementById('delete-modal-loader').style.display = 'none';
+            document.getElementById('delete-modal-footer-after-success').style.display = 'block';
+            document.getElementById('delete-modal-content').innerHTML = "The testcase will be deleted shortly <br> You will be notified once points for all submissions have been re-calculated";
+
+        },3500)
     }
 </script>
 </body>
