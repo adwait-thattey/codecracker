@@ -12,8 +12,17 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <style>
+        .spinner-layer {
+            border-color: #d50000;
+        }
+    </style>
 </head>
 <body>
+<script>
+    var cur_rerun_number = 0
+</script>
 <header>
     <nav>
         <div class="nav-wrapper cyan darken-4">
@@ -34,7 +43,7 @@
         <div class="row">
             {% for testcase in testcases %}
                 <div class="col s12 m6 l4 ">
-                    <div class="card pink darken-4">
+                    <div class="card pink darken-4 hoverable">
                         <div class="card-content white-text" style="padding-bottom: 3%;">
                             <span class="card-title center">Test Case #{{ testcase.number }}</span>
                             <div class="row">
@@ -67,21 +76,26 @@
                         <div class="card-action">
                             <div class="row center valign-wrapper no-padding" style="margin: 0;">
                                 <div class="col s3 center">
-					<a href="javascript:void(0);" class="btn-floating btn waves-effect waves-light green darken-4 tooltipped"
+                                    <a href="javascript:void(0);"
+                                       class="btn-floating btn waves-effect waves-light green darken-4 tooltipped"
                                        data-position="top" data-tooltip="View Stats"><i class="material-icons">assessment</i></a>
                                 </div>
                                 <div class="col s3">
-					<a href="javascript:void(0);" class="btn-floating btn waves-effect waves-light purple darken-4 tooltipped"
-                                       data-position="top" data-tooltip="Re-Run all Submissions"><i
+                                    <a href="javascript:void(0);"
+                                       class="btn-floating btn waves-effect waves-light purple darken-4 tooltipped modal-trigger"
+                                       data-position="top" data-tooltip="Re-Run all Submissions"
+                                       data-target="rerun-conf-modal" onclick="cur_rerun_number={{ testcase.number }};"><i
                                             class="material-icons">replay</i></a>
                                 </div>
                                 <div class="col s3">
-					<a href="{% url 'questions:testcase-edit' question.unique_code testcase.number %}" class="btn-floating btn waves-effect waves-light cyan darken-4 tooltipped"
+                                    <a href="{% url 'questions:testcase-edit' question.unique_code testcase.number %}"
+                                       class="btn-floating btn waves-effect waves-light cyan darken-4 tooltipped"
                                        data-position="top" data-tooltip="Edit TestCase"><i
                                             class="material-icons">edit</i></a>
                                 </div>
                                 <div class="col s3">
-					<a href="{% url 'questions:delete-testcase' question.unique_code testcase.number %}" class="btn-floating btn waves-effect waves-light red accent-4 tooltipped"
+                                    <a href="{% url 'questions:delete-testcase' question.unique_code testcase.number %}"
+                                       class="btn-floating btn waves-effect waves-light red accent-4 tooltipped"
                                        data-position="top" data-tooltip="Delete TestCase"><i
                                             class="material-icons">delete_forever</i></a>
                                 </div>
@@ -93,39 +107,49 @@
         </div>
     </div>
 </section>
-<section style="display: none;">
-    <div class="container">
-        <center>
-            <h2>Test Cases for <a href="{% url 'home' %}">{{ question.title }}</a></h2>
-        </center>
-        {#    TODO Put Question view link here#}
 
-        {% for testcase in testcases %}
-            <div>
-                Testcase #{{ testcase.number }}<br>
-                <a href="{{ testcase.input_file.url }}">View Input File</a><br>
-                <a href="{{ testcase.output_file.url }}">View Output File</a><br>
-                Points : {{ testcase.points }}<br>
-
-                <a href="{% url 'questions:testcase-edit' question.unique_code testcase.number %}">Edit Test Case</a>
-                <a href="{% url 'home' %}">View Test Case Stats</a>
-                {#        TODO Change this to stats page#}
-                <br><br>
+<section>
+    <div id="rerun-conf-modal" class="modal bottom-sheet">
+        <div class="modal-content">
+            <div class="title red-text text-accent-4 center-align flow-text"
+                 style="font-weight: bolder; font-size: 5vh;">
+                WARNING!
             </div>
-        {% empty %}
-            This question does not have any test cases yet.
+            <div class="flow-text center-align" id="rerun-conf-modal-content">
+                You are about to re-run all submissions for this test case. This could take a lot of time depending on
+                the test-case and number of existing submissions. Do this only if absolutely necessary.
+            </div>
+            <div class="center" style="display: none" id="rerun-conf-modal-loader">
+                <div class="preloader-wrapper medium active">
+                    <div class="spinner-layer spinner-red-only accent-4">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" id="rerun-conf-modal-footer">
+            <a href="#" class="modal-close waves-effect btn btn-large green darken-4 hoverable">Back</a>
+            <a href="javascript:void(0);" class="waves-effect btn btn-large red accent-4 hoverable"
+               onclick="send_rerun_request()">Proceed</a>
 
-        {% endfor %}
-
-        {% if testcases|length < 10 %}
-            <a href="{% url 'questions:testcase-create' question.unique_code %}">Create a test case</a>
-        {% endif %}
+        </div>
+        <div class="modal-footer" id="rerun-conf-modal-footer-after-success" style="display: none">
+            <a href="javascript:void(0);" class="modal-close waves-effect btn btn-large blue darken-4 hoverable">Close</a>
+        </div>
 
     </div>
 </section>
 {#<script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>#}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+<script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
 
 <script>
     {% comment %} document.addEventListener('DOMContentLoaded', function() {
@@ -135,6 +159,42 @@
     $(document).ready(function () {
         $('.tooltipped').tooltip();
     });
+
+    $(document).ready(function () {
+        $('.modal').modal();
+    });
+</script>
+<script>
+    function send_rerun_request() {
+        document.getElementById('rerun-conf-modal-loader').style.display = 'block';
+        document.getElementById('rerun-conf-modal-footer').style.display = 'none';
+
+        setTimeout(function () {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'questions:rerun-testcase-submissions' question.unique_code %}",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'test_case_number': cur_rerun_number,
+                },
+                success: function (result) {
+                    if (result.success === true){
+                        document.getElementById('rerun-conf-modal-loader').style.display = 'none';
+                        document.getElementById('rerun-conf-modal-footer-after-success').style.display = 'block';
+                        document.getElementById('rerun-conf-modal-content').innerText = "We are running all the submissions again. You will be notified once done.";
+
+
+                    }
+                    else {
+                        document.getElementById('rerun-conf-modal-loader').style.display = 'none';
+                        document.getElementById('rerun-conf-modal-footer-after-success').style.display = 'block';
+                        document.getElementById('rerun-conf-modal-content').innerText = "There was some error processing your request. Please try again later. If problem persists, contact us.";
+
+                    }
+                }
+            });
+        }, 2000);
+    }
 </script>
 </body>
 </html>

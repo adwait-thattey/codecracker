@@ -132,9 +132,9 @@ class LimitThreads(threading.Thread):
 
 
     def run(self):
-        print("chunk start")
+        # print("chunk start")
         for thr in self.thread_list:
             thr.start()
             thr.join()
 
-        print("chunk end")
+        # print("chunk end")

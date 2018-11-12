@@ -3,9 +3,10 @@ from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from questions.models import Question, Submission, Result, TestCase
+from questions.utils import run_in_background
 from .forms import SubmissionForm, TestCaseCreateForm
 
-from .background_tasks import RunAndAssert
+from .background_tasks import RunAndAssert, LimitThreads
 
 from django.forms import modelformset_factory
 
@@ -18,6 +19,27 @@ def start_code_run_sequence(submission):
         thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
         thread_temp.start()
 
+
+@run_in_background
+def rerun_all_testcase_submissions(testcase):
+    R_set = Result.objects.filter(testcase=testcase)
+    R_set.delete()
+
+    def chunker(seq, size):
+        return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+
+    for submission_chunk in chunker(testcase.question.submission_set.all(), 10):
+        thread_list = list()
+        for submission in submission_chunk:
+            R = Result.objects.create(testcase=testcase, submission=submission)
+            thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
+            thread_list.append(thread_temp)
+
+        thread_chunk = LimitThreads(thread_id=0, thread_list=thread_list)
+        thread_chunk.run()
+
+    # TODO Send mail after all submissions have been re-run
+    print("done!")
 
 @login_required
 def submit_solution(request, question_unique_id):
@@ -40,6 +62,7 @@ def submit_solution(request, question_unique_id):
     return render(request, "questions/submit_solution.html", {"form": submission_form})
 
 
+@login_required
 def submission_result(request, question_unique_id, submission_id):
     submission = get_object_or_404(Submission, id=submission_id)
 
@@ -105,6 +128,7 @@ def create_testcase(request, question_unique_id):
                   {"test_case_form": test_case_form, "new_case_number": num_test_cases + 1})
 
 
+@login_required
 def edit_testcase(request, question_unique_id, test_case_number):
     question = get_object_or_404(Question, unique_code=question_unique_id)
     if question.author != request.user:
@@ -133,6 +157,7 @@ def edit_testcase(request, question_unique_id, test_case_number):
                   {"test_case_form": test_case_form, "new_case_number": test_case.number})
 
 
+@login_required
 def view_testcases(request, question_unique_id):
     question = get_object_or_404(Question, unique_code=question_unique_id)
 
@@ -141,13 +166,14 @@ def view_testcases(request, question_unique_id):
 
     testcases = question.testcase_set.all()
 
-    return render(request, "questions/testcases_view.html", {"testcases": testcases, "question":question})
+    return render(request, "questions/testcases_view.html", {"testcases": testcases, "question": question})
 
 
 def redirect_to_view_testcases(request, question_unique_id):
     return redirect('questions:testcase-view', question_unique_id)
 
 
+@login_required
 def delete_test_case(request, question_unique_id, test_case_number):
     question = get_object_or_404(Question, unique_code=question_unique_id)
     if question.author != request.user:
@@ -162,3 +188,22 @@ def delete_test_case(request, question_unique_id, test_case_number):
     test_case.delete()
 
     return redirect('questions:testcase-view', question_unique_id)
+
+
+def ajax_call_rerun_all_testcase_submissions(request, question_unique_id):
+    ret_data = {"success": False}
+    question = Question.objects.filter(unique_code=question_unique_id)
+    try:
+        test_case_number = int(request.POST.get("test_case_number", None))
+        if question.exists():
+            question = question[0]
+            if question.author == request.user:
+                testcase = question.testcase_set.filter(number=test_case_number)
+                if testcase.exists():
+                    testcase = testcase[0]
+                    rerun_all_testcase_submissions(testcase)
+                    ret_data["success"] = True
+
+    except:
+        pass
+    return JsonResponse(ret_data)
