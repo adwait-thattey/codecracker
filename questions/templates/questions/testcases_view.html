@@ -137,7 +137,7 @@
 </section>
 
 <section>
-    <div id="rerun-conf-modal" class="modal bottom-sheet">
+    <div id="rerun-conf-modal" class="modal bottom-sheet modal-fixed-footer">
         <div class="modal-content">
             <div class="title red-text text-accent-4 center-align flow-text"
                  style="font-weight: bolder; font-size: 5vh;">
@@ -246,6 +246,7 @@
     function send_rerun_request() {
         document.getElementById('rerun-conf-modal-loader').style.display = 'block';
         document.getElementById('rerun-conf-modal-footer').style.display = 'none';
+        document.getElementById('rerun-conf-modal-content').innerHTML = "";
 
         setTimeout(function () {
             $.ajax({
@@ -283,7 +284,7 @@
         setTimeout(function () {
             document.getElementById('delete-modal-loader').style.display = 'none';
             document.getElementById('delete-modal-footer-after-success').style.display = 'block';
-            document.getElementById('delete-modal-content').innerHTML = "The testcase will be deleted shortly <br> You will be notified once points for all submissions have been re-calculated";
+            document.getElementById('delete-modal-content').innerHTML = "The testcase will be deleted shortly. <br> You will be notified once points for all submissions have been re-calculated";
 
         }, 3500)
     }
