@@ -16,6 +16,8 @@ def start_code_run_sequence(submission):
         thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
         thread_temp.start()
 
+def post_question(request):
+    return render(request, "questions/post_question.html")
 
 
 @login_required
@@ -65,5 +67,5 @@ def ajax_get_submission_results(request):
 
 def view_the_question(request, question_unique_id):
     question = get_object_or_404(Question, unique_code=question_unique_id)
-    
+
     return render(request, "questions/viewing_the_question.html", {"question":question})
