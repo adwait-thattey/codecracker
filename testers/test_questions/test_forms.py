@@ -15,7 +15,12 @@ class TestPostQuestionForm(TestCase):
             "short_description": "Sample Short Description",
             "description": "Sample Description",
             "time_limit": 2,
-            "unique_code": "samques001"
+            "unique_code": "samques001",
+            "constraints": "Sample constraints",
+            "input_format": "sample inp format",
+            "output_format": "sample_output_format",
+            "sample_input": "Sample Input",
+            "sample_output": "Sample Output"
         })
 
         self.assertEqual(form_instance.is_valid(), True)
@@ -30,13 +35,23 @@ class TestPostQuestionForm(TestCase):
         self.assertEqual(model_instance.short_description, "Sample Short Description")
         self.assertEqual(model_instance.description, "Sample Description")
         self.assertEqual(model_instance.time_limit, 2.0)
+        self.assertEqual(model_instance.constraints, "Sample constraints")
+        self.assertEqual(model_instance.input_format, "sample inp format")
+        self.assertEqual(model_instance.output_format, "sample_output_format")
+        self.assertEqual(model_instance.sample_input, "Sample Input")
+        self.assertEqual(model_instance.sample_output, "Sample Output")
 
     def test_missing_title(self):
         form_instance = PostQuestionForm(data={
             "short_description": "Sample Short Description",
             "description": "Sample Description",
             "time_limit": 2,
-            "unique_code": "samques001"
+            "unique_code": "samques001",
+            "constraints": "Sample constraints",
+            "input_format": "sample inp format",
+            "output_format": "sample_output_format",
+            "sample_input": "Sample Input",
+            "sample_output": "Sample Output"
         })
 
         self.assertEqual(form_instance.is_valid(), False)
@@ -47,7 +62,12 @@ class TestPostQuestionForm(TestCase):
             "title": "Sample Title",
             "description": "Sample Description",
             "time_limit": 2,
-            "unique_code": "samques001"
+            "unique_code": "samques001",
+            "constraints": "Sample constraints",
+            "input_format": "sample inp format",
+            "output_format": "sample_output_format",
+            "sample_input": "Sample Input",
+            "sample_output": "Sample Output"
         })
 
         self.assertEqual(form_instance.is_valid(), False)
@@ -58,7 +78,12 @@ class TestPostQuestionForm(TestCase):
             "title": "Sample Title",
             "short_description": "Sample Short Description",
             "time_limit": 2,
-            "unique_code": "samques001"
+            "unique_code": "samques001",
+            "constraints": "Sample constraints",
+            "input_format": "sample inp format",
+            "output_format": "sample_output_format",
+            "sample_input": "Sample Input",
+            "sample_output": "Sample Output"
         })
 
         self.assertEqual(form_instance.is_valid(), False)
@@ -69,7 +94,12 @@ class TestPostQuestionForm(TestCase):
             "title": "Sample Title",
             "short_description": "Sample Short Description",
             "description": "Sample Description",
-            "unique_code": "samques001"
+            "unique_code": "samques001",
+            "constraints": "Sample constraints",
+            "input_format": "sample inp format",
+            "output_format": "sample_output_format",
+            "sample_input": "Sample Input",
+            "sample_output": "Sample Output"
         })
 
         self.assertEqual(form_instance.is_valid(), False)
@@ -81,10 +111,90 @@ class TestPostQuestionForm(TestCase):
             "short_description": "Sample Short Description",
             "description": "Sample Description",
             "time_limit": 2,
+            "constraints": "Sample constraints",
+            "input_format": "sample inp format",
+            "output_format": "sample_output_format",
+            "sample_input": "Sample Input",
+            "sample_output": "Sample Output"
         })
 
         self.assertEqual(form_instance.is_valid(), False)
         self.assertNotEqual(form_instance.errors.get("unique_code"), None)
+
+    def test_missing_consraints(self):
+        form_instance = PostQuestionForm(data={
+            "title": "Sample Title",
+            "short_description": "Sample Short Description",
+            "description": "Sample Description",
+            "time_limit": 2,
+            "unique_code": "samques001",
+            "input_format": "sample inp format",
+            "output_format": "sample_output_format",
+            "sample_input": "Sample Input",
+            "sample_output": "Sample Output"
+        })
+
+        self.assertEqual(form_instance.is_valid(), False)
+
+    def test_missing_input_format(self):
+        form_instance = PostQuestionForm(data={
+            "title": "Sample Title",
+            "short_description": "Sample Short Description",
+            "description": "Sample Description",
+            "time_limit": 2,
+            "unique_code": "samques001",
+            "constraints": "Sample constraints",
+            "output_format": "sample_output_format",
+            "sample_input": "Sample Input",
+            "sample_output": "Sample Output"
+        })
+
+        self.assertEqual(form_instance.is_valid(), False)
+
+    def test_missing_output_format(self):
+        form_instance = PostQuestionForm(data={
+            "title": "Sample Title",
+            "short_description": "Sample Short Description",
+            "description": "Sample Description",
+            "time_limit": 2,
+            "unique_code": "samques001",
+            "constraints": "Sample constraints",
+            "input_format": "sample inp format",
+            "sample_input": "Sample Input",
+            "sample_output": "Sample Output"
+        })
+
+        self.assertEqual(form_instance.is_valid(), False)
+
+    def test_missing_sample_input(self):
+        form_instance = PostQuestionForm(data={
+            "title": "Sample Title",
+            "short_description": "Sample Short Description",
+            "description": "Sample Description",
+            "time_limit": 2,
+            "unique_code": "samques001",
+            "constraints": "Sample constraints",
+            "input_format": "sample inp format",
+            "output_format": "sample_output_format",
+            "sample_output": "Sample Output"
+        })
+
+        self.assertEqual(form_instance.is_valid(), False)
+
+    def test_missing_sample_output(self):
+        form_instance = PostQuestionForm(data={
+            "title": "Sample Title",
+            "short_description": "Sample Short Description",
+            "description": "Sample Description",
+            "time_limit": 2,
+            "unique_code": "samques001",
+            "constraints": "Sample constraints",
+            "input_format": "sample inp format",
+            "output_format": "sample_output_format",
+            "sample_input": "Sample Input"
+        })
+
+        self.assertEqual(form_instance.is_valid(), False)
 
 
 class TestSubmissionForm(TestCase):

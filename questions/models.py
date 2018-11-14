@@ -57,10 +57,22 @@ class Question(models.Model):
                                          )
     description = models.TextField(verbose_name="Description")
 
-    catagory = models.ManyToManyField(verbose_name="Catagories",
-                                      to=Catagory,
-                                      blank=True
-                                      )
+    input_format = models.TextField(verbose_name="Input format", null= 'True')
+
+    constraints = models.TextField(verbose_name="Constraints", null= 'True')
+
+    output_format = models.TextField(verbose_name="Output format", null= 'True')
+
+    sample_input = models.TextField(verbose_name="Sample input", null= 'True')
+
+    sample_output = models.TextField(verbose_name="Sample output", null= 'True')
+
+    catagory = models.ForeignKey(verbose_name="Catagories",
+                                 to=Catagory,
+                                 null=True,
+                                 blank=True,
+                                 on_delete=models.CASCADE
+                                 )
 
     time_limit = models.FloatField(verbose_name="Time Limit",
                                    default=2.0,
