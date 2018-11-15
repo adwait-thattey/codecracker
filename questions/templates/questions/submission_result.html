@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="result-section">
+
+</div>
+<h2>Total Score</h2>
+<div id="score-box">
+
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+    result_box = document.getElementById('result-section');
+    score_box = document.getElementById('score-box');
+    var interval_id = 0;
+
+    function result_card(label, result, error) {
+        return "<h3>Result Card " + label + " <br> Result : " + result + " <br>" + error
+    }
+
+    function get_result() {
+        console.log("sending request!");
+        $.ajax({
+        url: "{% url 'questions:ajax-submission-result' %}",
+        data: {
+            'submission_code': {{ submission.id }}
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            result_box.innerHTML="";
+            completion_check = 0;
+            for (result of data.results) {
+
+                result_box.innerHTML += result_card(result.id, result.pass_fail, result.errors);
+                if (result.pass_fail == 5){
+                    completion_check = 1;
+                }
+            }
+
+            if (completion_check==0){
+                clearInterval(interval_id)
+            }
+
+            score_box.innerHTML = data.score;
+        }
+      });
+    }
+
+    window.onload = function () {
+        interval_id = setInterval(get_result, 3000);
+        get_result();
+    }
+</script>
+</body>
+</html>
