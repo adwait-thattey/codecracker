@@ -106,7 +106,21 @@
                         </div>
                     </div>
                 </div>
-            {% endfor %}{% comment %}
+            {% endfor %}
+            <div class="col l4 m6 s12">
+                <a href="{% url 'questions:testcase-create' question.unique_code %}">
+                    <div style="margin-top:9px; height: 292px; position:relative; border:2px dashed black; width: 100%;"
+                         class="hoverable tooltipped black-text" data-position="top" data-tooltip="Add another test case">
+                        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);">
+                            <i class="material-icons" style="font-size: 1000%;">add</i>&nbsp;
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+    {% comment %}
 {#                        <div class="col s12 m6 l4 ">#}
 {#                <div class="row" style="margin-top: 5vh;">#}
 {#                    <div class="col s4 push-s4 valign-wrapper center-block">#}
