@@ -1,16 +1,16 @@
 from django.contrib import admin
-from .models import Catagory, Question, Submission, TestCase, Result
+from .models import Category, Question, Submission, TestCase, Result
 
 
 # Register your models here.
 
-class CatagoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'description', 'q_count']
     sortable_by = ['q_count', 'name']
     search_fields = ['name']
 
 
-admin.site.register(Catagory, CatagoryAdmin)
+admin.site.register(Category, CategoryAdmin)
 
 
 class QuestionAdmin(admin.ModelAdmin):

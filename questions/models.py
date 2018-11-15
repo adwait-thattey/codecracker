@@ -17,7 +17,7 @@ def image_upload_url(instance, filename):
 
 
 # Create your models here.
-class Catagory(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=25,
                             unique=True
                             )
@@ -60,8 +60,8 @@ class Question(models.Model):
                                          )
     description = models.TextField(verbose_name="Description")
 
-    catagories = models.ManyToManyField(verbose_name="Catagories",
-                                      to=Catagory,
+    categories = models.ManyToManyField(verbose_name="Categories",
+                                      to=Category,
                                       blank=True
                                       )
 
