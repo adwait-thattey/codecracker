@@ -1,0 +1,130 @@
+{% block custom_loaders %}
+    {% load static %}
+    {% load widget_tweaks %}
+{% endblock %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+      {% block common_includes %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main_page/nav/nav.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    {%  endblock common_includes %}
+
+  {% block fonts %}
+  {% endblock fonts %}
+
+  {% block custom_includes %}
+  
+  {% endblock %}
+
+  {% block internal_styles %}
+
+  {% endblock internal_styles %}
+    <title>
+        {% block title %}
+            Title
+        {% endblock %}
+    </title>
+  </head>
+  <body>
+  {% block header %}
+    <header>
+      <nav class="cyan darken-4">
+        <div id="menu">
+          <a href="#" class="brand-logo center" id="logo">CODING PORTAL</a>
+          <ul class="left hide-on-med-and-down">
+            <li><a href="#">HOME</a></li>
+            <li><a href="#">QUESTIONS</a></li>
+            <li><a href="#">POST</a></li>
+            <li><a href="#">ABOUT US</a></li>
+          </ul>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="#">LOGIN</a></li>
+            <li><a href="#">SIGN UP</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="fixed-action-btn right click-to-toggle hide-on-large-only" style="right:auto; top:0;" >
+        <a class="btn-flat btn-large cyan darken-4"><i class="material-icons" id="float">menu</i></a>
+        <ul>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Sign Up"><i class="material-icons">person_add</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Login"><i class="material-icons">person</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="About Us"><i class="material-icons">people</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Post"><i class="material-icons">publish</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Questions"><i class="material-icons">question_answer</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Home"><i class="material-icons">home</i></a></li>
+        </ul>
+      </div>
+    </header>
+{% endblock header %}
+
+    {% block main_content %}
+    <main>
+
+    </main>
+    {% endblock main_content %}
+
+    {% block footer %}
+
+    <footer class="page-footer" id="f">
+      <div class="container">
+        <div class="row">
+          <div class="col l4 s12">
+            <h4 class="brand-logo" id="logo">CODING PORTAL</h4>
+            <p>We are a team of college students working on this project.</p>
+          </div>
+          <div class="col l3 offset-l1 s12" id="fd">
+            <h6>Explore</h6>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Questions</a></li>
+              <li><a href="#">Post</a></li>
+              <li><a href="#">About Us</a></li>
+            </ul>
+          </div>
+          <div class="col l3 offset-l1 s12" id="fd1">
+            <h6>Contact Us</h6>
+            <ul>
+              <li>Something@iiits.in</li>
+              <li>Something@iiits.in</li>
+              <li>Something@iiits.in</li>
+              <li>Something@iiits.in</li>
+              <li>Something@iiits.in</li>
+              <li>Something@iiits.in</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright" id="f2">
+        <div class="container">
+          © 2018 Copyright Text
+        </div>
+      </div>
+    </footer>
+  {% endblock footer %}
+
+  {% block nav_eof_scripts %}
+<script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+  <script>
+      $(document).ready(function(){
+        $('.fixed-action-btn').floatingActionButton({
+          direction: 'bottom',
+          hoverEnabled: false,
+        });
+        $('.tooltipped').tooltip();
+      });
+    </script>
+
+  {% endblock %}
+
+  {% block custom_eof_scripts %}
+
+  {% endblock custom_eof_scripts %}
+  </body>
+</html>

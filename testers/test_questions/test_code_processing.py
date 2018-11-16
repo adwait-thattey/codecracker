@@ -36,6 +36,7 @@ class CodeRunTest(TestCase):
         self.tle_code_file = os.path.join("code_tests", "tle_code.py")
 
         self.testcase = models.TestCase(question=self.question,
+                                        number=1,
                                         input_file=self.input_file,
                                         output_file=self.output_file,
                                         points=10

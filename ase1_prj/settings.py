@@ -25,13 +25,13 @@ SECRET_KEY = 'bm+!!um=2p&r^!4(l5bpic2f&a7h0!vk^zl$53@drcuvaps08+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -40,10 +40,15 @@ INSTALLED_APPS = [
     'main_page',
     'registration',
     'testers',
+    'widget_tweaks',
+    'django.contrib.admin',
     'questions',
+<<<<<<< HEAD
     'widget_tweaks',
     'ckeditor',
     'ckeditor_uploader',
+=======
+>>>>>>> 1d9537cca7bf89f6eaa5b42056e701a346e5551c
 ]
 
 CKEDITOR_UPLOAD_PATH= "uploads/"
@@ -138,3 +143,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 LOGIN_URL = 'registration:login'
+<<<<<<< HEAD
+=======
+
+LOGIN_REDIRECT_URL = 'home'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+>>>>>>> 1d9537cca7bf89f6eaa5b42056e701a346e5551c
