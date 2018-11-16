@@ -1,0 +1,2 @@
+model:
+    user, content, icon, time , link
