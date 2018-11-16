@@ -1,90 +1,172 @@
-{% load static %}
+{% extends 'main_page/nav.html' %}
+
+{% block custom_loaders %}
+    {% load static %}
+    {% load widget_tweaks %}
+{% endblock custom_loaders %}
+
 <!DOCTYPE html>
 <html>
+{% comment %}
+  <head>
 
-	
-	
-	<head>
-      {# FIXME Page is not Responsive #}
         <!--Import Google Icon Font-->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css'%}"  media="screen,projection"/>
-		{# TODO Change to min.css in production #}
+      <link type="text/css" rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}"  media="screen,projection"/>
+
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	 <body class = "container">
-		 <div class="container col s8">
-  <div class="row">
-    <nav>
-      <div class="nav-wrapper">
-        <div class="col s8">
-          <h3 class="brand-logo center ">Register</h3>
+  </head>
+{% endcomment %}
+
+<body>
+
+
+{% block main_content %}
+    <section>
+    <div class="container">
+      <div class="card grey lighten-3">
+        <div class="card-content">
+         {% if form.non_field_errors %}
+               <span class="red-text">{{ signup_form.non_field_errors }}</span>
+         {% endif %}
+
+    <form class="col s14" id="register_form" method="POST" action="">
+      {% csrf_token %}
+      <h4 class="center">Register</h4>
+      <div class="row">
+
+        <div class="input-field col s12 m6">
+          <i class="material-icons prefix">contacts</i>
+          {{ signup_form.first_name|add_class:"validate" }}
+          <label for="{{ signup_form.first_name.id_for_label }}">First Name</label>
+                {% if signup_form.first_name.help_text %}
+                    <span class="helper-text" data-error="wrong"
+                          data-success="right">{{ signup_form.first_name.help_text }}</span>
+                {% endif %}
+                {% if signup_form.first_name.errors %}
+                    <span class="helper-text red-text"
+                          style="font-size:large">{{ signup_form.first_name.errors }}</span>
+                {% endif %}
+
+
         </div>
-      </div>
-    </nav>
 
-  </div>
-  <form class="col s14">
-    <div class="row">
-      <div class="input-field hoverable col s6">
-        <i class="material-icons prefix">contacts</i>
-        <input id="first_name" type="text" class="validate">
-        <label   for="first_name">First Name</label>
-      </div>
-      <div class="input-field hoverable col s6">
-        <i class="material-icons prefix">contacts</i>
-        <input id="last_name" type="text" class="validate">
-        <label for="last_name">Last Name</label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field hoverable col s10">
-        <i class="material-icons prefix">account_circle</i>
-        <input id="username" type="text" class="validate">
-        <label for="username">Username</label>
-      </div>
-      <div class="input-field hoverable col s10">
-        <i class="material-icons prefix">email</i>
-        <input id="email" type="email" class="validate" >
-         <label for="email">Email</label> 
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field hoverable col s6">
-        <i class="material-icons prefix">vpn_key</i>
-        <input id="password" type="password" class="validate">
-        <label for="password">Password</label>
-      </div>
-      <div class="input-field hoverable col s6">
-        <i class="material-icons prefix">replay</i>
-        <input id="password2" type="password" class="validate">
-        <label for="password2">Retype Password</label>
-      </div>
-    </div>
-    <a class="waves-effect waves-light btn right hoverable"><i class="large material-icons right">done</i>register</a>
-  </form>
+        <div class="input-field col s12 m6">
+          <i class="material-icons prefix">contacts</i>
+          {{ signup_form.last_name|add_class:"validate" }}
+          <label for="{{ signup_form.last_name.id_for_label }}">Last Name</label>
+            {% if signup_form.last_name.help_text %}
+                    <span class="helper-text" data-error="wrong"
+                          data-success="right">{{ signup_form.last_name.help_text }}</span>
+                {% endif %}
+                {% if signup_form.last_name.errors %}
+                    <span class="helper-text red-text"
+                          style="font-size:large">{{ signup_form.last_name.errors }}</span>
+                {% endif %}
 
-</div>
-	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	  <script src="//static.codepen.io/assets/common/stopExecutionOnTimeout-41c52890748cd7143004e05d3c5f786c66b19939c4500ce446314d1748483e13.js"></script>
-	  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-	  <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
-         {# TODO Switch to min.js in production #}
-	  <script src="https://materializecss.com/js/prism.js"></script>
-	</body>
+
+        </div>
+
+
+
+                <div class="row">
+
+                    <div class="input-field col s10">
+                        <i class="material-icons prefix">account_circle</i>
+                        {{ signup_form.username|add_class:"validate" }}
+                        <label for="{{ signup_form.username.id_for_label }}">Username</label>
+                            {% if signup_form.username.help_text %}
+                                <span class="helper-text" data-error="wrong"
+                                      data-success="right">{{ signup_form.username.help_text }}</span>
+                            {% endif %}
+                            {% if signup_form.username.errors %}
+                                <span class="helper-text red-text"
+                                      style="font-size:large">{{ signup_form.username.errors }}</span>
+                            {% endif %}
+
+                    </div>
+
+                    <div class="input-field col s10">
+                        <i class="material-icons prefix">email</i>
+                        {{ signup_form.email|add_class:"validate" }}
+                        <label for="{{ signup_form.email.id_for_label }}">Email</label>
+                            {% if signup_form.email.help_text %}
+                                <span class="helper-text" data-error="wrong"
+                                      data-success="right">{{ signup_form.email.help_text }}</span>
+                            {% endif %}
+                            {% if signup_form.email.errors %}
+                                <span class="helper-text red-text"
+                                      style="font-size:large">{{ signup_form.email.errors }}</span>
+                            {% endif %}
+
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <i class="material-icons prefix">vpn_key</i>
+                        {{ signup_form.password|add_class:"validate" }}
+                        <label for="{{ signup_form.password.id_for_label }}">Password</label>
+                           {% if signup_form.password.help_text %}
+                                <span class="helper-text" data-error="wrong"
+                                      data-success="right">{{ signup_form.password.help_text }}</span>
+                            {% endif %}
+                            {% if signup_form.password.errors %}
+                                <span class="helper-text red-text"
+                                      style="font-size:large">{{ signup_form.password.errors }}</span>
+                            {% endif %}
+
+                    </div>
+
+                    <div class="input-field col s12 m6">
+                        <i class="material-icons prefix">replay</i>
+                        {{ signup_form.confirm_password|add_class:"validate" }}
+                        <label for="{{ signup_form.confirm_password.id_for_label }}">Retype Password</label>
+                            {% if signup_form.confirm_password.help_text %}
+                                <span class="helper-text" data-error="wrong"
+                                      data-success="right">{{ signup_form.confirm_password.help_text }}</span>
+                            {% endif %}
+                            {% if signup_form.confirm_password.errors %}
+                                <span class="helper-text red-text"
+                                      style="font-size:large">{{ signup_form.confirm_password.errors }}</span>
+                            {% endif %}
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="center s12">
+                        <a class="waves-effect waves-light btn btn-large center-block hoverable"
+                           href="javascript:void(0)" onclick="document.getElementById('register_form').submit()"><i
+                                class="large material-icons right">done</i>register</a>
+                    </div>
+                </div>
+                    <div class="center">
+                        <h4 class="card-title center-align">Register using Google</h4>
+                    </div>
+                    <div class="row">
+                        <center>
+                        <span class="g-signin2" data-onsuccess="onSignIn"></span>
+                        </center>
+                    </div>
+            </form>
+            </div>
+          </div>
+        </div>
+
+        {% comment %}{{ signup_form.non_field_errors }}
+    {% for field in signup_form %}
+        {{ field.errors }}
+    {% endfor %}    {% endcomment %}
+
+    </section>
+{#<script src="//static.codepen.io/assets/common/stopExecutionOnTimeout-41c52890748cd7143004e05d3c5f786c66b19939c4500ce446314d1748483e13.js"></script>#}
+{% endblock main_content %}
+
+
+</body>
 
 </html>

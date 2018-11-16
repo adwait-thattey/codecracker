@@ -1,25 +1,38 @@
-{% load static %}
+{% block custom_loaders %}
+    {% load static %}
+    {% load widget_tweaks %}
+{% endblock %}
+
 <!DOCTYPE html>
 <html>
   <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      {% block common_includes %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'main_page/nav/nav.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script>
-      $(document).ready(function(){
-        $('.fixed-action-btn').floatingActionButton({
-          direction: 'bottom',
-          hoverEnabled: false,
-        });
-        $('.tooltipped').tooltip();
-      });
-    </script>
-    <title>Coding-Portal</title>
+
+    {%  endblock common_includes %}
+
+  {% block fonts %}
+  {% endblock fonts %}
+
+  {% block custom_includes %}
+  
+  {% endblock %}
+
+  {% block internal_styles %}
+
+  {% endblock internal_styles %}
+    <title>
+        {% block title %}
+            Title
+        {% endblock %}
+    </title>
   </head>
   <body>
+  {% block header %}
     <header>
       <nav class="cyan darken-4">
         <div id="menu">
@@ -49,10 +62,15 @@
         </ul>
       </div>
     </header>
+{% endblock header %}
 
+    {% block main_content %}
     <main>
 
     </main>
+    {% endblock main_content %}
+
+    {% block footer %}
 
     <footer class="page-footer" id="f">
       <div class="container">
@@ -89,6 +107,24 @@
         </div>
       </div>
     </footer>
+  {% endblock footer %}
 
+  {% block nav_eof_scripts %}
+<script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+  <script>
+      $(document).ready(function(){
+        $('.fixed-action-btn').floatingActionButton({
+          direction: 'bottom',
+          hoverEnabled: false,
+        });
+        $('.tooltipped').tooltip();
+      });
+    </script>
+
+  {% endblock %}
+
+  {% block custom_eof_scripts %}
+
+  {% endblock custom_eof_scripts %}
   </body>
 </html>
