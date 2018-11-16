@@ -27,7 +27,7 @@ class RegisterUrlTest(TestCase):
         self.client = Client()
         response = self.client.get(self.request_url)
 
-        self.assertRedirects(response, expected_url="/registration/register")
+        self.assertEqual(response.status_code,200)
 
     def test_authenticated_ping(self):
         self.client = Client()
