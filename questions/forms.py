@@ -16,7 +16,10 @@ class SubmissionForm(forms.ModelForm):
         fields = ['language', 'code']
 
 
-class TestCaseForm(forms.ModelForm):
+class TestCaseCreateForm(forms.ModelForm):
+
     class Meta:
         model = TestCase
-        fields = ['input_file', 'output_file']
+        fields = ['input_file', 'output_file', 'points']
+
+
