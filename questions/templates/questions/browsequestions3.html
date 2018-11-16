@@ -1,0 +1,505 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+  <title>expt browse questions</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+  <link rel="stylesheet" href="{% static 'questions/css/browsequestion_style2.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css">
+
+</head>
+<body>
+
+  <div class="navbar-fixed">
+    <nav class="nav-wrapper indigo">
+      <div class="container">
+        <a href="#" class="brand-logo tooltipped" data-position="right" data-tooltip="Hi Friend">Logo</a>
+        <a href="#" class="sidenav-trigger" data-target="mobile-links">
+          <i class="material-icons">menu</i>
+        </a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="#" alt="Login">
+            <i class="material-icons tooltipped waves-effect waves-light" data-position="right"data-tooltip="Home">home</i>
+          </a></li><!--Back to home-->
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <ul class="sidenav" id="mobile-links">
+    <li><a href="">Home</a></li>
+    <li><a href="">Login</a></li>
+    <li><a href="">Register</a></li>
+    <li><a href="">Contact</a></li>
+  </ul>
+
+  <!--Parallax-->
+
+<!--cards for filtering and sorting-->
+<div class="filter">
+<!--card for filtering using select-->
+<div class="col s12 m6">
+<div class="card">
+  <div class="card-content">
+
+     <div class=" card-title">
+        <select>
+          <option value="" disabled selected>Choose Category</option>
+          <option value="1">Option 1</option>
+          <option value="2">Option 2</option>
+          <option value="3">Option 3</option>
+        </select>
+     </div>
+
+  </div>
+ </div>
+</div>
+
+    <!--card for sorting-->
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Sort By</span>
+          <p>
+          <label>
+            <input type="checkbox" class="filled-in"  />
+            <span>Most Recent</span>
+          </label>
+         </p>
+         <p>
+         <label>
+           <input type="checkbox" class="filled-in"  />
+           <span>Most Submissions</span>
+         </label>
+        </p>
+        <p>
+        <label>
+          <input type="checkbox" class="filled-in"  />
+          <span>Most Viewed</span>
+        </label>
+       </p>
+       <p>
+       <label>
+         <input type="checkbox" class="filled-in"  />
+         <span>Difficulty</span>
+       </label>
+      </p>
+        </div>
+      </div>
+    </div>
+<!--reverse toggle-->
+  <div class="switch">
+    <label class="reverse">
+      Reverse OFF
+      <input type="checkbox">
+      <span class="lever"></span>
+      Reverse ON
+    </label>
+  </div>
+</div>
+<!--filter ends-->
+
+
+
+  <!--question cards with description-->
+
+  <!--q1-->
+<div class="container">
+  <div style="width:1000px;margin-top:25px;">
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 1
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x"style="color:black"></i>
+                <i class="fas fa-trophy fa-2x animated bounce"  style="color:black;animation-duration:2.5s"></i>
+                <i class="fas fa-flag-checkered " style="color:black;"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right "  href="http://www.iiits.ac.in/" ><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 2
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x" style="color:black"></i>
+                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
+                <i class="fas fa-flag-checkered" style="color:black"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 3
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x" style="color:black"></i>
+                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
+                <i class="fas fa-flag-checkered" style="color:black"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 1
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x" style="color:black"></i>
+                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
+                <i class="fas fa-flag-checkered" style="color:black"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 1
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x" style="color:black"></i>
+                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
+                <i class="fas fa-flag-checkered" style="color:black"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 1
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x" style="color:black"></i>
+                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
+                <i class="fas fa-flag-checkered" style="color:black"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 1
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x" style="color:black"></i>
+                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
+                <i class="fas fa-flag-checkered" style="color:black"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 1
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x" style="color:black"></i>
+                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
+                <i class="fas fa-flag-checkered" style="color:black"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 1
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x" style="color:black"></i>
+                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
+                <i class="fas fa-flag-checkered" style="color:black"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 1
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x" style="color:black"></i>
+                <i class=" fas fa-trophy fa-2x "  style="color:black"></i>
+                <i class="fas fa-flag-checkered" style="color:black"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 1
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x" style="color:black"></i>
+                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
+                <i class="fas fa-flag-checkered" style="color:black"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+  <ul class="collapsible popout">
+    <li>
+      <div class="collapsible-header teal white-text">
+        <table>
+            <th>
+              <td>
+                <i class="material-icons">expand_more</i>QUESTION 1
+              <td>
+              <td class="right">
+                <i class="far fa-eye fa-2x" style="color:black"></i>
+                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
+                <i class="fas fa-flag-checkered" style="color:black"></i>
+                <div class="chip">
+                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                </div>
+              </td>
+             </th>
+        </table>
+      </div>
+      <div class="collapsible-body">
+        <span>In programming, code (noun) is a term used for both the statements written in a
+          particular programming language - the source code , and a term for the source code after
+          it has been processed by a compiler and made ready to run in the computer - the object code
+       </span>
+       <br>
+       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
+       <br>
+      </div>
+    </li>
+  </ul>
+
+
+ </div>
+</div>
+<!--parallax ends here-->
+  <!--should have scroller-->
+  <!--footer-->
+  <!--JavaScript at end of body for optimized loading-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+  <script>
+    $(document).ready(function(){
+      $('.sidenav').sidenav();
+    });
+
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+
+  $(document).ready(function(){
+   $('.tooltipped').tooltip();
+ });
+/*select--*/
+
+ $(document).ready(function(){
+    $('select').formSelect();
+  });
+
+$('.dropdown-trigger').dropdown();
+</script>
+</body>
+</html>
