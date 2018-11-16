@@ -236,6 +236,7 @@ class Result(models.Model):
 
     class Meta:
         unique_together = ['testcase', 'submission']
+        ordering = ['submission', 'testcase']
 
     STATUS_DICT = {0: 'Unknown Result', 1: 'Correct Answer', 2: 'Timeout', 3: 'Runtime Error', 4: 'Wrong Answer',
                    5: 'In progress'}

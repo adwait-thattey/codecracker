@@ -41,162 +41,100 @@
 
         <div class="row">
             {% for result in submission.result_set.all %}
-            <div class=" col s12 m6 l4 ">
+                <div class=" col s12 m6 l4 ">
 
 
-                <ul class="collapsible popout ">
-                    <li>
-                        <div class="collapsible-header" style="color: black"><i class="material-icons">check</i>Test Case
-                        </div>
-                        <div class="collapsible-body">
-                            <span>Execution time:</span><br>
-                            <span> Score:</span><br>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                    <ul class="collapsible popout ">
+                        <li>
+                            <div class="collapsible-header" style="color: black"><i class="material-icons result_icon">check</i>Test
+                                Case #{{ result.testcase.number }}
+                            </div>
+                            <div class="collapsible-body">
+                                <div>
+                                    <span>Status: <span class="result_status">Passed</span> </span><br>
+                                    <span>Execution time: <span class="result_extime">1</span> sec</span><br>
+                                    <span> Score: <span class="result_score">10</span></span><br>
+                                </div>
+                                <div style="display: none" class="result_error_container">
+                                    Error: <a style="text-decoration: none;" class="red-text accent-4 result_error_link">click to view error</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             {% endfor %}
-{% comment %}
-
-            <div class=" col s12 m6 l4 ">
-
-
-                <ul class="collapsible popout ">
-                    <li>
-                        <div class="collapsible-header" style="color: black"><i class="material-icons">wrong</i>Test
-                            Case 2
-                        </div>
-                        <div class="collapsible-body">
-                            <span>Execution time:</span><br>
-                            <span> Score:</span><br>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class=" col s12 m6 l4 ">
-
-
-                <ul class="collapsible popout ">
-                    <li>
-                        <div class="collapsible-header" style="color: black"><i class="material-icons">timer</i>Test
-                            Case 3
-                        </div>
-                        <div class="collapsible-body">
-                            <span>Execution time:</span><br>
-                            <span> Score:</span><br>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class=" col s12 m6 l4 ">
-
-
-                <ul class="collapsible popout ">
-                    <li>
-                        <div class="collapsible-header" style="color: black"><i
-                                class="material-icons">report_problem</i>Test Case 4
-                        </div>
-                        <div class="collapsible-body">
-                            <span>Execution time:</span><br>
-                            <span> Score:</span><br>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class=" col s12 m6 l4 ">
-
-
-                <ul class="collapsible popout ">
-                    <li>
-                        <div class="collapsible-header" style="color: black"><i class="material-icons">c</i>Test Case 5
-                        </div>
-                        <div class="collapsible-body">
-                            <span>Execution time:</span><br>
-                            <span> Score:</span><br>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class=" col s12 m6 l4 ">
-
-
-                <ul class="collapsible popout ">
-                    <li>
-                        <div class="collapsible-header" style="color: black"><i class="material-icons">close</i>Test
-                            Case 6
-                        </div>
-                        <div class="collapsible-body">
-                            <span>Execution time:</span><br>
-                            <span> Score:</span><br>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class=" col s12 m6 l4 ">
-
-
-                <ul class="collapsible popout ">
-                    <li>
-                        <div class="collapsible-header" style="color: black"><i class="material-icons">check</i>Test
-                            Case 7
-                        </div>
-                        <div class="collapsible-body">
-                            <span>Execution time:</span><br>
-                            <span> Score:</span><br>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class=" col s12 m6 l4 ">
-
-
-                <ul class="collapsible popout ">
-                    <li>
-                        <div class="collapsible-header" style="color: black"><i class="material-icons">loop</i>Test Case
-                            8
-                        </div>
-                        <div class="collapsible-body">
-                            <span>Execution time:</span><br>
-                            <span> Score:</span><br>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class=" col s12 m6 l4 ">
-
-
-                <ul class="collapsible popout ">
-                    <li>
-                        <div class="collapsible-header" style="color: black"><i class="material-icons">check</i>Test
-                            Case 9
-                        </div>
-                        <div class="collapsible-body">
-                            <span>Execution time:</span><br>
-                            <span> Score:</span><br>
-                        </div>
-                    </li>
-                </ul>
-            </div>
 
 
         </div>
     </div>
-{% endcomment %}
-
-
-    </div>
-    </div>
-
 
 
 </section>
+
+<script>
+
+    result_icons = document.getElementsByClassName('result_icon');
+    restlu_statuss = document.getElementsByClassName('result_status');
+    result_extimes = document.getElementsByClassName('result_extime');
+    result_error_containers = document.getElementsByClassName('result_error_container');
+    result_error_link = document.getElementsByClassName('result_error_link');
+
+     var interval_id = 0;
+
+     function get_result() {
+        console.log("sending request!");
+        $.ajax({
+        url: "{% url 'questions:ajax-submission-result' %}",
+        data: {
+            'submission_code': {{ submission.id }}
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+
+            completion_check = 0;
+
+            result_iter = 0;
+            for (result of data.results) {
+
+                if (result.pass_fail === 1){
+                    result_icons[result_iter].innerHTML = "check";
+                    result_icons[result_iter].classList.add("green-text")
+                }
+                else if (result.pass_fail === 2) {
+                    result_icons[result_iter].innerHTML = "timer";
+                }
+                else if (result.pass_fail === 3) {
+                    result_icons[result_iter].innerHTML = "report_problem";
+                }
+                else if (result.pass_fail === 4) {
+                    result_icons[result_iter].innerHTML = "clear";
+                }
+                else if (result.pass_fail === 5) {
+                    result_icons[result_iter].innerHTML = "hourglass_full";
+                }
+
+                if (result.pass_fail == 5){
+                    completion_check = 1;
+                }
+
+                result_iter+=1
+            }
+
+            if (completion_check==0){
+                clearInterval(interval_id)
+            }
+
+
+        }
+      });
+    }
+
+    window.onload = function () {
+        interval_id = setInterval(get_result, 3000);
+        get_result();
+    }
+</script>
 </body>
 <script type="text/javascript" src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
 
