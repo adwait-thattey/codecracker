@@ -5,6 +5,8 @@ from django.db import models
 from django.contrib.auth.models import User as DefaultUser
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 import os
 import pathlib
@@ -55,7 +57,7 @@ class Question(models.Model):
                                          help_text="A short description whch describes your question. This will be visible when \
                                          user hovers on your question the all questions page"
                                          )
-    description = models.TextField(verbose_name="Description")
+    description = RichTextField(verbose_name="Description")
 
     input_format = models.TextField(verbose_name="Input format", null= 'True')
 

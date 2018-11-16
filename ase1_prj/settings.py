@@ -41,8 +41,12 @@ INSTALLED_APPS = [
     'registration',
     'testers',
     'questions',
-    'widget_tweaks'
+    'widget_tweaks',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
+
+CKEDITOR_UPLOAD_PATH= "uploads/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

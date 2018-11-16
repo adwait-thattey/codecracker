@@ -1,7 +1,6 @@
 from django import forms
-
 from questions.models import Question, Submission, TestCase
-
+from ckeditor.widgets import CKEditorWidget
 
 class PostQuestionForm(forms.ModelForm):
     class Meta:
