@@ -26,7 +26,7 @@ class TestRegisterForm(TestCase):
         register.save()
 
        # model_instance = UserProfile.objects.get(**********)
-        model_instance = UserProfile.objects.get()
+        model_instance = UserProfile.objects.get(user = "Sample User")
 
         self.assertEqual(model_instance.user, "Sample User")
         self.assertEqual(model_instance.phone_number, 9999999999)
