@@ -1,0 +1,24 @@
+
+.nav_style{background-color:#003366;}
+
+.sidenav{
+  background-color:#90caf9;
+
+}
+
+
+.container{
+  float:right;
+margin-right: 70px;
+
+}
+
+.filter{
+  float:left;
+  margin-left: 70px;
+}
+.reverse{
+  float:left;
+  color:teal;
+
+}

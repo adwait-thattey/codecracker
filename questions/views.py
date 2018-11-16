@@ -62,3 +62,7 @@ def ajax_get_submission_results(request):
         return JsonResponse(data)
     else:
         raise Http404("Invalid request!")
+
+
+def browse_questions(request):
+    return render(request, "questions/browsequestions3.html")

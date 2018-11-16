@@ -59,7 +59,7 @@ class Question(models.Model):
 
     catagory = models.ManyToManyField(verbose_name="Catagories",
                                       to=Catagory,
-                                      blank=True
+                                      blank=False
                                       )
 
     time_limit = models.FloatField(verbose_name="Time Limit",
