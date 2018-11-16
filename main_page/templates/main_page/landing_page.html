@@ -1,11 +1,102 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Landing Page</title>
-    {# TODO Set a Proper Title  #}
+    <title>landing</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+  <link rel="stylesheet" href="{% static 'main_page/landing/landing_style.css' %}">
+
 </head>
 <body>
-This is the landing page
+
+  <div class="navbar-fixed">
+    <nav class="nav-wrapper indigo">
+      <div class="container">
+        <a href="#" class="brand-logo">Logo</a>
+        <a href="#" class="sidenav-trigger" data-target="mobile-links">
+          <i class="material-icons">menu</i>
+        </a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="#" alt="Login"><i class="material-icons">fingerprint</i></a></li><!--Login-->
+         <li><a href="#" alt="Register"><i class="material-icons">person_add</i></a></li><!--register-->
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <ul class="sidenav" id="mobile-links">
+    <li><a href="">Login</a></li>
+    <li><a href="">Register</a></li>
+    <li><a href="">Contact</a></li>
+  </ul>
+
+  <div class="main_content">
+
+    <img class="mySlides" src="{% static 'main_page/landing/code2.jpg' %}">
+    <img class="mySlides" src="{% static 'main_page/landing/code3.jpg' %}" >
+    <img class="mySlides" src="{% static 'main_page/landing/code4.jpg' %}" >
+    <img class="mySlides" src="{% static 'main_page/landing/code5.jpg' %}">
+
+  </div>
+
+  <!--footer-->
+<footer class="page-footer teal">
+<div class="container">
+  <div class="row">
+    <div class="col l6 s12">
+      <h5 class="white-text">About Us</h5>
+      <p class="grey-text text-lighten-4">small description</p>
+    </div>
+    <div class="col l3 s12">
+    <!--keep images-->
+    </div>
+  <div class="col l3 s12">
+      <h6>contacts:</h6>
+      <ul>
+        <li><a class="white-text" href="#!">contact1</a></li>
+        <li><a class="white-text" href="#!">contact2</a></li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="footer-copyright">
+  <div class="container"><center>
+  copyright@<a class="white-text text-lighten-3" href="http://www.iiits.ac.in/">IIITsricity</a></center>
+  </div>
+</div>
+</footer>
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('.sidenav').sidenav();
+    });
+  </script>
+  <script>
+         var myIndex = 0;
+         carousel();
+
+         function carousel() {
+             var i;
+             var x = document.getElementsByClassName("mySlides");
+             for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+             }
+             myIndex++;
+             if (myIndex > x.length) {myIndex = 1}
+             x[myIndex-1].style.display = "block";
+             setTimeout(carousel, 2000); // Change image every 2 seconds
+         }
+ </script>
+
 </body>
 </html>

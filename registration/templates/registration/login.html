@@ -1,123 +1,168 @@
-{% load static %}
-{% load widget_tweaks %}
-<!DOCTYPE html>
-<html>
+{% extends 'main_page/nav.html' %}
+
+{% block custom_loaders %}
+    {% load static %}
+    {% load widget_tweaks %}
+{% endblock custom_loaders %}
 
 
-<head>
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}"
-          media="screen,projection"/>
 
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
+{#<head>#}
+{#    <!--Import Google Icon Font-->#}
+{#    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">#}
+{#    <!--Import materialize.css-->#}
+{#    <link type="text/css" rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}"#}
+{#          media="screen,projection"/>#}
+{# TODO Replace with materialize.min.css in production #}
+{##}
+{#    <!--Let browser know website is optimized for mobile-->#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>#}
+{#</head>#}
 
-<style>
+{% block title %}
+    Login
+{% endblock title %}
 
-    html {
-        font-family: "Nunito";
-    }
+{% block internal_styles %}
+    {#    <style>#}
 
-    h1, h2, h3, h4, h5, h6 {
-        font-family: "Raleway";
-    }
+    {#html {#}
+    {#    font-family: "Nunito";#}
+    {#}#}
 
-    .card-title {
-        font-weight: bolder;
-    }
+    {#h1, h2, h3, h4, h5, h6 {#}
+    {#    font-family: "Raleway";#}
+    {#}#}
 
-    .background-image {
-        background: url("https://static.pexels.com/photos/30732/pexels-photo-30732.jpg");
-        background-position: center;
-        background-size: cover;
-        display: block;
-        left: 0;
-        position: fixed;
-        right: 0;
-        z-index: 1;
-        height: 100%;
-    }
+    {#.card-title {#}
+    {#    font-weight: bolder;#}
+    {#}#}
 
-    .title h3 {
-        margin: 0;
-        padding: 40px 0;
-        position: relative;
-        z-index: 2;
-    }
+    {#.background-image {#}
+    {#    background: url("https://static.pexels.com/photos/30732/pexels-photo-30732.jpg");#}
+    {#    background-position: center;#}
+    {#    background-size: cover;#}
+    {#    display: block;#}
+    {#    left: 0;#}
+    {#    position: fixed;#}
+    {#    right: 0;#}
+    {#    z-index: 1;#}
+    {#    height: 100%;#}
+    {#}#}
 
-    .card {
-        top: 40px;
-        position: relative;
-        z-index: 2;
-    }
-</style>
+    {#.title h3 {#}
+    {#    margin: 0;#}
+    {#    padding: 40px 0;#}
+    {#    position: relative;#}
+    {#    z-index: 2;#}
+    {#}#}
 
-<body>
+    {#.card {#}
+    {#    top: 40px;#}
+    {#    position: relative;#}
+    {#    z-index: 2;#}
+    {#}#}
+    {#</style> #}
 
-<div class="background-image"></div>
-<div class="title">
-    <h3 class="center-align grey-text">Welcome!</h3>
-</div>
-<div class="row">
-    <div class="col s12 l4 offset-l4">
-        <div class="card grey lighten-3">
-            <div class="card-content">
-                <h4 class="card-title center-align">Login</h4>
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">account_circle</i>
-                            {{ form.username|add_class:"validate" }}
-                            <label for="{{ form.username.id_for_label }}">Username</label>
-                        </div>
+{% endblock %}
+
+{% block custom_includes %}
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id"
+          content="27851569207-eqmaeljgm7s5alnhadeo24nulq894e68.apps.googleusercontent.com.apps.googleusercontent.com">
+{% endblock %}
+
+
+{% block main_content %}
+
+    <section>
+
+        <div class="row">
+            <div class="col s12 l4 offset-l4">
+                <div class="card grey lighten-3">
+                    <div class="card-content">
+                        <h4 class="center">Login</h4>
+                        {% if form.non_field_errors %}
+                            <span class="red-text">{{ form.non_field_errors }}</span>
+                        {% endif %}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">account_circle</i>
+                                    {{ form.username|add_class:"validate" }}
+                                    <label for="{{ form.username.id_for_label }}">Username</label>
+                                    {% if form.username.help_text %}
+                                        <span class="helper-text" data-error="wrong"
+                                              data-success="right">{{ form.username.help_text }}</span>
+                                    {% endif %}
+                                    {% if form.username.errors %}
+                                        <span class="helper-text red-text"
+                                              style="font-size:large">{{ form.username.errors }}</span>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">vpn_key</i>
+                                    {{ form.password|add_class:"validate" }}
+                                    <label for="{{ form.password.id_for_label }}">Password</label>
+                                    {% if form.password.help_text %}
+                                        <span class="helper-text" data-error="wrong"
+                                              data-success="right">{{ form.password.help_text }}</span>
+                                    {% endif %}
+                                    {% if form.password.errors %}
+                                        <span class="helper-text red-text"
+                                              style="font-size:large">{{ form.password.errors }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="center">
+                                <span class="row">
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </span>
+                            </div>
+                            <div class="center">
+                                <h4 class="card-title center-align">Login using Google</h4>
+                            </div>
+                            <div class="row">
+
+                                <center>
+                                <span class="g-signin2" data-onsuccess="onSignIn"></span>
+                                    </center>
+
+                                </div>
+
+                        </form>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">vpn_key</i>
-                            {{ form.password|add_class:"validate" }}
-                            <label for="{{ form.password.id_for_label }}">Password</label>
-                        </div>
-                    </div>
-                    <!--
-                      <div class="row">
-                      <div class="input-field col s12 ">
-                          <input type="checkbox" class="filled-in" id="remember-me" />
-                          <label for="remember-me">Remember me</label>
-
-                     </div>
-                    </div>
-                      -->
-
-
-                    <div class="row center-align">
-                        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-                            <i class="material-icons right">send</i>
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-</body>
+    </section>
 
 
+{% endblock %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//static.codepen.io/assets/common/stopExecutionOnTimeout-41c52890748cd7143004e05d3c5f786c66b19939c4500ce446314d1748483e13.js"></script>
+{#<script src="//static.codepen.io/assets/common/stopExecutionOnTimeout-41c52890748cd7143004e05d3c5f786c66b19939c4500ce446314d1748483e13.js"></script>#}
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
-{#	  <script src="https://materializecss.com/js/prism.js"></script>#}
-<script>
-    (function () {
-        var height = $(document).height();
-        var background = $('.background-image');
-        background.css('min-height', height);
-    })();
-</script>
-</body>
 
-</html>
+
+{# TODO Replace with min.js in production #}
+{#<script src="https://materializecss.com/js/prism.js"></script>#}
+
+{% block custom_eof_scripts %}
+    <script>
+        (function () {
+            var height = $(document).height();
+            var background = $('.background-image');
+            background.css('min-height', height);
+        })();
+    </script>
+
+{% endblock %}
+
