@@ -1,13 +1,12 @@
 from django import forms
-
 from questions.models import Question, Submission, TestCase
-
+from ckeditor.widgets import CKEditorWidget
 
 class PostQuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['title', 'short_description', 'description', 'time_limit', 'unique_code', 
-        'input_format', 'constraints', 'output_format', 'sample_input', 'sample_output']
+        fields = ['title', 'category', 'unique_code', 'short_description', 'description','input_format',
+                    'output_format', 'sample_input', 'sample_output', 'constraints', 'time_limit',]
 
 
 class SubmissionForm(forms.ModelForm):

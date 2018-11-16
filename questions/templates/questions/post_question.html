@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="1.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <style>
+    .tabs .indicator{
+      background-color: #006064;
+    }
+
+    .tabs .tab a:hover{
+      background-color: white;
+      color: black;
+    }
+    .tabs .tab a {
+      color: #006064;
+    }
+
+   .tabs .tab a.active{
+      color: #006064;
+    }
+
+    .tabs .tab a.active{
+       color: #006064;
+     }
+  </style>
+    <script>
+    $(document).ready(function(){
+
+      $('ul.tabs').tabs({
+        swipeable: false,
+      });
+
+      $("#btnContinue").click(function() {
+        $('ul.tabs').tabs('select', 'test-swipe-2');
+      });
+
+      $("#btnContinue2").click(function() {
+          $('ul.tabs').tabs('select', 'test-swipe-3');
+      });
+
+      $("#btnBack").click(function() {
+        $('ul.tabs').tabs('select', 'test-swipe-1');
+      });
+
+      $("#btnBack2").click(function() {
+        $('ul.tabs').tabs('select', 'test-swipe-2');
+      });
+
+      $('select').formSelect();
+
+      $('#textarea1').val();
+        M.textareaAutoResize($('#textarea1'));
+
+      $('#icon_prefix3').characterCounter();
+
+    });
+    </script>
+    <title>Coding-Portal</title>
+  </head>
+  <body>
+
+    <header>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="card hoverable">
+          <div class="card-content">
+
+
+            <ul id="tabs-swipe-demo" class="tabs">
+              <li class="tab col s3 " ><a href="#test-swipe-1" class="active">Post</a></li>
+              <li class="tab col s3"><a href="#test-swipe-2">Post2</a></li>
+              <li class="tab col s3" ><a href="#test-swipe-3">Post3</a></li>
+            </ul>
+
+
+            <div id="test-swipe-1" class="col s12">
+              <div class="row">
+                <div class="col l10 offset-l1 s12">
+                  <form action="{% url 'questions:post_question' %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-field col l12 s12">
+                      <textarea id="icon_prefix" type="text" class="materialize-textarea" name="tittle"></textarea>
+                      <label for="icon_prefix">Tittle</label>
+                    </div>
+                    <div class="input-field col l6 s12">
+                      <select name="category">
+                        <option value="" disabled selected>category</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                      </select>
+                    </div>
+                    <div class="input-field col l6 s12">
+                      <input id="icon_prefix2" type="text" class="validate" name="code">
+                      <label for="icon_prefix2">Unique Code</label>
+                    </div>
+                    <div class="input-field col s12">
+                      <textarea id="icon_prefix1" type="text" class="materialize-textarea" data-length='150' name="sdescription"></textarea>
+                      <label for="icon_prefix1">Short Description</label>
+                    </div>
+                  <a href="#test-swipe-2" id="btnContinue" class="btn waves-effect right cyan darken-4 white-text">Next</a>
+                </div>
+              </div>
+            </div>
+
+
+            <div id="test-swipe-2" class="col s12">
+              <div class="row">
+                <div class="col l12 s12">
+                    <div class="input-field col l12 s12">
+                      {{form.media}}
+                      {{form.description}}
+                    </div>
+                    <a href="#test-swipe-3" id="btnContinue2" class="btn waves-effect right cyan darken-4 white-text">Next</a>
+                    <a href="#test-swipe-1" id="btnBack" class="btn waves-effect left cyan darken-4 white-text">Back</a>
+                </div>
+              </div>
+            </div>
+
+
+            <div id="test-swipe-3" class="col s12">
+              <div class="row">
+                <div class="col l10 offset-l1 s12">
+                    <div class="input-field col l6 m6 s12">
+                      <input id="icon_prefix4" type="text" class="validate" name="inputf">
+                      <label for="icon_prefix4">Input Format</label>
+                    </div>
+                    <div class="input-field col l6 s12">
+                      <input id="icon_prefix5" type="text" class="validate" name="outputf">
+                      <label for="icon_prefix5">Output Format</label>
+                    </div>
+                    <div class="input-field col l6 m6 s12">
+                      <input id="icon_prefix6" type="text" class="validate" name="samplei">
+                      <label for="icon_prefix6">Sample Input</label>
+                    </div>
+                    <div class="input-field col l6 s12">
+                      <input id="icon_prefix7" type="text" class="validate" name="sampleo">
+                      <label for="icon_prefix7">Sample Output</label>
+                    </div>
+                    <div class="input-field col l12 m12 s12">
+                      <textarea id="icon_prefix8" type="text" class="materialize-textarea" name="constraints"></textarea>
+                      <label for="icon_prefix8">Constraints</label>
+                    </div>
+                    <div class="input-field col l12 m12 s12">
+                      <textarea id="icon_prefix9" type="text" class="materialize-textarea" name="explaination"></textarea>
+                      <label for="icon_prefix9">Time_limit</label>
+                    </div>
+                    <button type="submit" class="btn waves-effect right cyan darken-4 white-text" name="submit">Post</button>
+                    <a href="#test-swipe-2" id="btnBack2" class="btn waves-effect left cyan darken-4 white-text">Back</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <footer>
+    </footer>
+
+  </body>
+</html>
