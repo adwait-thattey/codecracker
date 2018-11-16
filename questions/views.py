@@ -88,6 +88,11 @@ def ajax_get_submission_results(request):
     else:
         raise Http404("Invalid request!")
 
+
+
+def browse_questions(request):
+    return render(request, "questions/browsequestions3.html")
+
 def view_the_question(request, question_unique_id):
     question = get_object_or_404(Question, unique_code=question_unique_id)
     

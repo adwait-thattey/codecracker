@@ -60,6 +60,7 @@ class Question(models.Model):
                                          )
     description = models.TextField(verbose_name="Description")
 
+
     input_format = models.TextField(verbose_name="Input format", null= 'True')
 
     constraints = models.TextField(verbose_name="Constraints", null= 'True')
