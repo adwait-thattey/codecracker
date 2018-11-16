@@ -73,7 +73,7 @@ class ResultAdmin(admin.ModelAdmin):
 
     list_display = ['id', 'username', 'questionname', 'questionid', 'submissionid', 'pass_fail']
     list_filter = ['submission__user__username', 'submission__question__unique_code', 'submission__question__title',
-                   'pass_fail']
+                   'pass_fail', 'submission']
     sortable_by = ['id', 'username', 'questionname', 'questionid', 'pass_fail']
     search_fields = ['submission__user__username', 'submission__question__unique_code', 'submission__question__title']
 

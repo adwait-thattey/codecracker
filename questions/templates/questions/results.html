@@ -4,192 +4,198 @@
 <head>
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}"  media="screen,projection"/>
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}"
+          media="screen,projection"/>
 
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 
     <title>Results</title>
 </head>
-<script >
-	$(document).ready(function(){
-    $('.collapsible').collapsible();
-  });
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+    });
 </script>
 
 <body>
 <section>
-<div class="container">
-<div class="row">	
+    <div class="container">
+        <div class="row">
 <span>
     Submitted on:
 </span>
-<div class="right align">
-    Status:<br>
-    Total Score:<br><br>
-</div>
-</div>
-<div class="row " style="display: inline;">
-    <span ><a class="waves-effect waves-light btn-large">View Question</a></span>
-    <span class="right align">  <a class="waves-effect waves-light btn-large" >View submitted code</a></span>
-</div>
-<p><br></p>
+            <div class="right align">
+                Status:<br>
+                Total Score:<br><br>
+            </div>
+        </div>
+        <div class="row " style="display: inline;">
+            <span><a class="waves-effect waves-light btn-large">View Question</a></span>
+            <span class="right align">  <a class="waves-effect waves-light btn-large">View submitted code</a></span>
+        </div>
+        <p><br></p>
 
-<div class="row">
-<div class=" col s12 m6 l4 ">
-   	
-    
-    	<ul class="collapsible popout ">
-                <li >
-                  <div class="collapsible-header" style="color: black"><i class="material-icons">check</i>Test Case 1</div>
-                  <div class="collapsible-body">
-                      <span>Execution time:</span><br>
-                      <span> Score:</span><br>
-                  </div>
-                </li>
-            </ul>
+        <div class="row">
+            {% for result in submission.result_set.all %}
+            <div class=" col s12 m6 l4 ">
+
+
+                <ul class="collapsible popout ">
+                    <li>
+                        <div class="collapsible-header" style="color: black"><i class="material-icons">check</i>Test Case 
+                        </div>
+                        <div class="collapsible-body">
+                            <span>Execution time:</span><br>
+                            <span> Score:</span><br>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            {% endfor %}
+{% comment %}
+
+            <div class=" col s12 m6 l4 ">
+
+
+                <ul class="collapsible popout ">
+                    <li>
+                        <div class="collapsible-header" style="color: black"><i class="material-icons">wrong</i>Test
+                            Case 2
+                        </div>
+                        <div class="collapsible-body">
+                            <span>Execution time:</span><br>
+                            <span> Score:</span><br>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class=" col s12 m6 l4 ">
+
+
+                <ul class="collapsible popout ">
+                    <li>
+                        <div class="collapsible-header" style="color: black"><i class="material-icons">timer</i>Test
+                            Case 3
+                        </div>
+                        <div class="collapsible-body">
+                            <span>Execution time:</span><br>
+                            <span> Score:</span><br>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class=" col s12 m6 l4 ">
+
+
+                <ul class="collapsible popout ">
+                    <li>
+                        <div class="collapsible-header" style="color: black"><i
+                                class="material-icons">report_problem</i>Test Case 4
+                        </div>
+                        <div class="collapsible-body">
+                            <span>Execution time:</span><br>
+                            <span> Score:</span><br>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class=" col s12 m6 l4 ">
+
+
+                <ul class="collapsible popout ">
+                    <li>
+                        <div class="collapsible-header" style="color: black"><i class="material-icons">c</i>Test Case 5
+                        </div>
+                        <div class="collapsible-body">
+                            <span>Execution time:</span><br>
+                            <span> Score:</span><br>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class=" col s12 m6 l4 ">
+
+
+                <ul class="collapsible popout ">
+                    <li>
+                        <div class="collapsible-header" style="color: black"><i class="material-icons">close</i>Test
+                            Case 6
+                        </div>
+                        <div class="collapsible-body">
+                            <span>Execution time:</span><br>
+                            <span> Score:</span><br>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class=" col s12 m6 l4 ">
+
+
+                <ul class="collapsible popout ">
+                    <li>
+                        <div class="collapsible-header" style="color: black"><i class="material-icons">check</i>Test
+                            Case 7
+                        </div>
+                        <div class="collapsible-body">
+                            <span>Execution time:</span><br>
+                            <span> Score:</span><br>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class=" col s12 m6 l4 ">
+
+
+                <ul class="collapsible popout ">
+                    <li>
+                        <div class="collapsible-header" style="color: black"><i class="material-icons">loop</i>Test Case
+                            8
+                        </div>
+                        <div class="collapsible-body">
+                            <span>Execution time:</span><br>
+                            <span> Score:</span><br>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class=" col s12 m6 l4 ">
+
+
+                <ul class="collapsible popout ">
+                    <li>
+                        <div class="collapsible-header" style="color: black"><i class="material-icons">check</i>Test
+                            Case 9
+                        </div>
+                        <div class="collapsible-body">
+                            <span>Execution time:</span><br>
+                            <span> Score:</span><br>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+{% endcomment %}
+
+
+    </div>
     </div>
 
-<div class=" col s12 m6 l4 ">
-   	
-    
-    	<ul class="collapsible popout ">
-                <li >
-                  <div class="collapsible-header" style="color: black"><i class="material-icons">wrong</i>Test Case 2</div>
-                  <div class="collapsible-body">
-                      <span>Execution time:</span><br>
-                      <span> Score:</span><br>
-                  </div>
-                </li>
-            </ul>
-    </div>
-
-<div class=" col s12 m6 l4 ">
-   	
-    
-    	<ul class="collapsible popout ">
-                <li >
-                  <div class="collapsible-header" style="color: black"><i class="material-icons">timer</i>Test Case 3</div>
-                  <div class="collapsible-body">
-                      <span>Execution time:</span><br>
-                      <span> Score:</span><br>
-                  </div>
-                </li>
-            </ul>
-    </div>
-
-<div class=" col s12 m6 l4 ">
-   	
-    
-    	<ul class="collapsible popout ">
-                <li >
-                  <div class="collapsible-header" style="color: black"><i class="material-icons">report_problem</i>Test Case 4</div>
-                  <div class="collapsible-body">
-                      <span>Execution time:</span><br>
-                      <span> Score:</span><br>
-                  </div>
-                </li>
-            </ul>
-    </div>
-
-<div class=" col s12 m6 l4 ">
-   	
-    
-    	<ul class="collapsible popout ">
-                <li >
-                  <div class="collapsible-header" style="color: black"><i class="material-icons">c</i>Test Case 5</div>
-                  <div class="collapsible-body">
-                      <span>Execution time:</span><br>
-                      <span> Score:</span><br>
-                  </div>
-                </li>
-            </ul>
-    </div>
-
-<div class=" col s12 m6 l4 ">
-   	
-    
-    	<ul class="collapsible popout ">
-                <li >
-                  <div class="collapsible-header" style="color: black"><i class="material-icons">close</i>Test Case 6</div>
-                  <div class="collapsible-body">
-                      <span>Execution time:</span><br>
-                      <span> Score:</span><br>
-                  </div>
-                </li>
-            </ul>
-    </div>
-
-<div class=" col s12 m6 l4 ">
-   	
-    
-    	<ul class="collapsible popout ">
-                <li >
-                  <div class="collapsible-header" style="color: black"><i class="material-icons">check</i>Test Case 7</div>
-                  <div class="collapsible-body">
-                      <span>Execution time:</span><br>
-                      <span> Score:</span><br>
-                  </div>
-                </li>
-            </ul>
-    </div>
-
-<div class=" col s12 m6 l4 ">
-   	
-    
-    	<ul class="collapsible popout ">
-                <li >
-                  <div class="collapsible-header" style="color: black"><i class="material-icons">loop</i>Test Case 8</div>
-                  <div class="collapsible-body">
-                      <span>Execution time:</span><br>
-                      <span> Score:</span><br>
-                  </div>
-                </li>
-            </ul>
-    </div>
-
-<div class=" col s12 m6 l4 ">
-   	
-    
-    	<ul class="collapsible popout ">
-                <li >
-                  <div class="collapsible-header" style="color: black"><i class="material-icons">check</i>Test Case 9</div>
-                  <div class="collapsible-body">
-                      <span>Execution time:</span><br>
-                      <span> Score:</span><br>
-                  </div>
-                </li>
-            </ul>
-    </div>
 
 
-
-
-
-
-
-
-  </div>
-</div>
-
-
-
-
-
-
-
-
-</div>
-</div>
-
-
-
-
-</div>
 </section>
 </body>
 <script type="text/javascript" src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>

@@ -42,7 +42,7 @@ def submit_solution(request, question_unique_id):
 def submission_result(request, question_unique_id, submission_id):
     submission = get_object_or_404(Submission, id=submission_id)
 
-    return render(request, "questions/submission_result.html", {"submission": submission})
+    return render(request, "questions/results.html", {"submission": submission})
 
 
 def ajax_get_submission_results(request):
