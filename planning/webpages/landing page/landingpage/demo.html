@@ -1,8 +1,8 @@
-{% load static %}
+<!--add carousel-->
 
 <!DOCTYPE html>
 <head>
-    <title>landing</title>
+    <title>demo landing</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!--Import Google Icon Font-->
@@ -10,7 +10,7 @@
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 
-  <link rel="stylesheet" href="{% static 'main_page/landing/landing_style.css' %}">
+  <link rel="stylesheet" href="landing_style.css">
 
 </head>
 <body>
@@ -23,8 +23,12 @@
           <i class="material-icons">menu</i>
         </a>
         <ul class="right hide-on-med-and-down">
-          <li><a href="#" alt="Login"><i class="material-icons">fingerprint</i></a></li><!--Login-->
-         <li><a href="#" alt="Register"><i class="material-icons">person_add</i></a></li><!--register-->
+          <li><a href="#" alt="Login">
+            <i class="material-icons">fingerprint</i>
+          </a></li><!--Login-->
+         <li><a href="#" alt="Register">
+           <i class="material-icons">person_add</i>
+         </a></li><!--register-->
         </ul>
       </div>
     </nav>
@@ -35,15 +39,23 @@
     <li><a href="">Register</a></li>
     <li><a href="">Contact</a></li>
   </ul>
-
+<!--slide show-->
   <div class="main_content">
 
-    <img class="mySlides" src="{% static 'main_page/landing/code2.jpg' %}">
-    <img class="mySlides" src="{% static 'main_page/landing/code3.jpg' %}" >
-    <img class="mySlides" src="{% static 'main_page/landing/code4.jpg' %}" >
-    <img class="mySlides" src="{% static 'main_page/landing/code5.jpg' %}">
+    <img class="mySlides" src="code2.jpg">
+    <img class="mySlides" src="code3.jpg" >
+    <img class="mySlides" src="code4.jpg" >
+    <img class="mySlides" src="code5.jpg">
 
   </div>
+<!--carousel- for infos-->
+<!--<div class="carousel">
+    <a class="carousel-item" href="#one!"><img src="code2.jpg"></a>
+    <a class="carousel-item" href="#two!"><img src="code3.jpg"></a>
+    <a class="carousel-item" href="#three!"><img src="code4.jpg"></a>
+    <a class="carousel-item" href="#four!"><img src="code5.jpg"></a>
+
+  </div>-->
 
   <!--footer-->
 <footer class="page-footer teal">
@@ -59,13 +71,21 @@
   <div class="col l3 s12">
       <h6>contacts:</h6>
       <ul>
-        <li><a class="white-text" href="#!">contact1</a></li>
-        <li><a class="white-text" href="#!">contact2</a></li>
-
+        <div class="chip">
+          <img src="code3.jpg" alt="Contact Person">Member1
+        </div>
+        <!--<li><a class="white-text" href="#!">contact1</a></li>-->
+        <div class="chip">
+          <img src="code4.jpg" alt="Contact Person">Member1
+        </div>
+        <div class="chip">
+          <img src="code3.jpg" alt="Contact Person">Member1
+        </div>
       </ul>
     </div>
   </div>
 </div>
+
 <div class="footer-copyright">
   <div class="container"><center>
   copyright@<a class="white-text text-lighten-3" href="http://www.iiits.ac.in/">IIITsricity</a></center>
@@ -97,6 +117,17 @@
              setTimeout(carousel, 2000); // Change image every 2 seconds
          }
  </script>
+<script>
+$(document).ready(function(){
+    $('.carousel').carousel();
 
+  });
+
+</script>
+<script>
+$(document).ready(function(){
+  $('.tap-target').tapTarget();
+});
+</script>
 </body>
 </html>

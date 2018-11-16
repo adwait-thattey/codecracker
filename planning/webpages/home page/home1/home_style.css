@@ -1,0 +1,13 @@
+
+body{background-color: black;}
+.container{
+  float:right;
+
+}
+
+
+.sidebar{
+  float:left;
+  margin-left:70px;
+  margin-top: 25px;
+}

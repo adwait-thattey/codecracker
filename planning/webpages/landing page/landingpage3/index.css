@@ -1,0 +1,100 @@
+body{
+  margin: 0;
+  padding:0;
+  height: 100vh;
+}
+
+#particles-js{
+height: 100%;
+/* background-color: #111170*/
+background-size: cover;
+background-position: center;
+background-image:url("land6.jpg");
+}
+#particles1-js{
+height: 100%;
+/* background-color: #111170*/
+background-size: cover;
+background-position: center;
+background-image:url("land2.jpg");
+}
+
+#particles2-js{
+height: 100%;
+/* background-color: #111170*/
+background-size: cover;
+background-position: center;
+background-image:url("land1.jpg");
+}
+/*
+.overlay{
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,0.2);
+  z-index: -1;
+  position: fixed;
+}
+*/
+.content{
+  position: absolute;
+  top: 100px;
+  left: 300px;
+}
+
+.heading{
+  font-size: 100px;
+  color:white;
+
+}
+.sub-heading{
+  font-size: 50px;
+  color:white;
+  text-align: center;
+}
+.typewriter{
+  color: #fff;
+  font-family: monospace;
+  font-size: 50px;
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: .15em ; /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; /* Adjust as needed */
+  animation:
+    typing 3.5s steps(40, end),
+    blink-caret .75s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: transparent; }
+}
+
+.row{
+  text-align: center;
+}
+/*
+.panel {
+    font-family: 'Source Sans Pro';
+    font-size: 1.3em;
+    position: absolute;
+    z-index: 10;
+    width: 400px;
+    height: 320px;
+    background: #eee;
+    top: 55%;
+    left: 45%;
+    margin: -110px 0 0 -100px;
+    padding: 20px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    z-index: 100;
+}
+*/

@@ -1,0 +1,78 @@
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+#menu ul li a{
+  border-bottom: 4px solid rgba(255,255,255,0);
+}
+
+#menu ul li a:hover{
+  border-bottom: 4px solid rgba(0,0,0,1);
+  background-color: rgba(0,96,100,1);
+  color: rgba(0, 0, 0, 1);
+  transition: 0.5s;
+}
+
+#float{
+  color:rgba(255, 255, 255, 1);
+}
+
+#logo{
+  font-family:Agency FB;
+  letter-spacing:.10em;
+}
+
+#mobile-view{
+  background-color: rgba(0,96,100,1);
+}
+
+#mobile-view li a{
+  color: rgba(255, 255, 255, 1);
+  border-left: 5px solid rgba(255,255,255,0);
+  font-family: sans-serif;
+  border-bottom: 0.1px solid rgba(255,255,255,0.01);
+}
+
+#mobile-view a:hover{
+  background-color: rgba(0,96,100,1);
+  border-left: 5px solid rgba(0,0,0,1);
+  color: rgba(0, 0, 0, 1);
+  transition: 0.5s;
+}
+
+#f{
+  background-color: rgba(0,0,0,0.9);
+}
+
+#f p{
+  color: rgba(255, 255, 255, 0.8);
+}
+
+#fd a{
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#fd a:hover{
+  color: rgba(255, 255, 255, 1);
+  transition: 0.5s;
+}
+
+#fd1 li{
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#fd1 li:hover{
+  color: rgba(255, 255, 255, 1);
+  transition: 0.5s;
+}
+
+#f2{
+  background-color: rgba(0,96,100,1);
+  text-align: center;
+}
