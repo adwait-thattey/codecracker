@@ -1,0 +1,170 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}"
+          media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Create Test Cases</title>
+
+</head>
+<body>
+
+<div class="container">
+    <form method="post" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+
+
+        <div>
+            {{ test_case_form_set.management_form }}
+            {% for test_case_form in test_case_form_set %}
+                {{ test_case_form.id }}
+                <div class="link-formset">
+                    <div class="center-align">
+                        <span class="center-align flow-text">Test Case #<span
+                                class="testcasecounter">{{ forloop.counter }}</span></span>
+                    </div>
+                    <div class="input-field file-field">
+                        <div class="row">
+                            <div>
+                                <div class="btn col l2 m3 s4" id="fake_{{ test_case_form.input_file.id_for_label }}">
+                                    Input File
+{#                                This is just a fake button. An event listner is added which activates real button#}
+                                </div>
+                            </div>
+                            <div>
+                                <div class="file-path-wrapper col l10 m9 s8">
+                                    <input class="file-path validate">
+                                    {% if test_case_form.input_file.errors %}
+                                        <span class="helper-text"
+                                              style="color: red; font-weight: bolder">{{ test_case_form.input_file.errors }}</span>
+                                    {% endif %}
+                                    <span class="helper-text">{{ test_case_form.input_file.help_text }}</span>
+                                    {% if test_case_form.input_file.value.url %}
+                                    <span class="helper-text">Currently : <a href="{{ test_case_form.input_file.value.url }}">{{ test_case_form.input_file.value }}</a></span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div style="display: none">
+                                {{ test_case_form.input_file }}
+
+                                <script>
+
+                                    document.getElementById('fake_{{ test_case_form.input_file.id_for_label }}').onclick = function () {
+                                        console.log("open input file box");
+                                        document.getElementById('{{ test_case_form.input_file.id_for_label }}').click();
+                                    };
+                                </script>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="input-field file-field">
+                        <div class="row">
+                            <div class="btn col l2 m3 s4" id="fake_{{ test_case_form.output_file.id_for_label }}">
+                                    Output File
+{#                                This is just a fake button. An event listner is added which activates real button#}
+                                </div>
+                            <div class="file-path-wrapper col l10 m9 s8">
+                                <input class="file-path validate">
+                                {% if test_case_form.output_file.errors %}
+                                    <span class="helper-text"
+                                          style="color: red; font-weight: bolder">{{ test_case_form.output_file.errors }}</span>
+                                {% endif %}
+                                <span class="helper-text">{{ test_case_form.output_file.help_text }}</span>
+                                {% if test_case_form.output_file.value.url %}
+                                <span class="helper-text">Currently : <a href="{{ test_case_form.output_file.value.url }}">{{ test_case_form.output_file.value }}</a></span>
+                                {% endif %}
+                            </div>
+                            <div style="display: none">
+                                {{ test_case_form.output_file }}
+
+                                <script>
+
+                                    document.getElementById('fake_{{ test_case_form.output_file.id_for_label }}').onclick = function () {
+                                        console.log("open output file box");
+                                        document.getElementById('{{ test_case_form.output_file.id_for_label }}').click();
+                                    };
+                                </script>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="input-field">
+                        {{ test_case_form.points|add_class:"validate"|attr:"required" }}
+                        <label for="{{ test_case_form.points.id_for_label }}">Points</label>
+                        {% if test_case_form.points.errors %}
+                            <span class="helper-text"
+                                  style="color: red; font-weight: bolder">{{ test_case_form.points.errors }}</span>
+                        {% endif %}
+                        <span class="helper-text">{{ test_case_form.points.help_text }}</span>
+
+                    </div>
+
+
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="row center-align">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </form>
+</div>
+<script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="{% static 'questions/js/formset.js' %}"></script>
+<script>
+    $('.link-formset').formset({
+        addText: 'Add Another Test Case',
+        deleteText: 'Remove This Test Case'
+    });
+
+
+    function put_testcase_ids() {
+        console.log("running");
+
+        let sets = document.getElementsByClassName('testcasecounter');
+        var count = 1;
+        for (x of sets) {
+            x.innerHTML = count;
+            ++count;
+        }
+
+        rmlist = document.querySelectorAll('.delete-row');
+
+        for (x of rmlist){
+            x.addEventListener('click', function () {
+                put_testcase_ids();
+            });
+        }
+    }
+
+    document.querySelector('.add-row').addEventListener('click', function () {
+        put_testcase_ids()
+    });
+
+    document.querySelector('.delete-row').addEventListener('click', function () {
+        put_testcase_ids()
+    });
+
+
+</script>
+</body>
+</html>
