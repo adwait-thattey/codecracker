@@ -70,8 +70,8 @@ class Question(models.Model):
 
     sample_output = models.TextField(verbose_name="Sample output", null= 'True')
 
-    catagory = models.ForeignKey(verbose_name="Catagories",
-                                 to=Catagory,
+    category = models.ForeignKey(verbose_name="Category",
+                                 to=Category,
                                  null=True,
                                  blank=True,
                                  on_delete=models.CASCADE
