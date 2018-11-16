@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from questions.models import Question, Submission, Result, TestCase
 from questions.utils import run_in_background
-from .forms import SubmissionForm, TestCaseCreateForm
+from .forms import SubmissionForm, TestCaseCreateForm, PostQuestionForm
 
 from .background_tasks import RunAndAssert, LimitThreads
 
@@ -19,6 +19,18 @@ def start_code_run_sequence(submission):
         thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
         thread_temp.start()
 
+@login_required
+def post_question(request):
+    if(request.method=="POST"):
+        form= PostQuestionForm(request.POST)
+        if form.is_valid():
+            question=form.save(commit=False)
+            question.author=request.user
+            question.save()
+            return HttpResponse("successfully posted question")
+    else:
+        form= PostQuestionForm()
+    return render(request, "questions/post_question.html", {'form':form})
 
 @run_in_background
 def rerun_all_testcase_submissions(testcase):
