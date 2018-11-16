@@ -10,11 +10,8 @@ urlpatterns = [
     path('<slug:question_unique_id>/submission/<int:submission_id>/result', views.submission_result, name="submission-result"),
     path('ajax/submission-result', views.ajax_get_submission_results, name="ajax-submission-result"),
     path('<slug:question_unique_id>/view/', views.view_the_question, name="view_the_question"),
-<<<<<<< HEAD
     path('<slug:question_unique_id>/view/', views.view_the_question, name="view_the_question"),
     path('post/', views.post_question, name="post_question"),
-]
-=======
     path('<slug:question_unique_id>/testcases/view', views.view_testcases, name="testcase-view"),
     path('<slug:question_unique_id>/testcases/', views.redirect_to_view_testcases),
     path('<slug:question_unique_id>/testcases/new', views.create_testcase, name="testcase-create"),
@@ -29,4 +26,3 @@ urlpatterns = [
 
 ]
 
->>>>>>> 1d9537cca7bf89f6eaa5b42056e701a346e5551c

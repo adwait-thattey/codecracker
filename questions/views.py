@@ -1,23 +1,14 @@
-<<<<<<< HEAD
-from django.http import JsonResponse, Http404, HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from questions.models import Question, Submission, Result
-from .forms import SubmissionForm, PostQuestionForm
-from .background_tasks import RunAndAssert
-=======
 from django.http import JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from questions.models import Question, Submission, Result, TestCase
 from questions.utils import run_in_background
-from .forms import SubmissionForm, TestCaseCreateForm
+from .forms import SubmissionForm, TestCaseCreateForm, PostQuestionForm
 
 from .background_tasks import RunAndAssert, LimitThreads
 
 from django.forms import modelformset_factory
->>>>>>> 1d9537cca7bf89f6eaa5b42056e701a346e5551c
 
 
 # Create your views here.
@@ -116,10 +107,6 @@ def browse_questions(request):
 
 def view_the_question(request, question_unique_id):
     question = get_object_or_404(Question, unique_code=question_unique_id)
-<<<<<<< HEAD
-
-    return render(request, "questions/viewing_the_question.html", {"question":question})
-=======
     
     return render(request, "questions/viewing_the_question.html", {"question":question})
 
@@ -242,4 +229,3 @@ def ajax_call_rerun_all_testcase_submissions(request, question_unique_id):
     except:
         pass
     return JsonResponse(ret_data)
->>>>>>> 1d9537cca7bf89f6eaa5b42056e701a346e5551c

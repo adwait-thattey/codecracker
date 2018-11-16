@@ -17,12 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
-<<<<<<< HEAD
 from django.conf import settings
-=======
 from django.contrib.auth import views as auth_views
-from . import settings
->>>>>>> 1d9537cca7bf89f6eaa5b42056e701a346e5551c
+
 
 urlpatterns = [
 

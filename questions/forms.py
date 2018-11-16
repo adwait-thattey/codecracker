@@ -5,7 +5,7 @@ from ckeditor.widgets import CKEditorWidget
 class PostQuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['title', 'catagory', 'unique_code', 'short_description', 'description','input_format',
+        fields = ['title', 'category', 'unique_code', 'short_description', 'description','input_format',
                     'output_format', 'sample_input', 'sample_output', 'constraints', 'time_limit',]
 
 
