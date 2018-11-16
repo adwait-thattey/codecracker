@@ -4,10 +4,12 @@ from django.core.validators import MinLengthValidator, RegexValidator, FileExten
 from django.db import models
 from django.contrib.auth.models import User as DefaultUser
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 
 import os
 import pathlib
+
+from questions.utils import run_in_background
 
 
 def image_upload_url(instance, filename):
@@ -15,7 +17,7 @@ def image_upload_url(instance, filename):
 
 
 # Create your models here.
-class Catagory(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=25,
                             unique=True
                             )
@@ -50,17 +52,31 @@ class Question(models.Model):
                              max_length=80
                              )
 
-    short_description = models.TextField(verbose_name="Short Description",
+    short_description = models.TextField(verbose_name="Short Description"
+                                         ,
                                          max_length=250,
                                          help_text="A short description whch describes your question. This will be visible when \
                                          user hovers on your question the all questions page"
                                          )
     description = models.TextField(verbose_name="Description")
 
-    catagory = models.ManyToManyField(verbose_name="Catagories",
-                                      to=Catagory,
-                                      blank=False
-                                      )
+
+    input_format = models.TextField(verbose_name="Input format", null= 'True')
+
+    constraints = models.TextField(verbose_name="Constraints", null= 'True')
+
+    output_format = models.TextField(verbose_name="Output format", null= 'True')
+
+    sample_input = models.TextField(verbose_name="Sample input", null= 'True')
+
+    sample_output = models.TextField(verbose_name="Sample output", null= 'True')
+
+    category = models.ForeignKey(verbose_name="Category",
+                                 to=Category,
+                                 null=True,
+                                 blank=True,
+                                 on_delete=models.CASCADE
+                                 )
 
     time_limit = models.FloatField(verbose_name="Time Limit",
                                    default=2.0,
@@ -85,11 +101,19 @@ class Question(models.Model):
 
 
 def get_testcase_input_upload_path(instance, filename):
-    return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.id), "input.txt")
+    if filename:
+        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.number),
+                            "input.txt")
+    else:
+        return None
 
 
 def get_testcase_output_upload_path(instance, filename):
-    return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.id), "output.txt")
+    if filename:
+        return os.path.join("questions", str(instance.question.unique_code), "testcases", str(instance.number),
+                            "output.txt")
+    else:
+        return None
 
 
 class TestCase(models.Model):
@@ -98,10 +122,13 @@ class TestCase(models.Model):
                                  on_delete=models.CASCADE
                                  )
 
+    number = models.IntegerField(verbose_name="Number : ", validators=[MinValueValidator(1), MaxValueValidator(10)])
+
     input_file = models.FileField(verbose_name="File Containing Input",
                                   upload_to=get_testcase_input_upload_path,
                                   validators=[FileExtensionValidator(['txt'],
                                                                      message="Only text files are allowed as input and outpur")],
+                                  help_text="Upload a .txt file that contains the input for this test case"
                                   )
     # TODO input is reserved keyword
 
@@ -109,11 +136,19 @@ class TestCase(models.Model):
                                    upload_to=get_testcase_output_upload_path,
                                    validators=[FileExtensionValidator(['txt'],
                                                                       message="Only text files are allowed as input and output")],
+                                   help_text="Upload a .txt file that contains the expected output for the above given input"
                                    )
 
     points = models.PositiveIntegerField(verbose_name="Points",
+                                         null=False, blank=False, default=10,
                                          help_text="The number of points that user will get if he/she completes this \
                                          test case successfully. The total points later-on will be calculated as a percentage of 100")
+
+    last_edited_on = models.DateTimeField(verbose_name="Last Edited On", editable=False, auto_now=True)
+
+    class Meta:
+        unique_together = ['question', 'number']
+        ordering = ['question', 'number']
 
     def __str__(self):
         return str(self.id)
@@ -153,7 +188,12 @@ class Submission(models.Model):
                                                                     "Total Score must be calculated as a percentage of 100")
                                                   ]
                                       )
-    time_stamp = models.DateTimeField(auto_now_add=True)
+    submitted_on = models.DateTimeField(auto_now_add=True)
+
+    last_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['submitted_on']
 
     def __str__(self):
         return str(self.id)
@@ -209,6 +249,17 @@ class Result(models.Model):
 
     class Meta:
         unique_together = ['testcase', 'submission']
+        ordering = ['submission', 'testcase']
+
+    STATUS_DICT = {0: 'Unknown Result', 1: 'Correct Answer', 2: 'Timeout', 3: 'Runtime Error', 4: 'Wrong Answer',
+                   5: 'In progress'}
+
+    @classmethod
+    def ret_status_dict(cls):
+        return cls.STATUS_DICT
+
+    def result_status(self):
+        return self.STATUS_DICT[self.pass_fail]
 
     def __str__(self):
         return str(self.id)
@@ -221,7 +272,29 @@ class Result(models.Model):
         }
 
 
+@run_in_background
+def recalc_question_all_submissions_async(question):
+    for submission in question.submission_set.all():
+        submission.recalc_score()
+
+    from django.db import connection
+
+    connection.close()
+
+
 @receiver(post_save, sender=Result)
 def recalc_points(instance, *args, **kwargs):
     if instance.pass_fail == 1:
         instance.submission.recalc_score()
+
+
+@receiver(post_delete, sender=TestCase)
+def recalc_number(instance, *args, **kwargs):
+    question = instance.question
+    start = 1
+    for testcase in question.testcase_set.order_by('number'):
+        testcase.number = start
+        testcase.save()
+        start += 1
+
+    recalc_question_all_submissions_async(question)

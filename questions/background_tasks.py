@@ -7,13 +7,7 @@ from .models import TestCase
 import os
 
 
-def run_in_background(func):
-    def decorator(*args, **kwargs):
-        t = threading.Thread(target=func, args=args, kwargs=kwargs)
-        t.daemon = True
-        t.start()
 
-    return decorator
 
 
 
@@ -122,3 +116,25 @@ class RunAndAssert(threading.Thread):
         os.remove(self.output)
         os.remove(self.error)
         connection.close()
+
+
+class LimitThreads(threading.Thread):
+    def __init__(self, thread_id, thread_list):
+        """
+
+        :param thread_id:
+        :param thread_list:
+        """
+
+        super().__init__()
+        self.thread_id = thread_id
+        self.thread_list = thread_list
+
+
+    def run(self):
+        # print("chunk start")
+        for thr in self.thread_list:
+            thr.start()
+            thr.join()
+
+        # print("chunk end")

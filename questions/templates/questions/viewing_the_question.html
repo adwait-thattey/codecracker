@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{{question.title}}</title>
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %} "
+          media="screen,projection"/>
+    <!--Let browser know website is optimized for mobile-->
+
+
+</head>
+<body>
+
+
+<section>
+
+    <div class="row">
+        <div class="col l7 offset-l1 s12 m8 ">
+            <div class="card green lighten-5">
+                <div class="card-content" style="line-height: 2.3; font-size: 16px">
+
+                    <div id="headings">
+                        <div class="row valign-wrapper no-padding">
+                            <div class="col m8 s7" id="title">
+                                <h4>{{ question.title }} </h4>
+                            </div>
+                            <div class="col m4 s5">
+                                <i class="fas fa-trophy" style="font-size: larger; padding: 5px;"> Hard</i>
+                                <i class="fas fa-eye" style="font-size: larger; padding: 5px;"> 20</i>
+                                <i class="fas fa-flag checkered" style="font-size: larger; padding: 5px;"> 40</i><br>
+                                <div class="hide-on-med-and-up">
+                                    <b>Author: <span style="color: blue">{{question.author}}</span></b>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="chip " align= "center" >
+                            <img src="{{question.catagory.logo.url}}"
+                                 alt="Contact Person">
+                            {{question.catagory.name}}
+                        </div>
+                        <div id="description">
+                            {{ question.description }}
+                            
+                        </div>
+
+                    </div>
+                    <div id="input_format">
+                        <b>Input Format</b> <br>
+                        <p>
+                            {{question.input_format}}
+
+                        </p>
+                    </div>
+                    <div id="constraints">
+                        <b>Constraints</b> <br>
+                        <p>
+                            {{question.constraints}}
+                        </p>
+                    </div>
+                    <div id="output_format">
+                        <b>Output Format</b> <br>
+                        <p>
+                            {{question.output_format}}
+                        </p>
+                    </div>
+                    <div id="sample_input">
+                        <b>Sample Input 0</b> <br>
+                        <p>
+                            {{question.sample_input}}
+                        </p>
+                    </div>
+                    <div id="sample_output">
+                        <b>Sample Output 0</b> <br>
+                        <p>
+                            {{question.sample_output}}
+                        </p>
+                    </div>
+                    <div id="explanation">
+                        <!--if any-->
+                        <!--<b>Explanation</b> <br>-->
+                        <p>
+                            <!-- Will be added if necessary-->
+                        </p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+
+        <div class="hide-on-small-only">
+            <div class="col l3 m4">
+
+                <div class="card teal lighten-5">
+                    <div class="card-content" style="font-size: medium; padding: 20px;">
+                    <b>Author: <span style="color: blue">{{question.author}}</span></b> <br>
+                    <b>Difficulty:</b> <br>
+                    <b>No. of views:</b> <br>
+                    <b>No. of submissions:</b> <br>
+                    </div>
+                </div>
+
+                <div class="card teal lighten-5">
+                    <div class="card-content">
+                        <span class="card-title center">
+                            Try Solving <br>
+                        </span> 
+                        <div class="input-field">
+                            <select>
+                              <option value="" disabled selected>Choose your option</option>
+                              <option value="1">Python 2</option>
+                              <option value="2">Python 3</option>
+                            </select>
+                            <label>Select your preferred language:</label>
+                        </div>
+                        <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload"> <br></span>
+                        File input:
+                        <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
+                        </button>
+                        <input type="submit" value="Submit">
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="hide-on-med-and-up">
+            <div class="col s12">
+                <div class="card teal lighten-5">
+                    <div class="card-content">
+                        <span class="card-title center">
+                            Try Solving <br>
+                        </span> 
+                        <div class="input-field">
+                            <select>
+                              <option value="" disabled selected>Choose your option</option>
+                              <option value="1">Python 2</option>
+                              <option value="2">Python 3</option>
+                            </select>
+                            <label>Select your preferred language:</label>
+                        </div>
+                        <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload"> <br></span>
+                        File input:
+                        <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
+                        </button>
+                        <input type="submit" value="Submit">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col l7 offset-l1 s12 m8">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title center hide-on-large-only"> Discussion </span>
+                    <span class="card-title hide-on-med-and-down"> Discussion </span>
+                    <div id="disqus_thread" ></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        /**
+         *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+         *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+        var disqus_config = function () {
+            this.page.url = 'http://localhost:8000/questions/<slug:question_unique_id>/view/';  // Replace PAGE_URL with your page's canonical URL variable
+            //this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://codinghub-iiits.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+        Disqus.</a></noscript>
+
+
+
+</section>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+<script>
+     // Or with jQuery
+     $(document).ready(function(){
+    $('select').formSelect();
+  });
+</script>
+
+
+</body>
+</html>
