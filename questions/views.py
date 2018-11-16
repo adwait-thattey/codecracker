@@ -88,6 +88,10 @@ def ajax_get_submission_results(request):
     else:
         raise Http404("Invalid request!")
 
+def view_the_question(request, question_unique_id):
+    question = get_object_or_404(Question, unique_code=question_unique_id)
+    
+    return render(request, "questions/viewing_the_question.html", {"question":question})
 
 @login_required
 def create_testcase(request, question_unique_id):
