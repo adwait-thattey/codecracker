@@ -18,13 +18,13 @@ class QuestionAdmin(admin.ModelAdmin):
     def authorusername(self, obj):
         return obj.author.username
 
-    list_display = ['title', 'unique_code', 'authorusername', 'time_limit',
-                     'input_format', 'constraints', 'output_format', 'sample_input', 'sample_output']
-    sortable_by = ['time_limit', 'title']
+    list_display = ['title', 'unique_code', 'authorusername', 'time_limit' , 'difficulty']
+    sortable_by = ['time_limit', 'title', ]
     search_fields = ['title', 'author__username', 'unique_code']
 
 
 admin.site.register(Question, QuestionAdmin)
+
 
 
 class SubmissionAdmin(admin.ModelAdmin):

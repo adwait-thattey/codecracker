@@ -39,9 +39,9 @@
                                 <h4>{{ question.title }} </h4>
                             </div>
                             <div class="col m4 s5">
-                                <i class="fas fa-trophy" style="font-size: larger; padding: 5px;"> Hard</i>
-                                <i class="fas fa-eye" style="font-size: larger; padding: 5px;"> 20</i>
-                                <i class="fas fa-flag checkered" style="font-size: larger; padding: 5px;"> 40</i><br>
+                                <i class="fas fa-flag-checkered" style="font-size: larger; padding: 5px;"> {{question.difficulty}} </i>
+                                <i class="fas fa-eye" style="font-size: larger; padding: 5px;"> {{ question.view_count}} </i>
+                                <i class="fas fa-trophy" style="font-size: larger; padding: 5px;"> {{ question.submission_set.count }}</i><br>
                                 <div class="hide-on-med-and-up">
                                     <b>Author: <span style="color: blue">{{question.author}}</span></b>
                                 </div>
@@ -49,9 +49,9 @@
                             </div>
                         </div>
                         <div class="chip " align= "center" >
-                            <img src="{{question.catagory.logo.url}}"
+                            <img src="{{question.category.logo.url}}"
                                  alt="Contact Person">
-                            {{question.catagory.name}}
+                            {{question.category.name}}
                         </div>
                         <div id="description">
                             {{ question.description|safe }}
@@ -109,9 +109,9 @@
                 <div class="card teal lighten-5">
                     <div class="card-content" style="font-size: medium; padding: 20px;">
                     <b>Author: <span style="color: blue">{{question.author}}</span></b> <br>
-                    <b>Difficulty:</b> <br>
-                    <b>No. of views:</b> <br>
-                    <b>No. of submissions:</b> <br>
+                    <b>Difficulty: {{question.difficulty}}</b> <br>
+                    <b>No. of views: {{ question.view_count}}</b> <br>
+                    <b>No. of submissions: {{ question.submission_set.count }}</b> <br>
                     </div>
                 </div>
 
@@ -120,31 +120,12 @@
 
 
                         <span class="card-title center">
-                            <a class="waves-effect waves-light btn modal-trigger btn-large" href="#solve">Solve</a> <br>
+                            <a class="waves-effect waves-light btn modal-trigger btn-large" href="javascript:void(0);" data-target="solve">Solve</a> <br>
                         </span> 
 
 
                         
-                        <div id="solve" class="modal bottom-sheet">
-                        <div class="modal-content center" style="font-size: medium; padding: 50px;">
-                          <h4>Solve it</h4>
-                          <div class="input-field">
-                            <select>
-                              <option value="" disabled selected>Choose your option</option>
-                              <option value="1">Python 2</option>
-                              <option value="2">Python 3</option>
-                            </select>
-                            <label>Select your preferred language:</label>
-                          </div>
-                            <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload"> <br></span>
-                            File input:
-                            <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
-                            </button>
-                        </div>
-                        <div class="modal-footer">
-                          <a href="#!" class="modal-close waves-effect waves-green btn-flat" type="submit" value="Submit">Submit</a>
-                        </div>
-                      </div>
+                        
 
 
 
@@ -163,31 +144,8 @@
 
 
                         <span class="card-title center">
-                            <a class="waves-effect waves-light btn modal-trigger btn-large" href="#solve">Solve</a> <br>
-                        </span> 
-
-
-                        
-                        <div id="solve" class="modal bottom-sheet">
-                        <div class="modal-content center" style="font-size: medium; padding: 50px;">
-                          <h4>Solve it</h4>
-                          <div class="input-field">
-                            <select>
-                              <option value="" disabled selected>Choose your option</option>
-                              <option value="1">Python 2</option>
-                              <option value="2">Python 3</option>
-                            </select>
-                            <label>Select your preferred language:</label>
-                          </div>
-                            <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload" accept=".py"> <br></span>
-                            File input:
-                            <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
-                            </button>
-                        </div>
-                        <div class="modal-footer">
-                          <a href="#!" class="modal-close waves-effect waves-green btn-flat" type="submit" value="Submit">Submit</a>
-                        </div>
-                      </div>
+                            <a class="waves-effect waves-light btn modal-trigger btn-large" href="javascript:void(0);" data-target="solve">Solve</a> <br>
+                        </span>
 
 
 
@@ -209,7 +167,27 @@
             </div>
         </div>
     </div>
-
+    
+    <div id="solve" class="modal bottom-sheet">
+                        <div class="modal-content center" style="font-size: medium; padding: 50px;">
+                          <h4>Solve it</h4>
+                          <div class="input-field">
+                            <select>
+                              <option value="" disabled selected>Choose your option</option>
+                              <option value="1">Python 2</option>
+                              <option value="2">Python 3</option>
+                            </select>
+                            <label>Select your preferred language:</label>
+                          </div>
+                            <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload"> <br></span>
+                            File input:
+                            <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                          <a href="#!" class="modal-close waves-effect waves-green btn-flat" type="submit" value="Submit">Submit</a>
+                        </div>
+                      </div>
     <script>
 
         var disqus_config = function () 

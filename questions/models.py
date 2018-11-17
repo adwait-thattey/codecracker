@@ -21,6 +21,7 @@ def image_upload_url(instance, filename):
 
 # Create your models here.
 class Category(models.Model):
+    
     name = models.CharField(max_length=25,
                             unique=True
                             )
@@ -45,6 +46,12 @@ unique_code_validator = RegexValidator(r'^[0-9a-z]*$',
 
 
 class Question(models.Model):
+    DIFFICULTY = (
+        ('Unknown', 'Unknown'),
+        ('Easy', 'Easy'),
+        ('Medium', 'Medium'),
+        ('Hard', 'Hard'),
+        )
     author = models.ForeignKey(verbose_name="Question Poster",
                                to=DefaultUser,
                                null=True,
@@ -74,6 +81,12 @@ class Question(models.Model):
 
     sample_output = models.TextField(verbose_name="Sample output", null= 'True')
 
+    difficulty = models.CharField(verbose_name="Difficulty level", 
+                                  choices= DIFFICULTY, 
+                                  default='0', 
+                                  max_length=15
+                                  )
+
     category = models.ForeignKey(verbose_name="Category",
                                  to=Category,
                                  null=True,
@@ -98,6 +111,11 @@ class Question(models.Model):
                                    help_text="A unique code for your question. between 3-15 characters. May contain only \
                                    lowercase characters and numbers. For example if the question name is 'Sorting Array', \
                                    you may name the code SORTARR")
+       
+
+    view_count= models.IntegerField(verbose_name= 'Question View Count',
+                                 default=0,
+                                 )
 
     def __str__(self):
         return self.unique_code
@@ -301,3 +319,20 @@ def recalc_number(instance, *args, **kwargs):
         start += 1
 
     recalc_question_all_submissions_async(question)
+
+class QuestionView(models.Model):
+    question= models.ForeignKey( verbose_name='question',
+                                 to=Question,
+                                 on_delete=models.CASCADE
+                                )
+    user= models.ForeignKey( verbose_name= 'User',
+                            to=DefaultUser,
+                            on_delete=models.CASCADE
+                            )
+    
+
+
+
+
+
+                
