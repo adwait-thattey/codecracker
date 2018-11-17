@@ -119,7 +119,7 @@ API Changes:
 
 * [#1097](https://github.com/ckeditor/ckeditor-dev/issues/1097): Widget [`upcast`](https://docs.ckeditor.com/ckeditor4/docs/#!/api/CKEDITOR.plugins.widget.definition-property-upcast) methods are now called in the [widget definition's](https://docs.ckeditor.com/ckeditor4/docs/#!/api/CKEDITOR.plugins.widget-property-definition) context.
 * [#1118](https://github.com/ckeditor/ckeditor-dev/issues/1118): Added the `show` option in the [`balloonPanel.attach`](https://docs.ckeditor.com/ckeditor4/docs/#!/api/CKEDITOR.ui.balloonPanel-method-attach) method, allowing to attach a hidden [Balloon Panel](https://ckeditor.com/cke4/addon/balloonpanel) instance.
-* [#1145](https://github.com/ckeditor/ckeditor-dev/issues/1145): Added the [`skipNotifications`](https://docs.ckeditor.com/ckeditor4/docs/#!/api/CKEDITOR.fileTools.uploadWidgetDefinition-property-skipNotifications) option to the [`CKEDITOR.fileTools.uploadWidgetDefinition`](https://docs.ckeditor.com/ckeditor4/docs/#!/api/CKEDITOR.fileTools.uploadWidgetDefinition), allowing to switch off default notifications displayed by upload widgets.
+* [#1145](https://github.com/ckeditor/ckeditor-dev/issues/1145): Added the [`skipNotifications`](https://docs.ckeditor.com/ckeditor4/docs/#!/api/CKEDITOR.fileTools.uploadWidgetDefinition-property-skipNotifications) option to the [`CKEDITOR.fileTools.uploadWidgetDefinition`](https://docs.ckeditor.com/ckeditor4/docs/#!/api/CKEDITOR.fileTools.uploadWidgetDefinition), allowing to switch off default Notifications displayed by upload widgets.
 
 Other Changes:
 
@@ -573,7 +573,7 @@ Fixed Issues:
 * [#13419](https://dev.ckeditor.com/ticket/13419): Fixed: The [Auto Link](https://ckeditor.com/cke4/addon/autolink) plugin does not encode double quotes in URLs.
 * [#13420](https://dev.ckeditor.com/ticket/13420): Fixed: The [Auto Embed](https://ckeditor.com/cke4/addon/autoembed) plugin ignores encoded characters in URL parameters.
 * [#13410](https://dev.ckeditor.com/ticket/13410): Fixed: Error thrown in the [Auto Embed](https://ckeditor.com/cke4/addon/autoembed) plugin when undoing right after pasting a link.
-* [#13566](https://dev.ckeditor.com/ticket/13566): Fixed: Suppressed notifications in the [Media Embed Base](https://ckeditor.com/cke4/addon/embedbase) plugin.
+* [#13566](https://dev.ckeditor.com/ticket/13566): Fixed: Suppressed Notifications in the [Media Embed Base](https://ckeditor.com/cke4/addon/embedbase) plugin.
 * [#11616](https://dev.ckeditor.com/ticket/11616): [Chrome] Fixed: Resizing the editor while it is not displayed breaks the editable. Fixes also [#9160](https://dev.ckeditor.com/ticket/9160) and [#9715](https://dev.ckeditor.com/ticket/9715).
 * [#11376](https://dev.ckeditor.com/ticket/11376): [IE11] Fixed: Loss of text when pasting bulleted lists from Microsoft Word.
 * [#13143](https://dev.ckeditor.com/ticket/13143): [Edge] Fixed: Focus lost when opening the panel.
@@ -585,7 +585,7 @@ Fixed Issues:
 
 Other Changes:
 
-* [#13421](https://dev.ckeditor.com/ticket/13421): UX improvements to notifications in the [Auto Embed](https://ckeditor.com/cke4/addon/autoembed) plugin.
+* [#13421](https://dev.ckeditor.com/ticket/13421): UX improvements to Notifications in the [Auto Embed](https://ckeditor.com/cke4/addon/autoembed) plugin.
 
 ## CKEditor 4.5.1
 

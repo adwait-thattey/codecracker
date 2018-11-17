@@ -38,7 +38,7 @@ def notification(request):
 
     try:
         # blog.upvote(request.user)
-        ret_data["notification"] = [i['content'] for i in notifications.objects.filter(user=request.user).values("content")]
+        ret_data["notification"] = [i['content'] for i in Notifications.objects.filter(user=request.user).values("content")]
         print(ret_data)
 
 

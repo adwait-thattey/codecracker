@@ -114,7 +114,7 @@ def create_profile_and_oauth(sender, instance, created, **kwargs):
         GoogleAuth.objects.create(user=instance)
 
 
-class notifications(models.Model):
+class Notifications(models.Model):
     user = models.ForeignKey(verbose_name="User",
                              to=DefaultUser,
                              on_delete=models.SET_NULL,
