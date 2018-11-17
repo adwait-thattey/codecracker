@@ -113,8 +113,8 @@ def view_the_question(request, question_unique_id):
             QuestionView.objects.create(question=question, user=request.user)
             question.view_count+=1
                 
-    statistics= get_object_or_404(QuestionView)
-    return render(request, "questions/viewing_the_question.html", {"question":question})
+    submission_form = SubmissionForm()
+    return render(request, "questions/viewing_the_question.html", {"question":question, "submission_form":submission_form})
 
 @login_required
 def create_testcase(request, question_unique_id):

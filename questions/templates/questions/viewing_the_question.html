@@ -171,22 +171,32 @@
     <div id="solve" class="modal bottom-sheet">
                         <div class="modal-content center" style="font-size: medium; padding: 50px;">
                           <h4>Solve it</h4>
+                          <form action="{% url 'questions:submit-solution' question.unique_code %}" method="post" id="solution_form" enctype="multipart/form-data">
+                            {% csrf_token %}
                           <div class="input-field">
-                            <select>
+                            {% comment %}
+                            <select >
                               <option value="" disabled selected>Choose your option</option>
                               <option value="1">Python 2</option>
                               <option value="2">Python 3</option>
                             </select>
+                            {% endcomment %}
+                            {{ submission_form.language }}
                             <label>Select your preferred language:</label>
                           </div>
-                            <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload"> <br></span>
+                            
                             File input:
-                            <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
+                            <button class="btn-small" onclick="document.getElementById('id_code').click()">Upload
                             </button>
+                            
+                            <span style="display:none;">
+                            {{ submission_form.code }}
+                            </span>
                         </div>
                         <div class="modal-footer">
-                          <a href="#!" class="modal-close waves-effect waves-green btn-flat" type="submit" value="Submit">Submit</a>
+                          <a href="javascript:void(0);" class="modal-close waves-effect waves-green btn-flat" type="submit" onclick="document.getElementById('solution_form').submit()">Submit</a>
                         </div>
+                    </form>
                       </div>
     <script>
 
