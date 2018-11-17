@@ -8,7 +8,6 @@ from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db.models.signals import post_save, post_delete
 
-
 import os
 import pathlib
 
@@ -70,16 +69,15 @@ class Question(models.Model):
                                          )
     description = RichTextUploadingField(verbose_name="Description")
 
+    input_format = models.TextField(verbose_name="Input format", null='True')
 
-    input_format = models.TextField(verbose_name="Input format", null= 'True')
+    constraints = models.TextField(verbose_name="Constraints", null='True')
 
-    constraints = models.TextField(verbose_name="Constraints", null= 'True')
+    output_format = models.TextField(verbose_name="Output format", null='True')
 
-    output_format = models.TextField(verbose_name="Output format", null= 'True')
+    sample_input = models.TextField(verbose_name="Sample input", null='True')
 
-    sample_input = models.TextField(verbose_name="Sample input", null= 'True')
-
-    sample_output = models.TextField(verbose_name="Sample output", null= 'True')
+    sample_output = models.TextField(verbose_name="Sample output", null='True')
 
     difficulty = models.CharField(verbose_name="Difficulty level", 
                                   choices= DIFFICULTY, 
@@ -211,10 +209,13 @@ class Submission(models.Model):
                                       )
     submitted_on = models.DateTimeField(auto_now_add=True)
 
+    attempt_number = models.IntegerField(default=0, validators=[MinValueValidator(0)], editable=False)
+
     last_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['submitted_on']
+        ordering = ['question', 'user', 'submitted_on']
+        unique_together = ['question', 'user', 'attempt_number']
 
     def __str__(self):
         return str(self.id)
@@ -286,10 +287,14 @@ class Result(models.Model):
         return str(self.id)
 
     def as_dict(self):
+        points = 0
+        if self.pass_fail == 1:
+            points = self.testcase.points
         return {
             "id": self.id,
             "pass_fail": self.pass_fail,
-            "errors": self.errors
+            "errors": self.errors.replace("\n", "<br>"),
+            "points": points
         }
 
 
@@ -331,8 +336,9 @@ class QuestionView(models.Model):
                             )
     
 
+@receiver(post_save, sender=Submission)
+def get_attempt_number(sender, instance, created, **kwargs):
+    if created:
+        instance.attempt_number = Submission.objects.filter(user=instance.user, question=instance.question).count()
+        instance.save()
 
-
-
-
-                
