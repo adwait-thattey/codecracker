@@ -19,7 +19,7 @@ class QuestionAdmin(admin.ModelAdmin):
         return obj.author.username
 
     list_display = ['title', 'unique_code', 'authorusername', 'time_limit',
-                     'input_format', 'constraints', 'output_format', 'sample_input', 'sample_output']
+                    'input_format', 'constraints', 'output_format', 'sample_input', 'sample_output']
     sortable_by = ['time_limit', 'title']
     search_fields = ['title', 'author__username', 'unique_code']
 
@@ -29,9 +29,10 @@ admin.site.register(Question, QuestionAdmin)
 
 class SubmissionAdmin(admin.ModelAdmin):
     date_hierarchy = 'submitted_on'
-    list_display = ['id', 'question', 'user', 'language', 'total_score', 'submitted_on', 'last_updated']
+    list_display = ['id', 'question', 'user', 'language', 'total_score', 'attempt_number', 'submitted_on',
+                    'last_updated']
     list_filter = ['question__unique_code', 'user__username', 'language']
-    sortable_by = ['id', 'question', 'user', 'language', 'total_score', 'submitted_on', 'last_updated']
+    sortable_by = ['id', 'question', 'user', 'language', 'total_score', 'attempt_number','submitted_on', 'last_updated']
     search_fields = ['id', 'question__title', 'question__unique_code', 'language']
 
 

@@ -1,3 +1,4 @@
+{% extends 'main_page/nav.html' %}
 {% load static %}
 
 {% block custom_loaders %}
@@ -14,11 +15,7 @@
 
 
 {% block custom_includes %}
-    <script>
-        $(document).ready(function () {
-            $('.collapsible').collapsible();
-        });
-    </script>
+
 {% endblock %}
 
 
@@ -26,20 +23,37 @@
 {% block main_content %}
     <section>
         <div class="container">
-            <div class="row">
-<span>
-    Submitted on:
-</span>
-                <div class="right align">
-                    Status:<br>
-                    Total Score:<br><br>
-                </div>
-            </div>
-            <div class="row " style="display: inline;">
+            {#            <div class="row">#}
+            {#                <span>#}
+            {#                     Submitted on:#}
+            {#                </span>#}
+            {##}
+            {#            </div>#}
+            {% comment %}<div class="row " style="display: inline;">
                 <span><a class="waves-effect waves-light btn-large">View Question</a></span>
                 <span class="right align">  <a class="waves-effect waves-light btn-large">View submitted code</a></span>
+            </div>{% endcomment %}
+
+            <h4 class="center">
+                {{ submission.question.title }}
+            </h4>
+            <h5 class="center">
+                Attempt # {{ submission.attempt_number }}
+            </h5>
+            <div class="progress grey" style="height:2vh;">
+                <div class="indeterminate amber lighten-1" style="width: 0%; transition: width 1.75s"
+                     id="progress_bar"></div>
             </div>
-            <p><br></p>
+            <div class="row">
+                <div class=" col s6 left-align">
+                    <span class="left" style="font-size: 120%;">Status: <span id="overall_status"></span> </span>
+                </div>
+                <div class=" col s6">
+
+                    <span class="right" style="font-size: 120%;">Total Score: <span id="total_score"></span></span>
+                </div>
+            </div>
+
 
             <div class="row">
                 {% for result in submission.result_set.all %}
@@ -49,26 +63,95 @@
                         <ul class="collapsible popout ">
                             <li>
                                 <div class="collapsible-header" style="color: black"><i
-                                        class="material-icons result_icon">check</i>Test
+                                        class="material-icons result_icon ">hourglass_full</i>Test
                                     Case #{{ result.testcase.number }}
                                 </div>
                                 <div class="collapsible-body">
                                     <div>
-                                        <span>Status: <span class="result_status">Passed</span> </span><br>
-                                        <span>Execution time: <span class="result_extime">1</span> sec</span><br>
-                                        <span> Score: <span class="result_score">10</span></span><br>
+                                        <span>Status: <span class="result_status">Please Wait</span> </span><br>
+                                        <span>Execution time: <span class="result_extime">-</span></span><br>
+                                        <span> Score: <span class="result_score">-</span></span><br>
                                     </div>
                                     <div style="display: none" class="result_error_container">
-                                        Error: <a style="text-decoration: none;"
-                                                  class="red-text accent-4 result_error_link">click to view error</a>
+                                        Error: <a style="text-decoration: none;" href="javascript:void(0);"
+                                                  class="red-text accent-4 result_error_link modal-trigger"
+                                                  data-target="error_modal_{{ forloop.counter }}">click to view
+                                        error</a>
                                     </div>
                                 </div>
                             </li>
                         </ul>
                     </div>
+                    <div>
+                        <div id="error_modal_{{ forloop.counter }}"
+                             class="modal ">
+                            <div class="modal-content">
+                                <div class="title red-text text-accent-4 center-align flow-text"
+                                     style="font-weight: bolder; font-size: 5vh;">
+                                    Error Dump
+                                </div>
+                                <div class="result_error_modal align-left red-text medium" id="delete-modal-content"
+                                     style="font-size:large">
+                                    You are about to delete this test case. <br>
+                                    Any points gained by any person for this test case will be lost. <br>
+                                    Doing this will cause points of all submissions (for this question) to be
+                                    re-calculated.<br>
+                                    This operation could take some time. <br>
+
+                                </div>
+                                <div class="modal-footer" id="">
+                                    <a href="#" class="modal-close waves-effect btn btn-large green darken-4 hoverable">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
 
 
+            </div>
+
+            <div class="row">
+                <div class=" col s12 m6 l4 ">
+
+                    <a href="{% url 'questions:view_the_question' submission.question.unique_code %}">
+                        <ul class="collapsible hoverable">
+                            <li>
+                                <div class="collapsible-header" style="color: black"><i
+                                        class="material-icons result_icon ">arrow_back</i> Go To Question
+                                </div>
+
+                            </li>
+                        </ul>
+                    </a>
+                </div>
+                <div class=" col s12 m6 l4 ">
+
+
+                    <a href="{{ submission.code.url }}" target="_blank">
+                        <ul class="collapsible hoverable">
+                            <li>
+                                <div class="collapsible-header" style="color: black"><i
+                                        class="material-icons result_icon ">code</i>
+                                    View Code
+                                </div>
+
+                            </li>
+                        </ul>
+                    </a>
+                </div>
+                <div class=" col s12 m6 l4">
+                    <a href="{% url 'questions:browse' %}">
+                        <ul class="collapsible hoverable">
+                            <li>
+                                <div class="collapsible-header" style="color: black"><i
+                                        class="material-icons result_icon ">arrow_forward</i>
+                                    Other Questions
+                                </div>
+
+                            </li>
+                        </ul>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -80,15 +163,38 @@
 
 {% block custom_eof_scripts %}
 
+    <script>
+        $(document).ready(function () {
+            $('.collapsible').collapsible();
+        });
+
+        $(document).ready(function () {
+            $('.tooltipped').tooltip();
+        });
+
+        $(document).ready(function () {
+            $('.modal').modal();
+        });
+
+        $(document).ready(function () {
+            M.toast({html: 'Please Wait... '});
+        });
+    </script>
+
 
 
     <script>
 
         result_icons = document.getElementsByClassName('result_icon');
-        restlu_statuss = document.getElementsByClassName('result_status');
+        result_statuss = document.getElementsByClassName('result_status');
         result_extimes = document.getElementsByClassName('result_extime');
+        result_scores = document.getElementsByClassName('result_score');
         result_error_containers = document.getElementsByClassName('result_error_container');
         result_error_link = document.getElementsByClassName('result_error_link');
+        result_error_modals = document.getElementsByClassName('result_error_modal');
+        total_score = document.getElementById('total_score');
+        progress_bar = document.getElementById('progress_bar');
+        overall_status = document.getElementById('overall_status');
 
         var interval_id = 0;
 
@@ -110,30 +216,122 @@
 
                         if (result.pass_fail === 1) {
                             result_icons[result_iter].innerHTML = "check";
-                            result_icons[result_iter].classList.add("green-text")
+                            result_icons[result_iter].classList.add("green-text");
+
+                            result_statuss[result_iter].innerHTML = "Correct Answer";
+                            result_statuss[result_iter].classList.add("green-text");
+
+                            result_scores[result_iter].innerHTML = result.points;
+
+                            result_extimes[result_iter].innerHTML = "x sec";
+
+                            {#TODO Update result extime#}
+
+
                         }
                         else if (result.pass_fail === 2) {
                             result_icons[result_iter].innerHTML = "timer";
+                            result_icons[result_iter].classList.add("red-text");
+
+                            result_statuss[result_iter].innerHTML = "Timed Out";
+                            result_statuss[result_iter].classList.add("red-text");
+
+                            result_scores[result_iter].innerHTML = result.points;
+
+                            result_extimes[result_iter].innerHTML = "-"
                         }
                         else if (result.pass_fail === 3) {
                             result_icons[result_iter].innerHTML = "report_problem";
+                            result_icons[result_iter].classList.add("red-text");
+
+                            result_statuss[result_iter].innerHTML = "Runtime Error";
+                            result_statuss[result_iter].classList.add("red-text");
+
+                            result_scores[result_iter].innerHTML = result.points;
+
+                            result_error_modals[result_iter].innerHTML = result.errors;
+
+                            result_error_containers[result_iter].style.display = "block";
+
+                            result_extimes[result_iter].innerHTML = "-"
+
                         }
                         else if (result.pass_fail === 4) {
                             result_icons[result_iter].innerHTML = "clear";
+                            result_icons[result_iter].classList.add("red-text");
+
+                            result_statuss[result_iter].innerHTML = "Wrong Answer";
+                            result_statuss[result_iter].classList.add("red-text");
+
+                            result_scores[result_iter].innerHTML = result.points;
+
+                            result_extimes[result_iter].innerHTML = "-"
                         }
                         else if (result.pass_fail === 5) {
                             result_icons[result_iter].innerHTML = "hourglass_full";
+                            result_icons[result_iter].classList.add("blue-text");
+
+                            result_statuss[result_iter].innerHTML = "Running Code..";
+                            result_statuss[result_iter].classList.add("blue-text");
+
+                            result_extimes[result_iter].innerHTML = "-"
                         }
 
                         if (result.pass_fail == 5) {
                             completion_check = 1;
                         }
 
+
                         result_iter += 1
                     }
 
                     if (completion_check == 0) {
-                        clearInterval(interval_id)
+                        clearInterval(interval_id);
+                        M.Toast.dismissAll();
+                        total_score.innerHTML = data.score + "%";
+                        progress_bar.classList.remove('indeterminate');
+                        progress_bar.classList.add('determinate');
+                        progress_bar.classList.remove('amber');
+                        progress_bar.classList.remove('lighten-1');
+                        progress_bar.classList.add('green');
+                        progress_bar.style.width = data.score + "%";
+                        if (data.score > 99) {
+                            overall_status.innerHTML = "Correct Answer";
+                            overall_status.classList.add("green-text")
+                        }
+                        else {
+                            overall_status.innerHTML = "Wrong Answer";
+                            overall_status.classList.add("red-text")
+                        }
+                        {#progress_bar.style.width = "67%";#}
+
+                        {% comment %} $('#total_score').each(function () {
+                             $(this).prop('Counter', 0).animate({
+                                 Counter: $(this).text()
+                             }, {
+                                 duration: 2000,
+                                 easing: 'swing',
+                                 step: function (now) {
+                                     $(this).text(now.toFixed(2));
+                                     progress_bar.style.width = now.toFixed(2) + "%";
+                                 }
+                             });
+                         });{% endcomment %}
+
+
+
+
+                        {#$('#progress_bar').each(function () {#}
+                        {#        $(this).prop('Counter', 0).animate({#}
+                        {#            Counter: data.score#}
+                        {#        }, {#}
+                        {#            duration: 1000,#}
+                        {#            easing: 'swing',#}
+                        {#            step: function (now) {#}
+                        {#                progress_bar.style.width = now + "%"#}
+                        {#            }#}
+                        {#        });#}
+                        {#    });#}
                     }
 
 
@@ -143,10 +341,10 @@
 
         window.onload = function () {
             interval_id = setInterval(get_result, 3000);
-            get_result();
+            setTimeout(get_result, 2000);
         }
     </script>
 
-    <script type="text/javascript" src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+
 {% endblock custom_eof_scripts %}
 

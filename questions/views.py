@@ -14,6 +14,8 @@ from django.forms import modelformset_factory
 # Create your views here.
 def start_code_run_sequence(submission):
     # WARNING DO NOT MAKE THIS ASYNC PROCESS. THE RESULT WILL NOT RENDER IN RESULTS PAGE
+    Result.objects.filter(submission=submission).delete()
+
     for testcase in submission.question.testcase_set.all():
         R = Result.objects.create(testcase=testcase, submission=submission)
         thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
@@ -76,8 +78,8 @@ def submit_solution(request, question_unique_id):
 
 
 @login_required
-def submission_result(request, question_unique_id, submission_id):
-    submission = get_object_or_404(Submission, id=submission_id)
+def submission_result(request, question_unique_id, submission_attempt):
+    submission = get_object_or_404(Submission, question__unique_code=question_unique_id, attempt_number=submission_attempt)
 
     return render(request, "questions/results.html", {"submission": submission})
 
