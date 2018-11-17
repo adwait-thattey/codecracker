@@ -14,6 +14,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %} "
           media="screen,projection"/>
+
+          <link rel="stylesheet"
+          href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <!--Let browser know website is optimized for mobile-->
 
 
@@ -49,7 +54,7 @@
                             {{question.catagory.name}}
                         </div>
                         <div id="description">
-                            {{ question.description }}
+                            {{ question.description|safe }}
                             
                         </div>
 
@@ -110,24 +115,40 @@
                     </div>
                 </div>
 
-                <div class="card teal lighten-5">
+                <div class="card">
                     <div class="card-content">
+
+
                         <span class="card-title center">
-                            Try Solving <br>
+                            <a class="waves-effect waves-light btn modal-trigger btn-large" href="#solve">Solve</a> <br>
                         </span> 
-                        <div class="input-field">
+
+
+                        
+                        <div id="solve" class="modal bottom-sheet">
+                        <div class="modal-content center" style="font-size: medium; padding: 50px;">
+                          <h4>Solve it</h4>
+                          <div class="input-field">
                             <select>
                               <option value="" disabled selected>Choose your option</option>
                               <option value="1">Python 2</option>
                               <option value="2">Python 3</option>
                             </select>
                             <label>Select your preferred language:</label>
+                          </div>
+                            <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload"> <br></span>
+                            File input:
+                            <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
+                            </button>
                         </div>
-                        <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload"> <br></span>
-                        File input:
-                        <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
-                        </button>
-                        <input type="submit" value="Submit">
+                        <div class="modal-footer">
+                          <a href="#!" class="modal-close waves-effect waves-green btn-flat" type="submit" value="Submit">Submit</a>
+                        </div>
+                      </div>
+
+
+
+                        
                     </div>
                 </div>
 
@@ -137,24 +158,40 @@
 
         <div class="hide-on-med-and-up">
             <div class="col s12">
-                <div class="card teal lighten-5">
+                <div class="card">
                     <div class="card-content">
+
+
                         <span class="card-title center">
-                            Try Solving <br>
+                            <a class="waves-effect waves-light btn modal-trigger btn-large" href="#solve">Solve</a> <br>
                         </span> 
-                        <div class="input-field">
+
+
+                        
+                        <div id="solve" class="modal bottom-sheet">
+                        <div class="modal-content center" style="font-size: medium; padding: 50px;">
+                          <h4>Solve it</h4>
+                          <div class="input-field">
                             <select>
                               <option value="" disabled selected>Choose your option</option>
                               <option value="1">Python 2</option>
                               <option value="2">Python 3</option>
                             </select>
                             <label>Select your preferred language:</label>
+                          </div>
+                            <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload" accept=".py"> <br></span>
+                            File input:
+                            <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
+                            </button>
                         </div>
-                        <span style="display: none;"> <input type="file" id="uploadbutton" value="Upload"> <br></span>
-                        File input:
-                        <button class="btn-small" onclick="document.getElementById('uploadbutton').click()">Upload
-                        </button>
-                        <input type="submit" value="Submit">
+                        <div class="modal-footer">
+                          <a href="#!" class="modal-close waves-effect waves-green btn-flat" type="submit" value="Submit">Submit</a>
+                        </div>
+                      </div>
+
+
+
+                        
                     </div>
                 </div>
             </div>
@@ -172,15 +209,13 @@
             </div>
         </div>
     </div>
+
     <script>
 
-        /**
-         *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-         *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-
-        var disqus_config = function () {
-            this.page.url = 'http://localhost:8000/questions/<slug:question_unique_id>/view/';  // Replace PAGE_URL with your page's canonical URL variable
-            //this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        var disqus_config = function () 
+        {
+            this.page.url = 'http://localhost:8000/questions/{{question.unique_code}}/view/';  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = {{question.unique_code}} ; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };
 
         (function () { // DON'T EDIT BELOW THIS LINE
@@ -202,12 +237,21 @@
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
   crossorigin="anonymous"></script>
 <script type="text/javascript" src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5beee4514e83990011fd89af&product=sticky-share-buttons' async='async'></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 <script>
      // Or with jQuery
-     $(document).ready(function(){
-    $('select').formSelect();
-  });
+    $(document).ready(function()
+    {
+        $('select').formSelect();
+    });
+    $(document).ready(function()
+    {
+        $('.modal').modal();
+    });  
 </script>
+
 
 
 </body>
