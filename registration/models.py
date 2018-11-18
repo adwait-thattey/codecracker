@@ -3,9 +3,10 @@ from django.contrib.auth.models import User as DefaultUser
 from django.core.exceptions import ValidationError
 from django.dispatch import receiver
 from django.db.models import signals
+from django.utils import timezone
 
 
-#from django.db import models
+# from django.db import models
 
 
 # Create your models here.
@@ -111,3 +112,33 @@ def create_profile_and_oauth(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
         GoogleAuth.objects.create(user=instance)
+
+
+class Notifications(models.Model):
+    user = models.ForeignKey(verbose_name="User",
+                             to=DefaultUser,
+                             on_delete=models.SET_NULL,
+                             null=True,
+                             )
+
+    content = models.TextField(verbose_name="content",
+                               max_length=250,
+                               help_text="Notification content",
+                               )
+
+    icon = models.CharField(verbose_name="icon",
+                            max_length=50,
+
+                            )
+
+    link = models.URLField(verbose_name="link")
+
+    time_stamp = models.DateTimeField(verbose_name="time_stamp",
+                                      default=timezone.now)
+
+    def __str__(self):
+        return self.user.get_full_name() + "<" + self.user.username + ">"
+
+    class Meta:
+        ordering=['-time_stamp']
+

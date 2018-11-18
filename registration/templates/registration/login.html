@@ -68,8 +68,8 @@
 
 {% block custom_includes %}
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id"
-          content="27851569207-eqmaeljgm7s5alnhadeo24nulq894e68.apps.googleusercontent.com.apps.googleusercontent.com">
+
+    <meta name="google-signin-client_id" content="306049630448-op0gc1t2dvi7plqbevlu1t2fpd29ve8e.apps.googleusercontent.com">
 {% endblock %}
 
 
@@ -127,16 +127,11 @@
                                 </span>
                             </div>
                             <div class="center">
-                                <h4 class="card-title center-align">Login using Google</h4>
+                                <a href="{% url 'social:begin' 'google-oauth2' %}"><img src="{% static 'registration/img/google.png' %}" style="height: 15vh;"></a>
                             </div>
-                            <div class="row">
 
-                                <center>
-                                <span class="g-signin2" data-onsuccess="onSignIn"></span>
-                                    </center>
 
-                                </div>
-
+                            <!--<a href="#" onclick="signOut();">Sign out</a>-->
                         </form>
                     </div>
                 </div>
@@ -146,23 +141,43 @@
 
 
 {% endblock %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-{#<script src="//static.codepen.io/assets/common/stopExecutionOnTimeout-41c52890748cd7143004e05d3c5f786c66b19939c4500ce446314d1748483e13.js"></script>#}
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
-
 
 {# TODO Replace with min.js in production #}
 {#<script src="https://materializecss.com/js/prism.js"></script>#}
 
 {% block custom_eof_scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    {#<script src="//static.codepen.io/assets/common/stopExecutionOnTimeout-41c52890748cd7143004e05d3c5f786c66b19939c4500ce446314d1748483e13.js"></script>#}
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+
+
     <script>
         (function () {
             var height = $(document).height();
             var background = $('.background-image');
             background.css('min-height', height);
         })();
+
     </script>
+    <script>
+        function onSignIn(googleUser) {
+          var profile = googleUser.getBasicProfile();
+          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+          console.log('Name: ' + profile.getName());
+          console.log('Image URL: ' + profile.getImageUrl());
+          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        }
+    </script>
+    <script>
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
+      }
+    </script>
+
 
 {% endblock %}
 

@@ -8,7 +8,6 @@ from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db.models.signals import post_save, post_delete
 
-
 import os
 import pathlib
 
@@ -18,9 +17,11 @@ from questions.utils import run_in_background
 def image_upload_url(instance, filename):
     return os.path.join("catgories", str(instance.id), "logo", filename)
 
-
+def back_image_upload_url(instance, filename):
+    return os.path.join("catgories", str(instance.id), "back_img", filename)
 # Create your models here.
 class Category(models.Model):
+    
     name = models.CharField(max_length=25,
                             unique=True
                             )
@@ -30,6 +31,7 @@ class Category(models.Model):
                              null=True
                              )
 
+    back_image = models.ImageField(upload_to=back_image_upload_url,blank=True,null=True)
     description = models.TextField()
 
     @property
@@ -45,6 +47,13 @@ unique_code_validator = RegexValidator(r'^[0-9a-z]*$',
 
 
 class Question(models.Model):
+    DIFFICULTY = (
+        (None,'Choose Difficulty Level'),
+        ('Unknown', 'Unknown'),
+        ('Easy', 'Easy'),
+        ('Medium', 'Medium'),
+        ('Hard', 'Hard'),
+        )
     author = models.ForeignKey(verbose_name="Question Poster",
                                to=DefaultUser,
                                null=True,
@@ -63,16 +72,21 @@ class Question(models.Model):
                                          )
     description = RichTextUploadingField(verbose_name="Description")
 
+    input_format = models.TextField(verbose_name="Input format", null='True')
 
-    input_format = models.TextField(verbose_name="Input format", null= 'True')
+    constraints = models.TextField(verbose_name="Constraints", null='True')
 
-    constraints = models.TextField(verbose_name="Constraints", null= 'True')
+    output_format = models.TextField(verbose_name="Output format", null='True')
 
-    output_format = models.TextField(verbose_name="Output format", null= 'True')
+    sample_input = models.TextField(verbose_name="Sample input", null='True')
 
-    sample_input = models.TextField(verbose_name="Sample input", null= 'True')
+    sample_output = models.TextField(verbose_name="Sample output", null='True')
 
-    sample_output = models.TextField(verbose_name="Sample output", null= 'True')
+    difficulty = models.CharField(verbose_name="Difficulty level", 
+                                  choices= DIFFICULTY,
+                                  max_length=15,
+                                    default="Easy",
+                                  )
 
     category = models.ForeignKey(verbose_name="Category",
                                  to=Category,
@@ -98,6 +112,16 @@ class Question(models.Model):
                                    help_text="A unique code for your question. between 3-15 characters. May contain only \
                                    lowercase characters and numbers. For example if the question name is 'Sorting Array', \
                                    you may name the code SORTARR")
+       
+
+    view_count= models.IntegerField(verbose_name= 'Question View Count',
+                                 default=0,
+                                 )
+
+    submission_count = models.IntegerField(verbose_name="Submissions", default=0)
+
+    create_timestamp = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.unique_code
@@ -193,10 +217,13 @@ class Submission(models.Model):
                                       )
     submitted_on = models.DateTimeField(auto_now_add=True)
 
+    attempt_number = models.IntegerField(default=0, validators=[MinValueValidator(0)], editable=False)
+
     last_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['submitted_on']
+        ordering = ['question', 'user', 'submitted_on']
+        unique_together = ['question', 'user', 'attempt_number']
 
     def __str__(self):
         return str(self.id)
@@ -268,10 +295,14 @@ class Result(models.Model):
         return str(self.id)
 
     def as_dict(self):
+        points = 0
+        if self.pass_fail == 1:
+            points = self.testcase.points
         return {
             "id": self.id,
             "pass_fail": self.pass_fail,
-            "errors": self.errors
+            "errors": self.errors.replace("\n", "<br>"),
+            "points": points
         }
 
 
@@ -301,3 +332,19 @@ def recalc_number(instance, *args, **kwargs):
         start += 1
 
     recalc_question_all_submissions_async(question)
+
+class QuestionView(models.Model):
+    question= models.ForeignKey( verbose_name='question',
+                                 to=Question,
+                                 on_delete=models.CASCADE
+                                )
+    user= models.ForeignKey( verbose_name= 'User',
+                            to=DefaultUser,
+                            on_delete=models.CASCADE
+                            )
+
+@receiver(post_save, sender=Submission)
+def get_attempt_number(sender, instance, created, **kwargs):
+    if created:
+        instance.attempt_number = Submission.objects.filter(user=instance.user, question=instance.question).count()
+        instance.save()
