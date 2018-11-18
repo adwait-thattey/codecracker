@@ -32,6 +32,23 @@ def post_question(request):
         form= PostQuestionForm()
     return render(request, "questions/post_question.html", {'form':form})
 
+@login_required
+def edit_question(request, question_unique_id=None):
+    instance= get_object_or_404(Question, unique_code=question_unique_id)
+    if instance.author != request.user:
+        return PermissionDenied("You can not edit this question!")
+    form= PostQuestionForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        instance=form.save(commit=False)
+        instance.save()
+        return HttpResponse("successfully edited question")
+    context={
+        'instance':instance,
+        'form':form
+    }
+    return render(request, "questions/post_question.html", context)
+
+
 @run_in_background
 def rerun_all_testcase_submissions(testcase):
     R_set = Result.objects.filter(testcase=testcase)
@@ -107,7 +124,7 @@ def browse_questions(request):
 
 def view_the_question(request, question_unique_id):
     question = get_object_or_404(Question, unique_code=question_unique_id)
-    
+
     return render(request, "questions/viewing_the_question.html", {"question":question})
 
 @login_required
