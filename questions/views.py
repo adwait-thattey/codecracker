@@ -2,7 +2,7 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from questions.models import Question, Submission, Result, TestCase
+from questions.models import Question, Submission, Result, TestCase, QuestionView
 from questions.utils import run_in_background
 from .forms import SubmissionForm, TestCaseCreateForm, PostQuestionForm
 
@@ -14,6 +14,8 @@ from django.forms import modelformset_factory
 # Create your views here.
 def start_code_run_sequence(submission):
     # WARNING DO NOT MAKE THIS ASYNC PROCESS. THE RESULT WILL NOT RENDER IN RESULTS PAGE
+    Result.objects.filter(submission=submission).delete()
+
     for testcase in submission.question.testcase_set.all():
         R = Result.objects.create(testcase=testcase, submission=submission)
         thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
@@ -85,7 +87,7 @@ def submit_solution(request, question_unique_id):
             submission.save()
 
             start_code_run_sequence(submission)
-            return redirect('questions:submission-result', question.unique_code, submission.id)
+            return redirect('questions:submission-result', question.unique_code, submission.attempt_number)
 
     else:
         submission_form = SubmissionForm()
@@ -93,8 +95,8 @@ def submit_solution(request, question_unique_id):
 
 
 @login_required
-def submission_result(request, question_unique_id, submission_id):
-    submission = get_object_or_404(Submission, id=submission_id)
+def submission_result(request, question_unique_id, submission_attempt):
+    submission = get_object_or_404(Submission, question__unique_code=question_unique_id, attempt_number=submission_attempt)
 
     return render(request, "questions/results.html", {"submission": submission})
 
@@ -123,9 +125,15 @@ def browse_questions(request):
     return render(request, "questions/browsequestions3.html")
 
 def view_the_question(request, question_unique_id):
-    question = get_object_or_404(Question, unique_code=question_unique_id)
 
-    return render(request, "questions/viewing_the_question.html", {"question":question})
+    question = get_object_or_404(Question, unique_code=question_unique_id)
+    if request.user.is_authenticated:
+        if not QuestionView.objects.filter(question=question, user=request.user).exists():
+            QuestionView.objects.create(question=question, user=request.user)
+            question.view_count+=1
+
+    submission_form = SubmissionForm()
+    return render(request, "questions/viewing_the_question.html", {"question":question, "submission_form":submission_form})
 
 @login_required
 def create_testcase(request, question_unique_id):
@@ -246,3 +254,12 @@ def ajax_call_rerun_all_testcase_submissions(request, question_unique_id):
     except:
         pass
     return JsonResponse(ret_data)
+
+# def question_view_count(request):
+#     #qview_count= Statistics.objects.question_view_count
+#     if request.user.is_authenticated():
+#         Statistics.objects.all()
+
+
+#def submissions_count(request, submissions):
+#    if request.

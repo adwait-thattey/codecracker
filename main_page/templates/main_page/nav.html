@@ -5,35 +5,40 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
-      {% block common_includes %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'main_page/nav/nav.css' %}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
-          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+  <head>
+
+
+    {% block common_includes %}
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="{% static 'main_page/nav/nav.css' %}">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+            integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     {%  endblock common_includes %}
 
-  {% block fonts %}
-  {% endblock fonts %}
 
-  {% block custom_includes %}
+    {% block fonts %}
+    {% endblock fonts %}
 
-  {% endblock %}
 
-  {% block internal_styles %}
+    {% block custom_includes %}
+    {% endblock %}
 
-  {% endblock internal_styles %}
+
+    {% block internal_styles %}
+    {% endblock internal_styles %}
+
+
     <title>
         {% block title %}
-            Title
         {% endblock %}
     </title>
-  </head>
-  <body>
+
+<body>
+
   {% block header %}
   <header>
       <nav class="cyan darken-4" id="nav">
@@ -113,7 +118,7 @@
     {% endblock main_content %}
 
     {% block footer %}
-    
+
     <footer class="page-footer" id="f">
       <div class="container">
         <div class="row">
@@ -175,8 +180,10 @@
     </script>
   {% endblock %}
 
-  {% block custom_eof_scripts %}
 
+  {% block custom_eof_scripts %}
   {% endblock custom_eof_scripts %}
-  </body>
+
+</body>
+
 </html>
