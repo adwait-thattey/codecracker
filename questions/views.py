@@ -4,7 +4,7 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from questions.models import Question, Submission, Result, TestCase, Category
+from questions.models import Question, Submission, Result, TestCase, Category, QuestionView
 from questions.utils import run_in_background
 from .forms import SubmissionForm, TestCaseCreateForm, PostQuestionForm, QuestionsFilterForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -172,9 +172,15 @@ def browse_questions(request):
     return render(request, "questions/browsequestions3.html", {"questions": question_page, "filter_form":question_filter_form})
 
 def view_the_question(request, question_unique_id):
+
     question = get_object_or_404(Question, unique_code=question_unique_id)
-    
-    return render(request, "questions/viewing_the_question.html", {"question":question})
+    if request.user.is_authenticated:
+        if not QuestionView.objects.filter(question=question, user=request.user).exists():
+            QuestionView.objects.create(question=question, user=request.user)
+            question.view_count+=1
+                
+    submission_form = SubmissionForm()
+    return render(request, "questions/viewing_the_question.html", {"question":question, "submission_form":submission_form})
 
 @login_required
 def create_testcase(request, question_unique_id):
@@ -295,3 +301,12 @@ def ajax_call_rerun_all_testcase_submissions(request, question_unique_id):
     except:
         pass
     return JsonResponse(ret_data)
+
+# def question_view_count(request):
+#     #qview_count= Statistics.objects.question_view_count
+#     if request.user.is_authenticated():
+#         Statistics.objects.all()
+
+
+#def submissions_count(request, submissions):
+#    if request.        
