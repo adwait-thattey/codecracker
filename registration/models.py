@@ -113,11 +113,12 @@ def create_profile_and_oauth(sender, instance, created, **kwargs):
         UserProfile.objects.create(user=instance)
         GoogleAuth.objects.create(user=instance)
 
-'''
-class registration(models.Model):
+
+class Notifications(models.Model):
     user = models.ForeignKey(verbose_name="User",
                              to=DefaultUser,
-                             on_delete=models.SET_NULL
+                             on_delete=models.SET_NULL,
+                             null=True,
                              )
 
     content = models.TextField(verbose_name="content",
@@ -125,6 +126,16 @@ class registration(models.Model):
                                help_text="Notification content",
                                )
 
-    time = models.DateTimeField(verbose_name="time",
-                                default=timezone.now)
-'''
+    icon = models.CharField(verbose_name="icon",
+                            max_length=50,
+
+                            )
+
+    link = models.URLField(verbose_name="link")
+
+    time_stamp = models.DateTimeField(verbose_name="time_stamp",
+                                      default=timezone.now)
+
+    class Meta:
+        ordering=['-time_stamp']
+
