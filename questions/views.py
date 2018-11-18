@@ -158,7 +158,7 @@ def browse_questions(request):
         if question_filter_form.cleaned_data["category"]:
             questions = questions.filter(category=question_filter_form.cleaned_data["category"])
     if "sort_by" in question_filter_form.cleaned_data:
-        print("sortby",question_filter_form.cleaned_data["sort_by"])
+        # print("sortby",question_filter_form.cleaned_data["sort_by"])
         sort_by_dict = {
             "1":"-create_timestamp",
             "2":"-submission_count",
@@ -168,7 +168,7 @@ def browse_questions(request):
         questions = questions.order_by(sort_by_dict[question_filter_form.cleaned_data["sort_by"]])
     if "query" in question_filter_form.cleaned_data:
         if question_filter_form.cleaned_data["query"] != 'None':
-            print("query", question_filter_form.cleaned_data["query"])
+            # print("query", question_filter_form.cleaned_data["query"])
             questions = questions.filter(title__contains=question_filter_form.cleaned_data["query"])
     if "reverse" in question_filter_form.cleaned_data:
         print(question_filter_form.cleaned_data["reverse"])
@@ -185,7 +185,7 @@ def browse_questions(request):
         question_page = paginator.page(1)
     except EmptyPage:
         question_page = paginator.page(paginator.num_pages)
-    print(question_page)
+    # print(question_page)
     return render(request, "questions/browsequestions3.html", {"questions": question_page, "filter_form":question_filter_form})
 
 def view_the_question(request, question_unique_id):
