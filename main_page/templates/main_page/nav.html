@@ -144,7 +144,7 @@
                 console.log("sending req")
                 $.ajax({
                     type: 'POST',
-                    url: "{% url 'mainpage:Notifications' %}",
+                    url: "{% url 'Notifications' %}",
                     data: {
                         'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'username': '{{ user.username }}'
