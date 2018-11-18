@@ -46,6 +46,7 @@ unique_code_validator = RegexValidator(r'^[0-9a-z]*$',
 
 class Question(models.Model):
     DIFFICULTY = (
+        (None,'Choose Difficulty Level'),
         ('Unknown', 'Unknown'),
         ('Easy', 'Easy'),
         ('Medium', 'Medium'),
@@ -80,9 +81,9 @@ class Question(models.Model):
     sample_output = models.TextField(verbose_name="Sample output", null='True')
 
     difficulty = models.CharField(verbose_name="Difficulty level", 
-                                  choices= DIFFICULTY, 
-                                  default='Unknown',
-                                  max_length=15
+                                  choices= DIFFICULTY,
+                                  max_length=15,
+
                                   )
 
     category = models.ForeignKey(verbose_name="Category",

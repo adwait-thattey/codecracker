@@ -115,7 +115,7 @@
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.input_format.help_text}}</span>
                       {% endif %}
                       {% if form.input_format.errors %}
-                          <span class="helper-text red-text" style="font-size:large">{{form.input_format.errors</span>
+                          <span class="helper-text red-text" style="font-size:large">{{form.input_format.errors }}</span>
                       {% endif %}
                     </div>
 
@@ -126,7 +126,7 @@
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.output_format.help_text}}</span>
                       {% endif %}
                       {% if form.output_format.errors %}
-                          <span class="helper-text red-text" style="font-size:large">{{form.output_format.errors</span>
+                          <span class="helper-text red-text" style="font-size:large">{{form.output_format.errors }}</span>
                       {% endif %}
                     </div>
 
@@ -137,7 +137,7 @@
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.sample_input.help_text}}</span>
                       {% endif %}
                       {% if form.sample_input.errors %}
-                          <span class="helper-text red-text" style="font-size:large">{{form.sample_input.errors</span>
+                          <span class="helper-text red-text" style="font-size:large">{{form.sample_input.errors }}</span>
                       {% endif %}
                     </div>
 
@@ -148,7 +148,7 @@
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.sample_output.help_text}}</span>
                       {% endif %}
                       {% if form.sample_output.errors %}
-                          <span class="helper-text red-text" style="font-size:large">{{form.sample_output.errors</span>
+                          <span class="helper-text red-text" style="font-size:large">{{form.sample_output.errors }}</span>
                       {% endif %}
                     </div>
 
@@ -159,8 +159,12 @@
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.constraints.help_text}}</span>
                       {% endif %}
                       {% if form.constraints.errors %}
-                          <span class="helper-text red-text" style="font-size:large">{{form.constraints.errors</span>
+                          <span class="helper-text red-text" style="font-size:large">{{form.constraints.errors }}</span>
                       {% endif %}
+                    </div>
+
+                    <div class="input-field col l12 m12 s12">
+                      {{ form.difficulty }}
                     </div>
 
                     <div class="input-field col l12 m12 s12">
