@@ -70,7 +70,7 @@ def submit_solution(request, question_unique_id):
             submission.save()
 
             start_code_run_sequence(submission)
-            return redirect('questions:submission-result', question.unique_code, submission.id)
+            return redirect('questions:submission-result', question.unique_code, submission.attempt_number)
 
     else:
         submission_form = SubmissionForm()
