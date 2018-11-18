@@ -240,6 +240,15 @@ LOGIN_URL = 'registration:login'
 
 LOGIN_REDIRECT_URL = 'home'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='306049630448-dsoqnavpgevhno5q4ckkhsoai8okoqrm.apps.googleusercontent.com'  #Paste CLient Key
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YmeDaiDmrtmQGMTTk67X8FR9' #Paste Secret Key
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS =True
+EMAIL_HOST_USER = "adwaitthatteytemp@gmail.com"
+EMAIL_HOST_PASSWORD = "Hello World"
+

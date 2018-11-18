@@ -1,11 +1,13 @@
+from time import sleep
+
 from django.http import JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from questions.models import Question, Submission, Result, TestCase
+from questions.models import Question, Submission, Result, TestCase, Category, QuestionView
 from questions.utils import run_in_background
-from .forms import SubmissionForm, TestCaseCreateForm, PostQuestionForm
-
+from .forms import SubmissionForm, TestCaseCreateForm, PostQuestionForm, QuestionsFilterForm
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .background_tasks import RunAndAssert, LimitThreads
 
 from django.forms import modelformset_factory
@@ -14,6 +16,8 @@ from django.forms import modelformset_factory
 # Create your views here.
 def start_code_run_sequence(submission):
     # WARNING DO NOT MAKE THIS ASYNC PROCESS. THE RESULT WILL NOT RENDER IN RESULTS PAGE
+    Result.objects.filter(submission=submission).delete()
+
     for testcase in submission.question.testcase_set.all():
         R = Result.objects.create(testcase=testcase, submission=submission)
         thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
@@ -31,6 +35,23 @@ def post_question(request):
     else:
         form= PostQuestionForm()
     return render(request, "questions/post_question.html", {'form':form})
+
+@login_required
+def edit_question(request, question_unique_id=None):
+    instance= get_object_or_404(Question, unique_code=question_unique_id)
+    if instance.author != request.user:
+        return PermissionDenied("You can not edit this question!")
+    form= PostQuestionForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        instance=form.save(commit=False)
+        instance.save()
+        return HttpResponse("successfully edited question")
+    context={
+        'instance':instance,
+        'form':form
+    }
+    return render(request, "questions/post_question.html", context)
+
 
 @run_in_background
 def rerun_all_testcase_submissions(testcase):
@@ -68,7 +89,7 @@ def submit_solution(request, question_unique_id):
             submission.save()
 
             start_code_run_sequence(submission)
-            return redirect('questions:submission-result', question.unique_code, submission.id)
+            return redirect('questions:submission-result', question.unique_code, submission.attempt_number)
 
     else:
         submission_form = SubmissionForm()
@@ -76,8 +97,8 @@ def submit_solution(request, question_unique_id):
 
 
 @login_required
-def submission_result(request, question_unique_id, submission_id):
-    submission = get_object_or_404(Submission, id=submission_id)
+def submission_result(request, question_unique_id, submission_attempt):
+    submission = get_object_or_404(Submission, question__unique_code=question_unique_id, attempt_number=submission_attempt)
 
     return render(request, "questions/results.html", {"submission": submission})
 
@@ -101,14 +122,82 @@ def ajax_get_submission_results(request):
         raise Http404("Invalid request!")
 
 
+def browse_args_questions(request, category, sortby, rev):
+
+    if not Category.objects.filter(pk=category).exists():
+        category=0
+
+    if not sortby in [1,2,3,4]:
+        sortby =1
+
+    if not rev in [0,1]:
+        rev=0
+
+    questions = Question.objects.all()
+
+    if category!=0:
+        questions = questions.filter(category__pk=category)
+
+    if sortby==1: questions = questions.order_by('-create_timestamp')
+    elif sortby==2: questions = questions.order_by('submission__count')
+    elif sortby == 2: questions = questions.order_by('-create_timestamp')
+    elif sortby == 2: questions = questions.order_by('-create_timestamp')
 
 def browse_questions(request):
-    return render(request, "questions/browsequestions3.html")
+
+    questions = Question.objects.all()
+
+    page = request.GET.get('page', 1)
+    question_filter_form = QuestionsFilterForm(request.GET)
+
+
+    question_filter_form.is_valid()
+    #Just did this to make sure clean is called
+
+    if "category" in question_filter_form.cleaned_data:
+        if question_filter_form.cleaned_data["category"]:
+            questions = questions.filter(category=question_filter_form.cleaned_data["category"])
+    if "sort_by" in question_filter_form.cleaned_data:
+        # print("sortby",question_filter_form.cleaned_data["sort_by"])
+        sort_by_dict = {
+            "1":"-create_timestamp",
+            "2":"-submission_count",
+            "3":"-view_count",
+            "4":"-difficulty"
+        }
+        questions = questions.order_by(sort_by_dict[question_filter_form.cleaned_data["sort_by"]])
+    if "query" in question_filter_form.cleaned_data:
+        if question_filter_form.cleaned_data["query"] != 'None':
+            # print("query", question_filter_form.cleaned_data["query"])
+            questions = questions.filter(title__contains=question_filter_form.cleaned_data["query"])
+    if "reverse" in question_filter_form.cleaned_data:
+        print(question_filter_form.cleaned_data["reverse"])
+        if question_filter_form.cleaned_data["reverse"]:
+            questions = questions.reverse()
+
+
+
+    paginator = Paginator(questions, 7)
+    try:
+        sleep(1.5)
+        question_page = paginator.page(page)
+    except PageNotAnInteger:
+        question_page = paginator.page(1)
+    except EmptyPage:
+        question_page = paginator.page(paginator.num_pages)
+    # print(question_page)
+    return render(request, "questions/browsequestions3.html", {"questions": question_page, "filter_form":question_filter_form})
 
 def view_the_question(request, question_unique_id):
+
     question = get_object_or_404(Question, unique_code=question_unique_id)
-    
-    return render(request, "questions/viewing_the_question.html", {"question":question})
+    if request.user.is_authenticated:
+        if not QuestionView.objects.filter(question=question, user=request.user).exists():
+            QuestionView.objects.create(question=question, user=request.user)
+            question.view_count+=1
+
+    submission_form = SubmissionForm()
+    return render(request, "questions/viewing_the_question.html", {"question":question, "submission_form":submission_form})
 
 @login_required
 def create_testcase(request, question_unique_id):
@@ -229,3 +318,12 @@ def ajax_call_rerun_all_testcase_submissions(request, question_unique_id):
     except:
         pass
     return JsonResponse(ret_data)
+
+# def question_view_count(request):
+#     #qview_count= Statistics.objects.question_view_count
+#     if request.user.is_authenticated():
+#         Statistics.objects.all()
+
+
+#def submissions_count(request, submissions):
+#    if request.
