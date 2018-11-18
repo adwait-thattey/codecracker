@@ -341,4 +341,3 @@ def get_attempt_number(sender, instance, created, **kwargs):
     if created:
         instance.attempt_number = Submission.objects.filter(user=instance.user, question=instance.question).count()
         instance.save()
-
