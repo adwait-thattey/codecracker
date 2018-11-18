@@ -204,5 +204,27 @@ class SubmissionResultUrlTest(TestCase):
 
 
     #TODO Make Post Request Submission tests
-      
+       
+# class TestCase(TestCase):
+
+#     def setUp(self):
+#         self.createduser = User.objects.create_user(username="testnormaluser", email="testnormaluser@ts.com",
+#                                                     password="Test Hello World")
+#         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
+#                                                 short_description="Sample Short Desc", description="Sample Descrption",
+#                                                 unique_code="sq")
+#         self.client = None
+#         self.request_url = '/questions/' + self.question.unique_code + '/testcases'
+#         # Create clients on the fly in the tests as login/logout is required
+
+#     def test_anonymous_ping(self):
+#         self.client = Client()
+#         response = self.client.get(self.request_url)
+#         self.assertRedirects(response, expected_url = self.request_url + "view", target_status_code=301)
     
+    # def test_authenticated_ping(self):
+    #     self.client = Client()
+    #     self.client.force_login(self.createduser)
+    #     response = self.client.get(self.request_url)
+    #     self.assertEqual(response.status_code, 200)
+    # 
