@@ -36,6 +36,23 @@ def post_question(request):
         form= PostQuestionForm()
     return render(request, "questions/post_question.html", {'form':form})
 
+@login_required
+def edit_question(request, question_unique_id=None):
+    instance= get_object_or_404(Question, unique_code=question_unique_id)
+    if instance.author != request.user:
+        return PermissionDenied("You can not edit this question!")
+    form= PostQuestionForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        instance=form.save(commit=False)
+        instance.save()
+        return HttpResponse("successfully edited question")
+    context={
+        'instance':instance,
+        'form':form
+    }
+    return render(request, "questions/post_question.html", context)
+
+
 @run_in_background
 def rerun_all_testcase_submissions(testcase):
     R_set = Result.objects.filter(testcase=testcase)
@@ -72,7 +89,7 @@ def submit_solution(request, question_unique_id):
             submission.save()
 
             start_code_run_sequence(submission)
-            return redirect('questions:submission-result', question.unique_code, submission.id)
+            return redirect('questions:submission-result', question.unique_code, submission.attempt_number)
 
     else:
         submission_form = SubmissionForm()
@@ -178,7 +195,7 @@ def view_the_question(request, question_unique_id):
         if not QuestionView.objects.filter(question=question, user=request.user).exists():
             QuestionView.objects.create(question=question, user=request.user)
             question.view_count+=1
-                
+
     submission_form = SubmissionForm()
     return render(request, "questions/viewing_the_question.html", {"question":question, "submission_form":submission_form})
 
@@ -309,4 +326,4 @@ def ajax_call_rerun_all_testcase_submissions(request, question_unique_id):
 
 
 #def submissions_count(request, submissions):
-#    if request.        
+#    if request.

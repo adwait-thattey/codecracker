@@ -14,9 +14,23 @@ main {
 
 #menu ul li a:hover{
   border-bottom: 4px solid rgba(0,0,0,1);
-  background-color: rgba(0,96,100,1);
+  background-color: rgba(0,96,100,0);
   color: rgba(0, 0, 0, 1);
   transition: 0.5s;
+}
+
+#no_border ul li a:hover{
+  border-bottom: 4px solid rgba(0,0,0,0);
+}
+
+#sidenav ul li a{
+  color: rgba(0,96,100,1);
+}
+
+#sidenav ul li a:hover{
+  border-bottom: 4px solid rgba(0,0,0,1);
+  color: rgba(0,0,0,1);
+  transition: 1s;
 }
 
 #float{

@@ -12,6 +12,7 @@ urlpatterns = [
     path('ajax/submission-result', views.ajax_get_submission_results, name="ajax-submission-result"),
     path('<slug:question_unique_id>/view/', views.view_the_question, name="view_the_question"),
     path('post/', views.post_question, name="post_question"),
+    path('<slug:question_unique_id>/edit', views.edit_question, name="question-edit"),
     path('<slug:question_unique_id>/testcases/view', views.view_testcases, name="testcase-view"),
     path('<slug:question_unique_id>/testcases/', views.redirect_to_view_testcases),
     path('<slug:question_unique_id>/testcases/new', views.create_testcase, name="testcase-create"),
@@ -26,4 +27,3 @@ urlpatterns = [
          name="rerun-testcase-submissions")
 
 ]
-
