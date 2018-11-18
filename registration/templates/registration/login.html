@@ -68,8 +68,8 @@
 
 {% block custom_includes %}
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id"
-          content="27851569207-eqmaeljgm7s5alnhadeo24nulq894e68.apps.googleusercontent.com.apps.googleusercontent.com">
+
+    <meta name="google-signin-client_id" content="306049630448-op0gc1t2dvi7plqbevlu1t2fpd29ve8e.apps.googleusercontent.com">
 {% endblock %}
 
 
@@ -127,16 +127,10 @@
                                 </span>
                             </div>
                             <div class="center">
-                                <h4 class="card-title center-align">Login using Google</h4>
+                                <h4 class="card-title center-align "><a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a></h4>
                             </div>
-                            <div class="row">
 
-                                <center>
-                                <span class="g-signin2" data-onsuccess="onSignIn"></span>
-                                    </center>
-
-                                </div>
-
+                            <!--<a href="#" onclick="signOut();">Sign out</a>-->
                         </form>
                     </div>
                 </div>
@@ -162,7 +156,26 @@
             var background = $('.background-image');
             background.css('min-height', height);
         })();
+
     </script>
+    <script>
+        function onSignIn(googleUser) {
+          var profile = googleUser.getBasicProfile();
+          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+          console.log('Name: ' + profile.getName());
+          console.log('Image URL: ' + profile.getImageUrl());
+          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        }
+    </script>
+    <script>
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
+      }
+    </script>
+
 
 {% endblock %}
 
