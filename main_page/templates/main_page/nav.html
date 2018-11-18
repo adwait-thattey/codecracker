@@ -9,6 +9,8 @@
       {% block common_includes %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'main_page/nav/nav.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -34,61 +36,74 @@
   <body>
   {% block header %}
   <header>
-    <div class="navbar-fixed">
-      <nav class="cyan darken-4">
+      <nav class="cyan darken-4" id="nav">
         <div id="menu">
           <a href="#" class="brand-logo center" id="logo">CODE CRACKER</a>
           <ul class="left hide-on-med-and-down">
-            <li><a href="#">HOME</a></li>
-            <li><a href="#">QUESTIONS</a></li>
-            <li><a href="#">POST</a></li>
-            <li><a href="#">ABOUT US</a></li>
+            <li><a href="{% url "home" %}">HOME</a></li>
+            <li><a href="{% url "questions:browse" %}">QUESTIONS</a></li>
+            <li><a href="{% url "questions:post_question" %}">POST</a></li>
+            <li><a href="{% url "home" %}">ABOUT US</a></li>
           </ul>
+          <ul class="right">
+            <li>
+              <div class="center row hide-on-med-and-down">
+                  <div class="col s12 " >
+                    <div class="row" id="topbarsearch">
+                      <div class="input-field col s6 s12">
+                        <i class="material-icons prefix">search</i>
+                        <input type="text" placeholder="search" id="autocomplete-input" class="autocomplete black-text" >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
           {% if user.is_authenticated %}
-          <div id="no_border">
-            <ul class="right" id="no_border">
-              <li><a class='dropdown-trigger' href='#' style="border-top: 4px solid rgba(255,255,255,0);" data-target='dropdown1'><i class="large material-icons">notifications</i></a></li>
-
-              <ul id='dropdown1' class='dropdown-content'>
-              <li><a href="#!">one</a></li>
-              <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-              <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
-              </ul>
-
-              <ul class="sidenav" id="mobile-demo">
-                <li><a href="#">link1</a></li>
-                <li><a href="#">link2</a></li>
-                <li><a href="#">link3</a></li>
-                <li><a href="#">link4</a></li>
-              </ul>
-
-              <li><a href="#" data-target="mobile-demo" class="sidenav-trigger show-on-large"><i class="large material-icons">account_circle</i></a></li>
+          <li><div id="no_border">
+            <ul>
+              <li><a href="#" data-target="mobile-demo" class="sidenav-trigger show-on-large"><i class="fas fa-bell fa-lg"></i></a></li>
+              <li><a href="#" class='dropdown-trigger' data-target='dropdown1'><i class="fas fa-user-alt fa-lg"></i></a></li>
             </ul>
+
+            <div class="center" id="dropdown">
+            <ul id='dropdown1' class='dropdown-content'  style="width: 300px;">
+            <li><a href="#!"><i class="fas fa-user-circle"></i>Profile</a></li>
+            <li><a href="#!"><i class="fas fa-clipboard-list"></i>My Questions</a></li>
+            <li><a href="{% url "registration:logout" %}"><i class="fas fa-power-off"></i>Log Out</a></li>
+            </ul>
+            </div>
+
+            <div id="sidenav">
+            <ul class="sidenav" id="mobile-demo">
+              <li><a href="#"><i class=" material-icons">view_module</i>link1</a></li>
+              <li><a href="#"><i class="material-icons">cloud</i>link2</a></li>
+              <li><a href="#">link3</a></li>
+              <li><a href="#">link4</a></li>
+            </ul>
+            </div>
+
           </div>
           {% else %}
           <ul class="right hide-on-med-and-down">
-            <li><a href="#">LOGIN</a></li>
-            <li><a href="#">SIGN UP</a></li>
+            <li><a href="{% url "registration:login" %}">LOGIN</a></li>
+            <li><a href="{% url "registration:signup" %}">SIGN UP</a></li>
           </ul>
           {% endif %}
-        </div>
+        </li></div>
 
       </nav>
 
       <div class="fixed-action-btn right click-to-toggle hide-on-large-only" style="right:auto; top:0;" >
         <a class="btn-flat btn-large cyan darken-4"><i class="material-icons" id="float">menu</i></a>
         <ul>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Sign Up"><i class="material-icons">person_add</i></a></li>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Login"><i class="material-icons">person</i></a></li>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="About Us"><i class="material-icons">people</i></a></li>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Post"><i class="material-icons">publish</i></a></li>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Questions"><i class="material-icons">question_answer</i></a></li>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Home"><i class="material-icons">home</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="About Us" href="{% url "home" %}"><i class="material-icons">people</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Post" href="{% url "questions:post_question" %}"><i class="material-icons">publish</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Questions" href="{% url "questions:browse" %}"><i class="material-icons">question_answer</i></a></li>
+          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Home" href="{% url "home" %}"><i class="material-icons">home</i></a></li>
         </ul>
       </div>
-    </div>
-  </header>
 
+  </header>
 {% endblock header %}
 
     {% block main_content %}
@@ -98,7 +113,7 @@
     {% endblock main_content %}
 
     {% block footer %}
-
+    
     <footer class="page-footer" id="f">
       <div class="container">
         <div class="row">
@@ -109,10 +124,10 @@
           <div class="col l3 offset-l1 s12" id="fd">
             <h6>Explore</h6>
             <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">Questions</a></li>
-              <li><a href="#">Post</a></li>
-              <li><a href="#">About Us</a></li>
+              <li><a href="{% url "home" %}">Home</a></li>
+              <li><a href="{% url "questions:browse" %}">Questions</a></li>
+              <li><a href="{% url "questions:post_question" %}">Post</a></li>
+              <li><a href="{% url "home" %}">About Us</a></li>
             </ul>
           </div>
           <div class="col l3 offset-l1 s12" id="fd1">
@@ -140,6 +155,10 @@
   <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
     <script>
       $(document).ready(function(){
+        $('.sidenav').sidenav({
+          edge: 'right',
+        });
+
         $('.fixed-action-btn').floatingActionButton({
           direction: 'bottom',
           hoverEnabled: false,
@@ -147,10 +166,7 @@
 
         $(".dropdown-trigger").dropdown({
           coverTrigger: false,
-        });
-
-        $('.sidenav').sidenav({
-          edge: 'right',
+          constrainWidth: false,
         });
 
         $('.tooltipped').tooltip();

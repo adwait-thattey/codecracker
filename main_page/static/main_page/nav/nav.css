@@ -23,6 +23,16 @@ main {
   border-bottom: 4px solid rgba(0,0,0,0);
 }
 
+#sidenav ul li a{
+  color: rgba(0,96,100,1);
+}
+
+#sidenav ul li a:hover{
+  border-bottom: 4px solid rgba(0,0,0,1);
+  color: rgba(0,0,0,1);
+  transition: 1s;
+}
+
 #float{
   color:rgba(255, 255, 255, 1);
 }
