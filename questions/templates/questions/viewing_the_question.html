@@ -42,7 +42,7 @@
                                     <i class="fas fa-eye"
                                        style="font-size: larger; padding: 5px;"> {{ question.view_count }} </i>
                                     <i class="fas fa-trophy"
-                                       style="font-size: larger; padding: 5px;"> {{ question.submission_set.count }}</i><br>
+                                       style="font-size: larger; padding: 5px;"> {{ question.submission_count }}</i><br>
                                     <div class="hide-on-med-and-up">
                                         <b>Author: <span style="color: blue">{{ question.author }}</span></b>
                                     </div>
@@ -112,7 +112,7 @@
                             <b>Author: <span style="color: blue">{{ question.author }}</span></b> <br>
                             <b>Difficulty: {{ question.difficulty }}</b> <br>
                             <b>No. of views: {{ question.view_count }}</b> <br>
-                            <b>No. of submissions: {{ question.submission_set.count }}</b> <br>
+                            <b>No. of submissions: {{ question.submission_count }}</b> <br>
                         </div>
                     </div>
 

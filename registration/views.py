@@ -60,4 +60,4 @@ def activate(request, uidb64, token):
 
 def logout_view(request):
     logout(request)
-    return redirect('home')
+    return redirect('landing')

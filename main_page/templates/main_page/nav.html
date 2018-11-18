@@ -60,9 +60,12 @@
                             <div class="col s12 ">
                                 <div class="row" id="topbarsearch">
                                     <div class="input-field col s6 s12">
-                                        <i class="material-icons prefix">search</i>
-                                        <input type="text" placeholder="search" id="autocomplete-input"
-                                               class="autocomplete black-text">
+
+                                        <form action="{% url 'questions:browse' %}" method="get">
+                                            <i class="material-icons prefix">search</i>
+                                        <input type="text" placeholder="search" id="autocomplete-input" name="query"
+                                               class="autocomplete black-text" >
+                                            </form>
                                     </div>
                                 </div>
                             </div>
@@ -223,8 +226,8 @@
             };
 
             window.onload = function () {
-                interval_id = setInterval(get_notification, 3000);
-                get_notification();
+                {#interval_id = setInterval(get_notification, 3000);#}
+                {#get_notification();#}
             }
 
         {% endif %}

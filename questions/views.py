@@ -31,9 +31,10 @@ def post_question(request):
             question=form.save(commit=False)
             question.author=request.user
             question.save()
-            return HttpResponse("successfully posted question")
+            return redirect('questions:testcase-view', question.unique_code)
     else:
         form= PostQuestionForm()
+    print(form.errors)
     return render(request, "questions/post_question.html", {'form':form})
 
 @login_required
@@ -45,7 +46,7 @@ def edit_question(request, question_unique_id=None):
     if form.is_valid():
         instance=form.save(commit=False)
         instance.save()
-        return HttpResponse("successfully edited question")
+        return redirect('questions:view_the_question', instance.unique_code)
     context={
         'instance':instance,
         'form':form

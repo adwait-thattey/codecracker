@@ -7,7 +7,7 @@ class PostQuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ['title', 'category', 'unique_code', 'short_description', 'description', 'input_format',
-                  'output_format', 'sample_input', 'sample_output', 'constraints', 'time_limit','difficulty' ]
+                  'output_format', 'sample_input', 'sample_output', 'constraints', 'time_limit', ]
 
 
 class SubmissionForm(forms.ModelForm):
