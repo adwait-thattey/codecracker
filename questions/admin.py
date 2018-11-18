@@ -19,9 +19,10 @@ class QuestionAdmin(admin.ModelAdmin):
         return obj.author.username
 
     list_display = ['title', 'unique_code', 'authorusername', 'time_limit',
-                    'input_format', 'constraints', 'output_format', 'sample_input', 'sample_output']
+                     'create_timestamp']
     sortable_by = ['time_limit', 'title']
     search_fields = ['title', 'author__username', 'unique_code']
+    list_filter = ['category__name', 'author__username']
 
 
 admin.site.register(Question, QuestionAdmin)

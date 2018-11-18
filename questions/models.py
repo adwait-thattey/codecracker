@@ -97,6 +97,9 @@ class Question(models.Model):
                                    lowercase characters and numbers. For example if the question name is 'Sorting Array', \
                                    you may name the code SORTARR")
 
+    create_timestamp = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.unique_code
 
@@ -307,10 +310,9 @@ def recalc_number(instance, *args, **kwargs):
 
     recalc_question_all_submissions_async(question)
 
+
 @receiver(post_save, sender=Submission)
 def get_attempt_number(sender, instance, created, **kwargs):
     if created:
         instance.attempt_number = Submission.objects.filter(user=instance.user, question=instance.question).count()
         instance.save()
-
-
