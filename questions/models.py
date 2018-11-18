@@ -81,7 +81,7 @@ class Question(models.Model):
 
     difficulty = models.CharField(verbose_name="Difficulty level", 
                                   choices= DIFFICULTY, 
-                                  default='0', 
+                                  default='Unknown',
                                   max_length=15
                                   )
 
@@ -114,6 +114,11 @@ class Question(models.Model):
     view_count= models.IntegerField(verbose_name= 'Question View Count',
                                  default=0,
                                  )
+
+    submission_count = models.IntegerField(verbose_name="Submissions", default=0)
+
+    create_timestamp = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.unique_code
@@ -334,7 +339,6 @@ class QuestionView(models.Model):
                             to=DefaultUser,
                             on_delete=models.CASCADE
                             )
-    
 
 @receiver(post_save, sender=Submission)
 def get_attempt_number(sender, instance, created, **kwargs):

@@ -113,8 +113,8 @@ def create_profile_and_oauth(sender, instance, created, **kwargs):
         UserProfile.objects.create(user=instance)
         GoogleAuth.objects.create(user=instance)
 
-'''
-class notifications(models.Model):
+
+class Notifications(models.Model):
     user = models.ForeignKey(verbose_name="User",
                              to=DefaultUser,
                              on_delete=models.SET_NULL,
@@ -136,6 +136,9 @@ class notifications(models.Model):
     time_stamp = models.DateTimeField(verbose_name="time_stamp",
                                       default=timezone.now)
 
+    def __str__(self):
+        return self.user.get_full_name() + "<" + self.user.username + ">"
 
+    class Meta:
+        ordering=['-time_stamp']
 
-'''

@@ -5,6 +5,7 @@ app_name = "questions"
 
 urlpatterns = [
     path('browse', views.browse_questions, name="browse"),
+    path('browse/<int:category>/<int:sortby>/<int:rev>', views.browse_args_questions,name="browse_args"),
     path('<slug:question_unique_id>/submit', views.submit_solution, name="submit-solution"),
 
     path('<slug:question_unique_id>/submission/<int:submission_attempt>/result', views.submission_result, name="submission-result"),

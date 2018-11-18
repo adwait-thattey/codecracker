@@ -1,14 +1,16 @@
-{% block custom_loaders %}
+{% block basic_loaders %}
     {% load static %}
     {% load widget_tweaks %}
 {% endblock %}
 
+{% block custom_loaders %}
+
+{% endblock custom_loaders %}
+
 <!DOCTYPE html>
+<!--suppress ALL -->
 <html>
-
-  <head>
-
-
+<head>
     {% block common_includes %}
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="{% static 'main_page/nav/nav.css' %}">
@@ -20,22 +22,25 @@
     {%  endblock common_includes %}
 
 
+
+    {% endblock common_includes %}
+
     {% block fonts %}
     {% endblock fonts %}
 
-
     {% block custom_includes %}
+
     {% endblock %}
 
-
     {% block internal_styles %}
-    {% endblock internal_styles %}
 
+    {% endblock internal_styles %}
 
     <title>
         {% block title %}
         {% endblock %}
     </title>
+  </head>
 
 <body>
 
@@ -111,11 +116,14 @@
   </header>
 {% endblock header %}
 
-    {% block main_content %}
+{% block main_content %}
+
     <main>
 
     </main>
-    {% endblock main_content %}
+{% endblock main_content %}
+
+
 
     {% block footer %}
 
@@ -150,11 +158,11 @@
       </div>
       <div class="footer-copyright" id="f2">
         <div class="container">
-          © 2018 Copyright Text
+          Copyright CodeCracker
         </div>
       </div>
-    </footer>
-  {% endblock footer %}
+{% endblock footer %}
+
 
   {% block nav_eof_scripts %}
   <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
@@ -177,13 +185,44 @@
         $('.tooltipped').tooltip();
 
         });
+    </script>    
+    <script>
+        {% if user.is_authenticated %}
+            function get_notification() {
+                console.log("sending req")
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'Notifications' %}",
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'username': '{{ user.username }}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+
+                        console.log(result);
+                        console.log(result.notification);
+                        if (result.notification != []) {
+                            console.log(result.notification);
+
+
+                        }
+                    }
+                });
+            };
+
+            window.onload = function () {
+                interval_id = setInterval(get_notification, 3000);
+                get_notification();
+            }
+
+        {% endif %}
     </script>
-  {% endblock %}
 
+{% endblock %}
 
-  {% block custom_eof_scripts %}
-  {% endblock custom_eof_scripts %}
+{% block custom_eof_scripts %}
 
+{% endblock custom_eof_scripts %}
 </body>
-
 </html>

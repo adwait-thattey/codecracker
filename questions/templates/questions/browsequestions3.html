@@ -1,505 +1,243 @@
+{% extends 'main_page/nav.html' %}
 {% load static %}
-<!DOCTYPE html>
-<head>
-  <title>expt browse questions</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!--Import Google Icon Font-->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-  <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-  <link rel="stylesheet" href="{% static 'questions/css/browsequestion_style2.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css">
+{% block title %}
+    Questions
+{% endblock %}
 
-</head>
-<body>
+{% block custom_includes %}
+    <link rel="stylesheet" href="{% static 'questions/css/browsequestion_style2.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css">
 
-  <div class="navbar-fixed">
-    <nav class="nav-wrapper indigo">
-      <div class="container">
-        <a href="#" class="brand-logo tooltipped" data-position="right" data-tooltip="Hi Friend">Logo</a>
-        <a href="#" class="sidenav-trigger" data-target="mobile-links">
-          <i class="material-icons">menu</i>
-        </a>
-        <ul class="right hide-on-med-and-down">
-          <li><a href="#" alt="Login">
-            <i class="material-icons tooltipped waves-effect waves-light" data-position="right"data-tooltip="Home">home</i>
-          </a></li><!--Back to home-->
-        </ul>
-      </div>
-    </nav>
-  </div>
+{% endblock %}
 
-  <ul class="sidenav" id="mobile-links">
-    <li><a href="">Home</a></li>
-    <li><a href="">Login</a></li>
-    <li><a href="">Register</a></li>
-    <li><a href="">Contact</a></li>
-  </ul>
+{% block internal_styles %}
+    <style>
+    body {
+        background-color: #f5f5f5;
+    }
+    </style>
+{% endblock %}
 
-  <!--Parallax-->
 
-<!--cards for filtering and sorting-->
-<div class="filter">
-<!--card for filtering using select-->
-<div class="col s12 m6">
-<div class="card">
-  <div class="card-content">
+{% block main_content %}
+    <section>
 
-     <div class=" card-title">
-        <select>
-          <option value="" disabled selected>Choose Category</option>
-          <option value="1">Option 1</option>
-          <option value="2">Option 2</option>
-          <option value="3">Option 3</option>
-        </select>
-     </div>
+        <h4 class="title center cyan-text text-darken-4">Questions</h4>
+        <!--Parallax-->
 
-  </div>
- </div>
-</div>
+        <!--cards for filtering and sorting-->
+        <div class="filter">
+            <form method="get" action="" id="filter_form">
+                <!--card for filtering using select-->
+                <div class="col s12 m6">
+                    <div class="card cyan-text text-darken-4">
+                        <div class="card-content">
+                            <span class="card-title">Filter By</span>
+                            <div class="input-field card-title">
+                                {{ filter_form.category }}
+                            </div>
 
-    <!--card for sorting-->
-    <div class="col s12 m6">
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Sort By</span>
-          <p>
-          <label>
-            <input type="checkbox" class="filled-in"  />
-            <span>Most Recent</span>
-          </label>
-         </p>
-         <p>
-         <label>
-           <input type="checkbox" class="filled-in"  />
-           <span>Most Submissions</span>
-         </label>
-        </p>
-        <p>
-        <label>
-          <input type="checkbox" class="filled-in"  />
-          <span>Most Viewed</span>
-        </label>
-       </p>
-       <p>
-       <label>
-         <input type="checkbox" class="filled-in"  />
-         <span>Difficulty</span>
-       </label>
-      </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!--card for sorting-->
+                <div class="col s12 m6">
+                    <div class="card cyan-text text-darken-4">
+                        <div class="card-content">
+                            <span class="card-title">Sort By</span>
+                            {% for choice in filter_form.sort_by.field.choices %}
+                                <p>
+                                    <label>
+                                        <input type="radio" id="id_sort_by_{{ choice.0|add:"-1" }}" class="filled-in"
+                                               name="sort_by" value="{{ choice.0 }}"
+                                                {% if filter_form.sort_by.value == choice.0 %}
+                                               checked="checked" {% endif %}/>
+                                        <span class="black-text">{{ choice.1 }}</span>
+                                    </label>
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <!--reverse toggle-->
+                <div class="switch">
+                    <label class="reverse">
+                        Reverse False
+                        {{ filter_form.reverse }}
+                        <span class="lever"></span>
+                        Reverse True
+                    </label>
+                </div>
+            </form>
+            <script>
+
+                console.log('{{ filter_form.sort_by.value }}');
+                form = document.getElementById('filter_form');
+                document.getElementById('id_reverse').onchange = function () {
+                    form.submit()
+                };
+                document.getElementById('id_category').onchange = function () {
+                    form.submit()
+                };
+                rad = form.sort_by;
+                for (var i = 0; i < rad.length; i++) {
+                    rad[i].addEventListener('change', function () {
+                        form.submit()
+                    });
+                }
+
+            </script>
         </div>
-      </div>
-    </div>
-<!--reverse toggle-->
-  <div class="switch">
-    <label class="reverse">
-      Reverse OFF
-      <input type="checkbox">
-      <span class="lever"></span>
-      Reverse ON
-    </label>
-  </div>
-</div>
-<!--filter ends-->
+        <!--filter ends-->
 
 
+        <!--question cards with description-->
 
-  <!--question cards with description-->
+        <!--q1-->
+        <div class="container">
+            <div style="width:1000px;margin-top:25px;">
+                <div class="infinite-container" id="all_questions">
+                    {% for question in questions %}
+                        <div class="infinite-item">
+                            <ul class="collapsible popout">
+                                <li>
+                                    <div class="collapsible-header grey lighten-5 black-text valign-wrapper"
+                                         style="height: 15vh; border-left: 7px solid #006064;">
+                                        <div class="row" style="margin: 0;min-width:100%;">
+                                            <div class="col s5 left-align cyan-text text-darken-4">
+                                                <span class="flow-text left">{{ question.title }}</span>
+                                            </div>
+                                            <div class="col s5 right-align">
+                                                <i class="far fa-eye fa-2x"
+                                                   style="color:black; padding-right: 20%;"><span
+                                                        style="font-size: large">{{ question.view_count }}</span></i>
+                                                <i class="fas fa-trophy fa-2x"
+                                                   style="color:black;padding-right: 20%;"><span
+                                                        style="font-size: large; font-weight: normal">{{ question.submission_count }}</span></i>
+                                                <i class="fas fa-flag-checkered"
+                                                   style="color:black;padding-right: 40%;"><span
+                                                        style="font-size: large;font-weight: normal">{{ question.difficulty }}</span></i>
+                                            </div>
+                                            <div class="col s2 rignt-align">
+                                                <div class="chip">
+                                                    <img src="{{ question.category.logo.url }}"
+                                                         alt="ContactPerson">{{ question.category.name }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <span>{{ question.short_description }}</span>
+                                        <br>
+                                        <a class="waves-effect waves-light btn-small black right "
+                                           href="{% url 'questions:view_the_question' question.unique_code %}"><i
+                                                class="far fa-edit fa-2x"></i>&nbspSolve</a>
+                                        <br>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if questions.has_next %}
+                    <a style="display:none;" class="infinite-more-link"
+                       href="?category={{ filter_form.category.value }}&sort_by={{ filter_form.sort_by.value }}&query={{ filter_form.query.value }}&reverse={{ filter_form.reverse.value }}&page={{ questions.next_page_number }}">More</a>
+                {% endif %}
+                <div class="loading center center-block" style="display: none;">
+                    <div class="preloader-wrapper big active">
+                        <div class="spinner-layer spinner-blue">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
 
-  <!--q1-->
-<div class="container">
-  <div style="width:1000px;margin-top:25px;">
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 1
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x"style="color:black"></i>
-                <i class="fas fa-trophy fa-2x animated bounce"  style="color:black;animation-duration:2.5s"></i>
-                <i class="fas fa-flag-checkered " style="color:black;"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
+                        <div class="spinner-layer spinner-red">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+
+                        <div class="spinner-layer spinner-yellow">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+
+                        <div class="spinner-layer spinner-green">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right "  href="http://www.iiits.ac.in/" ><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 2
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x" style="color:black"></i>
-                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
-                <i class="fas fa-flag-checkered" style="color:black"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
-                </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 3
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x" style="color:black"></i>
-                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
-                <i class="fas fa-flag-checkered" style="color:black"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
-                </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 1
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x" style="color:black"></i>
-                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
-                <i class="fas fa-flag-checkered" style="color:black"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
-                </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 1
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x" style="color:black"></i>
-                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
-                <i class="fas fa-flag-checkered" style="color:black"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
-                </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 1
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x" style="color:black"></i>
-                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
-                <i class="fas fa-flag-checkered" style="color:black"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
-                </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 1
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x" style="color:black"></i>
-                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
-                <i class="fas fa-flag-checkered" style="color:black"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
-                </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 1
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x" style="color:black"></i>
-                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
-                <i class="fas fa-flag-checkered" style="color:black"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
-                </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 1
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x" style="color:black"></i>
-                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
-                <i class="fas fa-flag-checkered" style="color:black"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
-                </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 1
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x" style="color:black"></i>
-                <i class=" fas fa-trophy fa-2x "  style="color:black"></i>
-                <i class="fas fa-flag-checkered" style="color:black"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
-                </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 1
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x" style="color:black"></i>
-                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
-                <i class="fas fa-flag-checkered" style="color:black"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
-                </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
-  <ul class="collapsible popout">
-    <li>
-      <div class="collapsible-header teal white-text">
-        <table>
-            <th>
-              <td>
-                <i class="material-icons">expand_more</i>QUESTION 1
-              <td>
-              <td class="right">
-                <i class="far fa-eye fa-2x" style="color:black"></i>
-                <i class="fas fa-trophy fa-2x"  style="color:black"></i>
-                <i class="fas fa-flag-checkered" style="color:black"></i>
-                <div class="chip">
-                  <img src="code4.jpg" alt="ContactPerson">CATEGORY
-                </div>
-              </td>
-             </th>
-        </table>
-      </div>
-      <div class="collapsible-body">
-        <span>In programming, code (noun) is a term used for both the statements written in a
-          particular programming language - the source code , and a term for the source code after
-          it has been processed by a compiler and made ready to run in the computer - the object code
-       </span>
-       <br>
-       <a class="waves-effect waves-light btn-small black right"  href="http://www.iiits.ac.in/"><i class="far fa-edit fa-2x"></i>&nbspSolve</a>
-       <br>
-      </div>
-    </li>
-  </ul>
+            </div>
+        </div>
+    </section>
+{% endblock %}
 
 
- </div>
-</div>
 <!--parallax ends here-->
-  <!--should have scroller-->
-  <!--footer-->
-  <!--JavaScript at end of body for optimized loading-->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
-  <script>
-    $(document).ready(function(){
-      $('.sidenav').sidenav();
-    });
+<!--should have scroller-->
+<!--footer-->
+<!--JavaScript at end of body for optimized loading-->
+{% block custom_eof_scripts %}
+    <script src="{% static 'common_assests/imakewebthings-waypoints-34d9f6d/lib/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'common_assests/imakewebthings-waypoints-34d9f6d/lib/shortcuts/infinite.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.sidenav').sidenav();
+        });
 
-  $(document).ready(function(){
-    $('.collapsible').collapsible();
-  });
+        $(document).ready(function () {
+            $('.collapsible').collapsible();
+        });
 
-  $(document).ready(function(){
-   $('.tooltipped').tooltip();
- });
-/*select--*/
+        $(document).ready(function () {
+            $('.tooltipped').tooltip();
+        });
+        /*select--*/
 
- $(document).ready(function(){
-    $('select').formSelect();
-  });
+        $(document).ready(function () {
+            $('select').formSelect();
+        });
 
-$('.dropdown-trigger').dropdown();
-</script>
-</body>
-</html>
+        $('.dropdown-trigger').dropdown();
+
+        var infinite = new Waypoint.Infinite({
+            element: $('.infinite-container')[0],
+            onBeforePageLoad: function () {
+                $('.loading').show();
+            },
+            onAfterPageLoad: function ($items) {
+                $('.loading').hide();
+                $('.collapsible').collapsible();
+
+            }
+        });
+    </script>
+{% endblock %}
