@@ -1,102 +1,114 @@
 {% load static %}
-
 <!DOCTYPE html>
 <head>
-    <title>landing</title>
+  <title>index_exp</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 
-  <link rel="stylesheet" href="{% static 'main_page/landing/landing_style.css' %}">
+  <link rel="stylesheet" href="{% static 'main_page/index.css' %}">
 
 </head>
 <body>
 
-  <div class="navbar-fixed">
-    <nav class="nav-wrapper indigo">
-      <div class="container">
-        <a href="#" class="brand-logo">Logo</a>
-        <a href="#" class="sidenav-trigger" data-target="mobile-links">
-          <i class="material-icons">menu</i>
-        </a>
-        <ul class="right hide-on-med-and-down">
-          <li><a href="#" alt="Login"><i class="material-icons">fingerprint</i></a></li><!--Login-->
-         <li><a href="#" alt="Register"><i class="material-icons">person_add</i></a></li><!--register-->
-        </ul>
+
+<div class="parallax-container"><!--first-->
+
+    <div class="parallax">
+      <div id="particles-js"></div>
+      <!--<div class="overlay"></div>-->
+      <div class="content">
+        <div class="heading flow-text">CODE CRACKER</div>
+        <div class="typewriter flow-text">Come let's Code ......</div><br><br>
+        <div class="row center">
+          <button class="btn btn-large flow-text hoverable" style="background-color: rgba(0,0,0,0.7)">Browse Questions</button>
+{#          <button class="button button1">Register</button>#}
+      
+        </div>
       </div>
-    </nav>
-  </div>
-
-  <ul class="sidenav" id="mobile-links">
-    <li><a href="">Login</a></li>
-    <li><a href="">Register</a></li>
-    <li><a href="">Contact</a></li>
-  </ul>
-
-  <div class="main_content">
-
-    <img class="mySlides" src="{% static 'main_page/landing/code2.jpg' %}">
-    <img class="mySlides" src="{% static 'main_page/landing/code3.jpg' %}" >
-    <img class="mySlides" src="{% static 'main_page/landing/code4.jpg' %}" >
-    <img class="mySlides" src="{% static 'main_page/landing/code5.jpg' %}">
-
-  </div>
-
-  <!--footer-->
-<footer class="page-footer teal">
-<div class="container">
-  <div class="row">
-    <div class="col l6 s12">
-      <h5 class="white-text">About Us</h5>
-      <p class="grey-text text-lighten-4">small description</p>
     </div>
-    <div class="col l3 s12">
-    <!--keep images-->
-    </div>
-  <div class="col l3 s12">
-      <h6>contacts:</h6>
-      <ul>
-        <li><a class="white-text" href="#!">contact1</a></li>
-        <li><a class="white-text" href="#!">contact2</a></li>
 
-      </ul>
+ </div>
+
+<div class="section white">
+    <div class="row container">
+      <h2>CATEGORIES</h2>
+      <p class="grey-text text-darken-3 lighten-3">Explore questions from different categories
+      </p>
     </div>
-  </div>
 </div>
-<div class="footer-copyright">
-  <div class="container"><center>
-  copyright@<a class="white-text text-lighten-3" href="http://www.iiits.ac.in/">IIITsricity</a></center>
-  </div>
-</div>
-</footer>
 
-  <!-- Compiled and minified JavaScript -->
+{% for category in categories %}
+<div class="parallax-container" onclick="location.href='{% url "questions:browse" %}?category={{ category.id }}'"> <!--second-->
+    <div class="parallax">
+        <div id="particles1-js" style="background-image: url('{{ category.back_image.url }}')"></div>
+
+        <div class="content content2">
+            <center><div class="heading heading2 center">{{ category.name|title }}</div></center>
+
+      </div>
+    </div>
+</div>
+<div class="section white">
+    <div class="row container">
+
+
+    </div>
+</div>
+{% endfor %}
+
+
+<div class="section  white">
+        <div class="row container">
+          <div class="col l6 s12">
+            <h5>About Us</h5>
+            <p>write here the content about us.</p>
+          </div>
+          <div class="col l4 offset-l2 s12">
+            <h5>Contact Us</h5>
+            <ul>
+            <div class="chip">
+              <img src="{% static 'main_page/land1.jpg' %}" alt="Contact Person">member1
+            </div>
+            <div class="chip">
+              <img src="{% static 'main_page/land2.jpg' %}" alt="Contact Person">member1
+            </div>
+            <div class="chip">
+              <img src="{% static 'main_page/land2.jpg' %}" alt="Contact Person">member1
+            </div>
+            <div class="chip">
+              <img src="{% static 'main_page/land1.jpg' %}" alt="Contact Person">member1
+            </div>
+            <div class="chip">
+              <img src="{% static 'main_page/land2.jpg' %}" alt="Contact Person">member1
+            </div>
+          </ul>
+          </div>
+        </div>
+  </div>
+
+        <div class="row container">
+            <div class="col s12 m12 l12">
+              <h5 style="text-align:center;">© 2018 IIIT Sricity</h5>
+            </div>
+        </div>
+
+
+  <script type="text/javascript" src="{% static 'main_page/js/particles.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'main_page/js/app.js' %}"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
   <script>
-    $(document).ready(function(){
-      $('.sidenav').sidenav();
-    });
+        $(document).ready(function(){
+            $('.parallax').parallax();
+        });
   </script>
-  <script>
-         var myIndex = 0;
-         carousel();
-
-         function carousel() {
-             var i;
-             var x = document.getElementsByClassName("mySlides");
-             for (i = 0; i < x.length; i++) {
-                x[i].style.display = "none";
-             }
-             myIndex++;
-             if (myIndex > x.length) {myIndex = 1}
-             x[myIndex-1].style.display = "block";
-             setTimeout(carousel, 2000); // Change image every 2 seconds
-         }
- </script>
-
+   <script>
+       $('.chips').chips();
+   </script>
 </body>
 </html>

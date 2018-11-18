@@ -18,7 +18,8 @@ from questions.utils import run_in_background
 def image_upload_url(instance, filename):
     return os.path.join("catgories", str(instance.id), "logo", filename)
 
-
+def back_image_upload_url(instance, filename):
+    return os.path.join("catgories", str(instance.id), "back_img", filename)
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=25,
@@ -30,6 +31,7 @@ class Category(models.Model):
                              null=True
                              )
 
+    back_image = models.ImageField(upload_to=back_image_upload_url,blank=True,null=True)
     description = models.TextField()
 
     @property

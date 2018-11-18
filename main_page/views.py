@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 
-
 # Create your views here.
+from questions.models import Category
+
 
 def landing_page(request):
-    return render(request, 'main_page/landing_page.html')
+    categories = Category.objects.all()
+    return render(request, 'main_page/landing_page.html',  {"categories": categories})
 
 
 def redirect_to_landing(request):
@@ -12,11 +14,13 @@ def redirect_to_landing(request):
 
 
 def home(request):
-    return render(request, 'main_page/home.html')
+    categories = Category.objects.all()
+    return render(request, 'main_page/home.html', {"categories": categories})
 
 
 def redirect_to_home(request):
     return redirect('home')
+
 
 def nav(request):
     return render(request, 'main_page/nav.html')
