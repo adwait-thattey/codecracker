@@ -141,17 +141,17 @@ def browse_questions(request):
         if question_filter_form.cleaned_data["category"]:
             questions = questions.filter(category=question_filter_form.cleaned_data["category"])
     if "sort_by" in question_filter_form.cleaned_data:
-        print(question_filter_form.cleaned_data["sort_by"])
+        print("sortby",question_filter_form.cleaned_data["sort_by"])
         sort_by_dict = {
             "1":"-create_timestamp",
             "2":"-submission_count",
-            "3":"-views_count",
+            "3":"-view_count",
             "4":"-difficulty"
         }
         questions = questions.order_by(sort_by_dict[question_filter_form.cleaned_data["sort_by"]])
     if "query" in question_filter_form.cleaned_data:
-        print(question_filter_form.cleaned_data["query"])
-        if question_filter_form.cleaned_data["query"]:
+        if question_filter_form.cleaned_data["query"] != 'None':
+            print("query", question_filter_form.cleaned_data["query"])
             questions = questions.filter(title__contains=question_filter_form.cleaned_data["query"])
     if "reverse" in question_filter_form.cleaned_data:
         print(question_filter_form.cleaned_data["reverse"])
@@ -160,9 +160,9 @@ def browse_questions(request):
 
 
 
-    paginator = Paginator(questions, 1)
+    paginator = Paginator(questions, 7)
     try:
-        sleep(1)
+        sleep(1.5)
         question_page = paginator.page(page)
     except PageNotAnInteger:
         question_page = paginator.page(1)

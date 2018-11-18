@@ -81,7 +81,7 @@ class Question(models.Model):
 
     difficulty = models.CharField(verbose_name="Difficulty level", 
                                   choices= DIFFICULTY, 
-                                  default='0', 
+                                  default='Unknown',
                                   max_length=15
                                   )
 
