@@ -133,10 +133,10 @@
                 console.log("sending req")
                 $.ajax({
                     type: 'POST',
-                    url: "{% url 'mainpage:notifications' %}",
+                    url: "{% url 'mainpage:Notifications' %}",
                     data: {
                         'csrfmiddlewaretoken': '{{ csrf_token }}',
-                        'username': '{{ user.usernamLe }}'
+                        'username': '{{ user.username }}'
                     },
                     dataType: 'json',
                     success: function (result) {

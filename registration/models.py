@@ -136,6 +136,9 @@ class Notifications(models.Model):
     time_stamp = models.DateTimeField(verbose_name="time_stamp",
                                       default=timezone.now)
 
+    def __str__(self):
+        return self.user.get_full_name() + "<" + self.user.username + ">"
+
     class Meta:
         ordering=['-time_stamp']
 
