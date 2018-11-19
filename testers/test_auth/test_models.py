@@ -34,8 +34,8 @@ class EmailConfirmationModelTest(TestCase):
         self.assertEqual(str(user), EmailConfirmation.user)
 
 
-class NotificationsModelTest(TestCase):
+class NotificationModelTest(TestCase):
 
     def test_string_representation(self):
-        user = Notifications(user="sample user")
-        self.assertEqual(str(user), Notifications.user)
+        user = Notification(user="sample user")
+        self.assertEqual(str(user), Notification.user)

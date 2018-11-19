@@ -1,5 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
+
 from registration.models import *
 
 # Create your views here.
@@ -8,7 +11,7 @@ from questions.models import Category
 
 def landing_page(request):
     categories = Category.objects.all()
-    return render(request, 'main_page/landing_page.html',  {"categories": categories})
+    return render(request, 'main_page/landing_page.html', {"categories": categories})
 
 
 def redirect_to_landing(request):
@@ -28,24 +31,20 @@ def nav(request):
     return render(request, 'main_page/nav.html')
 
 
-def notification(request):
-    ret_data = {
-        "notification": []
-    }
+@login_required
+def get_all_notifications(request):
+    ret_data = {"notifications": list(Notification.objects.filter(user=request.user).values_list('content', 'icon', 'link'))}
+    print(ret_data)
 
-    if request.user.is_anonymous:
-        return JsonResponse(ret_data)
+    return JsonResponse(ret_data)
 
+@login_required
+def get_unseen_notifications(request):
+    qset = Notification.objects.filter(user=request.user, seen=False)
+    ret_data = {"notifications": list(qset.values_list('content', 'icon', 'link'))}
+    print(ret_data)
 
-    # blog = get_object_or_404(Blog, pk=blog_id)
-
-    try:
-        # blog.upvote(request.user)
-        ret_data["notification"] = [i['content'] for i in Notifications.objects.filter(user=request.user).values("content")]
-        print(ret_data)
-
-
-    except:
-        pass
-
+    for notif in qset :
+        notif.seen = True;
+        notif.save()
     return JsonResponse(ret_data)
