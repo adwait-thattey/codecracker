@@ -1,4 +1,8 @@
 language: python
+sudo: required
+
+services:
+  - docker
 
 python:
   - 3.6
@@ -11,6 +15,8 @@ install:
   - pip3 install coveralls
 
 before_script:
+  - docker pull coderdude/ase1:v1
+  - docker tag coderdude/ase1:v1 pybuntu
   - python manage.py makemigrations
   - python manage.py migrate
 
