@@ -1,9 +1,10 @@
 import subprocess
+import sys
 import threading
 import os
 import shutil
 
-from ase1_prj import settings
+from django.conf import settings
 
 
 def is_file_empty(path):
@@ -120,9 +121,17 @@ class Docker:
         # It does not delete the volume dir. It is the duty of caller to call delete_dir function again after this one
         self.setUp()
         self.start_container()
-        status_code = self.run_code()
-        self.stop_container()
-        return status_code
+        try:
+            status_code = self.run_code()
+            self.stop_container()
+            return status_code
+        except:
+            self.stop_container()
+            self.delete_dir()
+            print("Unexpected error:", sys.exc_info()[0])
+            raise
+            pass
+
 
     @classmethod
     def run_code_and_collect_output(cls, unique_code, code_file, input_file, time_limit):
@@ -130,7 +139,13 @@ class Docker:
         instance = Docker(unique_code=unique_code, code_file=code_file, input_file=input_file, time_limit=time_limit)
         instance.setUp()
         instance.start_container()
-        status_code = instance.run_code()
-        instance.stop_container()
-        instance.delete_dir()
-        return status_code
+        try:
+            status_code = instance.run_code()
+            instance.stop_container()
+            instance.delete_dir()
+            return status_code
+        except:
+            instance.stop_container()
+            instance.delete_dir()
+            print("Unexpected error:", sys.exc_info()[0])
+            raise
