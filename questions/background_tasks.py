@@ -1,16 +1,10 @@
 import threading
 import subprocess
-
+from .docker import Docker
 from django.db import connection
 
 from .models import TestCase
 import os
-
-
-
-
-
-
 
 
 class RunAndAssert(threading.Thread):
@@ -33,45 +27,64 @@ class RunAndAssert(threading.Thread):
         else:
             self.code = code_file
 
-        dir = os.path.dirname(self.code)
-        dir = os.path.join(dir, str(self.result.testcase.id))
+        # dir = os.path.dirname(self.code)
+        # dir = os.path.join(dir, str(self.result.testcase.id))
+        #
+        # if not os.path.exists(dir):
+        #     os.makedirs(dir)
 
-        if not os.path.exists(dir):
-            os.makedirs(dir)
-
-        self.error = os.path.join(dir, "error.txt")
-        self.output = os.path.join(dir, "output.txt")
+        # self.error = os.path.join(dir, "error.txt")
+        # self.output = os.path.join(dir, "output.txt")
         self.result_code = -1
 
+        self.docker_instance = Docker(
+            unique_code="cont" + str(self.result.id),
+            code_file=self.code,
+            input_file=self.result.testcase.input_file.path,
+            time_limit=self.result.submission.question.time_limit
+        )
+
     def run_code(self):
-        fi = open(self.result.testcase.input_file.path, mode="r")
-        fo = open(self.output, mode="w")
-        fe = open(self.error, mode="w")
+        # fi = open(self.result.testcase.input_file.path, mode="r")
+        # fo = open(self.output, mode="w")
+        # fe = open(self.error, mode="w")
 
-        try:
-            #TODO Add support for ore languages
-            code_result = subprocess.run(["python3", self.code], stdin=fi, stdout=fo, stderr=fe,
-                                         timeout=self.result.submission.question.time_limit)
+        # try:
 
-            fe.close()
-            if os.stat(self.error).st_size == 0:
-                self.result_code = 0
-            else:
-                self.result_code = -1
+            # code_result = subprocess.run(["python3", self.code], stdin=fi, stdout=fo, stderr=fe,
+            #                              timeout=self.result.submission.question.time_limit)
 
-        except subprocess.TimeoutExpired:
+        # TODO Add support for more languages
+
+        code_status = self.docker_instance.run_code_and_return_status()
+        if code_status == 124:
             self.result_code = -5
+
+        elif code_status == -1:
+            self.result_code = -1
+
+        else:
+            self.result_code = 0
+
+        #     # fe.close()
+        #     if os.stat(self.error).st_size == 0:
+        #         self.result_code = 0
+        #     else:
+        #         self.result_code = -1
+        #
+        # except subprocess.TimeoutExpired:
+        #     self.result_code = -5
 
         # TODO Set timeout
 
-        fi.close()
-        fo.close()
+        # fi.close()
+        # fo.close()
 
     def assert_output(self):
         exp_output = self.result.testcase.output_file.path
 
         f1 = open(exp_output, mode="r")
-        f2 = open(self.output, mode="r")
+        f2 = open(self.docker_instance.output_file, mode="r")
 
         result = False
         if f1.read() == f2.read():
@@ -88,16 +101,15 @@ class RunAndAssert(threading.Thread):
         self.result.save()
 
         self.run_code()
-        result = self.assert_output()
-
         if self.result_code == 0:
+            result = self.assert_output()
             if result:
                 self.result.pass_fail = 1
             else:
                 self.result.pass_fail = 4
 
         elif self.result_code == -1:
-            fe = open(self.error, mode="r")
+            fe = open(self.docker_instance.error_file, mode="r")
             self.result.pass_fail = 3
             self.result.errors = fe.read()
             fe.close()
@@ -113,8 +125,7 @@ class RunAndAssert(threading.Thread):
         self.teardown()
 
     def teardown(self):
-        os.remove(self.output)
-        os.remove(self.error)
+        self.docker_instance.delete_dir()
         connection.close()
 
 
@@ -129,7 +140,6 @@ class LimitThreads(threading.Thread):
         super().__init__()
         self.thread_id = thread_id
         self.thread_list = thread_list
-
 
     def run(self):
         # print("chunk start")

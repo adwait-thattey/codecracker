@@ -39,6 +39,14 @@
         {% block title %}
         {% endblock %}
     </title>
+
+    <style>
+        .active .spinner-layer.spinner-blue-only {
+            animation: fill-unfill-rotate 3000ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+            border-color: #006064;
+
+        }
+    </style>
 </head>
 
 <body>
@@ -60,9 +68,12 @@
                             <div class="col s12 ">
                                 <div class="row" id="topbarsearch">
                                     <div class="input-field col s6 s12">
-                                        <i class="material-icons prefix">search</i>
-                                        <input type="text" placeholder="search" id="autocomplete-input"
-                                               class="autocomplete black-text">
+
+                                        <form action="{% url 'questions:browse' %}" method="get">
+                                            <i class="material-icons prefix">search</i>
+                                            <input type="text" placeholder="search" id="autocomplete-input" name="query"
+                                                   class="autocomplete black-text">
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -73,7 +84,7 @@
                         <div id="no_border">
                             <ul>
                                 <li><a href="#" data-target="mobile-demo" class="sidenav-trigger show-on-large"><i
-                                        class="fas fa-bell fa-lg"></i></a></li>
+                                        class="fas fa-bell fa-lg" onclick="get_all_notifications()"></i></a></li>
                                 <li><a href="#" class='dropdown-trigger' data-target='dropdown1'><i
                                         class="fas fa-user-alt fa-lg"></i></a></li>
                             </ul>
@@ -89,11 +100,26 @@
 
                             <div id="sidenav">
                                 <ul class="sidenav" id="mobile-demo">
-                                    <li><a href="#"><i class=" material-icons">view_module</i>link1</a></li>
-                                    <li><a href="#"><i class="material-icons">cloud</i>link2</a></li>
-                                    <li><a href="#">link3</a></li>
-                                    <li><a href="#">link4</a></li>
+                                    <li class="center" style="padding-top: 5vh;display: none" id="notification-loader">
+                                        <div class="preloader-wrapper big active">
+                                            <div class="spinner-layer spinner-blue-only">
+                                                <div class="circle-clipper left">
+                                                    <div class="circle"></div>
+                                                </div>
+                                                <div class="gap-patch">
+                                                    <div class="circle"></div>
+                                                </div>
+                                                <div class="circle-clipper right">
+                                                    <div class="circle"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div id="notification-container" style="margin-top: 6vh;">
+
+                                    </div>
                                 </ul>
+
                             </div>
 
                         </div>
@@ -176,6 +202,11 @@
 
 
 {% block nav_eof_scripts %}
+    <script>
+        if (performance.navigation.type == 2) {
+            location.reload(true);
+        }
+    </script>
     <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
     <script>
         $(document).ready(function () {
@@ -198,36 +229,67 @@
         });
     </script>
     <script>
+        notification_bar = document.getElementById('notification-container');
+        notification_loader = document.getElementById('notification-loader')
         {% if user.is_authenticated %}
-            function get_notification() {
-                console.log("sending req")
+            function get_all_notifications() {
+                notification_bar.innerHTML = ""
+                notification_loader.style.display = "block";
+                console.log("sending notification req")
+                setTimeout(function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: "{% url 'all_notifications' %}",
+                        data: {},
+                        dataType: 'json',
+                        success: function (result) {
+
+                            console.log(result);
+                            notification_loader.style.display = "none";
+                            for (notif of result.notifications) {
+                                single_notif = "<li><a href='" + notif[2] + "'><i class='material-icons'>" + notif[1] + "</i>" + notif[0] + "</a></li>"
+                                notification_bar.innerHTML += single_notif
+                                console.log(single_notif)
+                            }
+                        }
+                    });
+                }, 800);
+
+
+            };
+
+            function get_toast_notifications() {
+                console.log("sending unseen notification req")
                 $.ajax({
-                    type: 'POST',
-                    url: "{% url 'Notifications' %}",
-                    data: {
-                        'csrfmiddlewaretoken': '{{ csrf_token }}',
-                        'username': '{{ user.username }}'
-                    },
+                    type: 'GET',
+                    url: "{% url 'unseen_notifications' %}",
+                    data: {},
                     dataType: 'json',
                     success: function (result) {
 
                         console.log(result);
-                        console.log(result.notification);
-                        if (result.notification != []) {
-                            console.log(result.notification);
+                        console.log(result.notifications);
 
+                        for (notif of result.notifications) {
+                            var toastHTML = "<a class='valign-wrapper white-text' href='" + notif[2] + "'><i class='material-icons' style='padding-right:10px;'>" + notif[1] + "</i>" + notif[0] + "</a>";
+                            M.toast({html: toastHTML});
 
                         }
+
+
                     }
                 });
             };
 
             window.onload = function () {
-                interval_id = setInterval(get_notification, 3000);
-                get_notification();
+                interval_id = setInterval(get_toast_notifications, 2000);
+                {#get_toast_notifications();#}
             }
 
+
+
         {% endif %}
+
     </script>
 
 {% endblock %}

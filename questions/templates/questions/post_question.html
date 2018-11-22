@@ -163,13 +163,13 @@
                       {% endif %}
                     </div>
 
-                    <div class="input-field col l12 m12 s12">
+                    {% comment %}<div class="input-field col l12 m12 s12">
                       {{ form.difficulty }}
-                    </div>
+                    </div>{% endcomment %}
 
                     <div class="input-field col l12 m12 s12">
                       {{form.time_limit|add_class:"materialize-textarea"}}
-                      <label for="{{form.time_limit.id_for_label}}">Explaination</label>
+                      <label for="{{form.time_limit.id_for_label}}">Time Limit (in sec.)</label>
                       {% if form.time_limit.help_text %}
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.time_limit.help_text}}</span>
                       {% endif %}

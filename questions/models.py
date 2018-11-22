@@ -85,7 +85,7 @@ class Question(models.Model):
     difficulty = models.CharField(verbose_name="Difficulty level", 
                                   choices= DIFFICULTY,
                                   max_length=15,
-
+                                    default="Easy",
                                   )
 
     category = models.ForeignKey(verbose_name="Category",

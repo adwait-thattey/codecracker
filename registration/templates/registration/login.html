@@ -68,8 +68,8 @@
 
 {% block custom_includes %}
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-
-    <meta name="google-signin-client_id" content="306049630448-op0gc1t2dvi7plqbevlu1t2fpd29ve8e.apps.googleusercontent.com">
+    <meta name="google-signin-client_id"
+          content="137077797037-ldngtd8afh63birn4ofecp3du782flhq.apps.googleusercontent.com">
 {% endblock %}
 
 
@@ -126,8 +126,10 @@
                                     </button>
                                 </span>
                             </div>
-                            <div class="center">
-                                <a href="{% url 'social:begin' 'google-oauth2' %}"><img src="{% static 'registration/img/google.png' %}" style="height: 15vh;"></a>
+                            <div class="row">
+                                <center>
+                                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                                </center>
                             </div>
 
 
@@ -139,7 +141,25 @@
         </div>
     </section>
 
-
+    <form style="display: none;" id="google_signin_form" method="post" action="{% url 'registration:google_sign_in' %}">
+        {% csrf_token %}
+        <tr>
+            <th><label for="id_gog_id">Gog id:</label></th>
+            <td><input type="text" name="gog_id" required id="id_gog_id"></td>
+        </tr>
+        <tr>
+            <th><label for="id_gog_email">Gog email:</label></th>
+            <td><input type="email" name="gog_email" required id="id_gog_email"></td>
+        </tr>
+        <tr>
+            <th><label for="id_gog_full_name">Gog full name:</label></th>
+            <td><input type="text" name="gog_full_name" required id="id_gog_full_name"></td>
+        </tr>
+        <tr>
+            <th><label for="id_gog_profile_pic">Gog profile pic:</label></th>
+            <td><input type="url" name="gog_profile_pic" id="id_gog_profile_pic"></td>
+        </tr>
+    </form>
 {% endblock %}
 
 {# TODO Replace with min.js in production #}
@@ -161,21 +181,36 @@
 
     </script>
     <script>
-        function onSignIn(googleUser) {
-          var profile = googleUser.getBasicProfile();
-          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-          console.log('Name: ' + profile.getName());
-          console.log('Image URL: ' + profile.getImageUrl());
-          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
         }
+
+
+
     </script>
     <script>
-      function signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-          console.log('User signed out.');
-        });
-      }
+
+
+        google_form = document.getElementById('google_signin_form');
+
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            google_form.gog_id.value = profile.getId();
+            google_form.gog_full_name.value = profile.getName();
+            google_form.gog_email.value = profile.getEmail();
+            google_form.gog_profile_pic.value = profile.getImageUrl();
+            signOut();
+            google_form.submit();
+        }
+
+
     </script>
 
 

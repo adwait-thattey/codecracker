@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'bm+!!um=2p&r^!4(l5bpic2f&a7h0!vk^zl$53@drcuvaps08+'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -48,7 +46,7 @@ INSTALLED_APPS = [
     'social_django'
 ]
 
-CKEDITOR_UPLOAD_PATH= "ckeditor_uploads/"
+CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
 
 # CKEDITOR_CONFIGS = {
 #     'default': {
@@ -167,15 +165,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ase1_prj.wsgi.application'
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
-    'social_core.backends.google.GoogleOpenId',  # for Google authentication
-    'social_core.backends.google.GoogleOAuth2',  # for Google authentication
-    'social_core.backends.github.GithubOAuth2',  # for Github authentication
-    'social_core.backends.facebook.FacebookOAuth2',  # for Facebook authentication
-
-    'django.contrib.auth.backends.ModelBackend',
-)
 
 
 # Database
@@ -187,7 +176,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -207,7 +195,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -220,7 +207,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -235,20 +221,22 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 LOGIN_URL = 'registration:login'
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'landing'
 
-
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='306049630448-dsoqnavpgevhno5q4ckkhsoai8okoqrm.apps.googleusercontent.com'  #Paste CLient Key
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YmeDaiDmrtmQGMTTk67X8FR9' #Paste Secret Key
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_USE_TLS =True
+EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "adwaitthatteytemp@gmail.com"
 EMAIL_HOST_PASSWORD = "Hello World"
 
+# Docker conf
+
+DOCKER_ROOT = os.path.join(BASE_DIR, "docker")
+DOCKER_IMAGE_NAME = "pybuntu"
+DOCKER_MEM_LIMIT = "25m"  # This means 25 mega bytes
+DOCKER_CPU_QUOTA_LIMIT = "5000"  # This means 5% of CPU
+DOCKER_MOUNT_PATH = '/home/trial'
