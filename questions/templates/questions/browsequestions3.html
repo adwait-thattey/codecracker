@@ -40,7 +40,9 @@
                         </div>
                     </div>
                 </div>
-
+                <div style="display: none">
+                    {{ filter_form.query }}
+                </div>
                 <!--card for sorting-->
                 <div class="col s12 m6">
                     <div class="card cyan-text text-darken-4">
@@ -72,7 +74,7 @@
             </form>
             <script>
 
-                console.log('{{ filter_form.sort_by.value }}');
+                console.log('{{ filter_form.query.value }}');
                 form = document.getElementById('filter_form');
                 document.getElementById('id_reverse').onchange = function () {
                     form.submit()

@@ -17,7 +17,8 @@ from questions.utils import run_in_background
 def image_upload_url(instance, filename):
     return os.path.join("catgories", str(instance.id), "logo", filename)
 
-
+def back_image_upload_url(instance, filename):
+    return os.path.join("catgories", str(instance.id), "back_img", filename)
 # Create your models here.
 class Category(models.Model):
     
@@ -30,6 +31,7 @@ class Category(models.Model):
                              null=True
                              )
 
+    back_image = models.ImageField(upload_to=back_image_upload_url,blank=True,null=True)
     description = models.TextField()
 
     @property
@@ -46,6 +48,7 @@ unique_code_validator = RegexValidator(r'^[0-9a-z]*$',
 
 class Question(models.Model):
     DIFFICULTY = (
+        (None,'Choose Difficulty Level'),
         ('Unknown', 'Unknown'),
         ('Easy', 'Easy'),
         ('Medium', 'Medium'),
@@ -80,9 +83,9 @@ class Question(models.Model):
     sample_output = models.TextField(verbose_name="Sample output", null='True')
 
     difficulty = models.CharField(verbose_name="Difficulty level", 
-                                  choices= DIFFICULTY, 
-                                  default='Unknown',
-                                  max_length=15
+                                  choices= DIFFICULTY,
+                                  max_length=15,
+                                    default="Easy",
                                   )
 
     category = models.ForeignKey(verbose_name="Category",

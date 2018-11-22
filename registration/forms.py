@@ -29,3 +29,10 @@ class RegisterForm(forms.ModelForm):
 
         elif password != confirm_password:
             self.add_error("confirm_password", "Both Passwords Do Not Match!")
+
+
+class GoogleRegisterFrom(forms.Form):
+    gog_id = forms.CharField()
+    gog_email = forms.EmailField()
+    gog_full_name = forms.CharField()
+    gog_profile_pic = forms.URLField(required=False)

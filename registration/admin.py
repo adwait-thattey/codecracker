@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from .models import Institute, UserProfile, GoogleAuth, EmailConfirmation, Notifications
+from .models import Institute, UserProfile, GoogleAuth, EmailConfirmation, Notification
 
 #from django.contrib import admin
 
@@ -59,4 +59,4 @@ class EmailConfirmationAdmin(admin.ModelAdmin):
     search_fields = ['id']
 
 admin.site.register(EmailConfirmation, EmailConfirmationAdmin)
-admin.site.register(Notifications)
+admin.site.register(Notification)
