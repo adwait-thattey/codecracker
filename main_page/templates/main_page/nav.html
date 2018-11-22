@@ -1,130 +1,301 @@
-{% block custom_loaders %}
+{% block basic_loaders %}
     {% load static %}
     {% load widget_tweaks %}
 {% endblock %}
 
+{% block custom_loaders %}
+
+{% endblock custom_loaders %}
+
 <!DOCTYPE html>
+<!--suppress ALL -->
 <html>
-  <head>
-      {% block common_includes %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'main_page/nav/nav.css' %}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<head>
+    {% block common_includes %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'main_page/nav/nav.css' %}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'common_assests/materialize/css/materialize.css' %}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+              integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+              crossorigin="anonymous">
+    {% endblock common_includes %}
 
-    {%  endblock common_includes %}
 
-  {% block fonts %}
-  {% endblock fonts %}
 
-  {% block custom_includes %}
-  
-  {% endblock %}
+    {% block fonts %}
+    {% endblock fonts %}
 
-  {% block internal_styles %}
+    {% block custom_includes %}
 
-  {% endblock internal_styles %}
+    {% endblock %}
+
+    {% block internal_styles %}
+
+    {% endblock internal_styles %}
+
     <title>
         {% block title %}
-            Title
         {% endblock %}
     </title>
-  </head>
-  <body>
-  {% block header %}
-    <header>
-      <nav class="cyan darken-4">
-        <div id="menu">
-          <a href="#" class="brand-logo center" id="logo">CODING PORTAL</a>
-          <ul class="left hide-on-med-and-down">
-            <li><a href="#">HOME</a></li>
-            <li><a href="#">QUESTIONS</a></li>
-            <li><a href="#">POST</a></li>
-            <li><a href="#">ABOUT US</a></li>
-          </ul>
-          <ul class="right hide-on-med-and-down">
-            <li><a href="#">LOGIN</a></li>
-            <li><a href="#">SIGN UP</a></li>
-          </ul>
-        </div>
-      </nav>
 
-      <div class="fixed-action-btn right click-to-toggle hide-on-large-only" style="right:auto; top:0;" >
-        <a class="btn-flat btn-large cyan darken-4"><i class="material-icons" id="float">menu</i></a>
-        <ul>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Sign Up"><i class="material-icons">person_add</i></a></li>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Login"><i class="material-icons">person</i></a></li>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="About Us"><i class="material-icons">people</i></a></li>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Post"><i class="material-icons">publish</i></a></li>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Questions"><i class="material-icons">question_answer</i></a></li>
-          <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Home"><i class="material-icons">home</i></a></li>
-        </ul>
-      </div>
+    <style>
+        .active .spinner-layer.spinner-blue-only {
+            animation: fill-unfill-rotate 3000ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+            border-color: #006064;
+
+        }
+    </style>
+</head>
+
+<body>
+
+{% block header %}
+    <header>
+        <nav class="cyan darken-4" id="nav">
+            <div id="menu">
+                <a href="#" class="brand-logo center" id="logo">CODE CRACKER</a>
+                <ul class="left hide-on-med-and-down">
+                    <li><a href="{% url "home" %}">HOME</a></li>
+                    <li><a href="{% url "questions:browse" %}">QUESTIONS</a></li>
+                    <li><a href="{% url "questions:post_question" %}">POST</a></li>
+                    <li><a href="{% url "home" %}">ABOUT US</a></li>
+                </ul>
+                <ul class="right">
+                    <li>
+                        <div class="center row hide-on-med-and-down">
+                            <div class="col s12 ">
+                                <div class="row" id="topbarsearch">
+                                    <div class="input-field col s6 s12">
+
+                                        <form action="{% url 'questions:browse' %}" method="get">
+                                            <i class="material-icons prefix">search</i>
+                                            <input type="text" placeholder="search" id="autocomplete-input" name="query"
+                                                   class="autocomplete black-text">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li>
+                        <div id="no_border">
+                            <ul>
+                                <li><a href="#" data-target="mobile-demo" class="sidenav-trigger show-on-large"><i
+                                        class="fas fa-bell fa-lg" onclick="get_all_notifications()"></i></a></li>
+                                <li><a href="#" class='dropdown-trigger' data-target='dropdown1'><i
+                                        class="fas fa-user-alt fa-lg"></i></a></li>
+                            </ul>
+
+                            <div class="center" id="dropdown">
+                                <ul id='dropdown1' class='dropdown-content' style="width: 300px;">
+                                    <li><a href="#!"><i class="fas fa-user-circle"></i>Profile</a></li>
+                                    <li><a href="#!"><i class="fas fa-clipboard-list"></i>My Questions</a></li>
+                                    <li><a href="{% url "registration:logout" %}"><i class="fas fa-power-off"></i>Log
+                                        Out</a></li>
+                                </ul>
+                            </div>
+
+                            <div id="sidenav">
+                                <ul class="sidenav" id="mobile-demo">
+                                    <li class="center" style="padding-top: 5vh;display: none" id="notification-loader">
+                                        <div class="preloader-wrapper big active">
+                                            <div class="spinner-layer spinner-blue-only">
+                                                <div class="circle-clipper left">
+                                                    <div class="circle"></div>
+                                                </div>
+                                                <div class="gap-patch">
+                                                    <div class="circle"></div>
+                                                </div>
+                                                <div class="circle-clipper right">
+                                                    <div class="circle"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div id="notification-container" style="margin-top: 6vh;">
+
+                                    </div>
+                                </ul>
+
+                            </div>
+
+                        </div>
+                    {% else %}
+                        <ul class="right hide-on-med-and-down">
+                            <li><a href="{% url "registration:login" %}">LOGIN</a></li>
+                            <li><a href="{% url "registration:signup" %}">SIGN UP</a></li>
+                        </ul>
+                    {% endif %}
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+
+        <div class="fixed-action-btn right click-to-toggle hide-on-large-only" style="right:auto; top:0;">
+            <a class="btn-flat btn-large cyan darken-4"><i class="material-icons" id="float">menu</i></a>
+            <ul>
+                <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="About Us"
+                       href="{% url "home" %}"><i class="material-icons">people</i></a></li>
+                <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Post"
+                       href="{% url "questions:post_question" %}"><i class="material-icons">publish</i></a></li>
+                <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Questions"
+                       href="{% url "questions:browse" %}"><i class="material-icons">question_answer</i></a></li>
+                <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Home"
+                       href="{% url "home" %}"><i class="material-icons">home</i></a></li>
+            </ul>
+        </div>
+
     </header>
 {% endblock header %}
 
-    {% block main_content %}
+{% block main_content %}
+
     <main>
 
     </main>
-    {% endblock main_content %}
+{% endblock main_content %}
 
-    {% block footer %}
+
+
+{% block footer %}
 
     <footer class="page-footer" id="f">
-      <div class="container">
-        <div class="row">
-          <div class="col l4 s12">
-            <h4 class="brand-logo" id="logo">CODING PORTAL</h4>
-            <p>We are a team of college students working on this project.</p>
-          </div>
-          <div class="col l3 offset-l1 s12" id="fd">
-            <h6>Explore</h6>
-            <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">Questions</a></li>
-              <li><a href="#">Post</a></li>
-              <li><a href="#">About Us</a></li>
-            </ul>
-          </div>
-          <div class="col l3 offset-l1 s12" id="fd1">
-            <h6>Contact Us</h6>
-            <ul>
-              <li>Something@iiits.in</li>
-              <li>Something@iiits.in</li>
-              <li>Something@iiits.in</li>
-              <li>Something@iiits.in</li>
-              <li>Something@iiits.in</li>
-              <li>Something@iiits.in</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer-copyright" id="f2">
         <div class="container">
-          © 2018 Copyright Text
+            <div class="row">
+                <div class="col l4 s12">
+                    <h4 class="brand-logo" id="logo">CODE CRACKER</h4>
+                    <p>We are a team of college students working on this project.</p>
+                </div>
+                <div class="col l3 offset-l1 s12" id="fd">
+                    <h6>Explore</h6>
+                    <ul>
+                        <li><a href="{% url "home" %}">Home</a></li>
+                        <li><a href="{% url "questions:browse" %}">Questions</a></li>
+                        <li><a href="{% url "questions:post_question" %}">Post</a></li>
+                        <li><a href="{% url "home" %}">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="col l3 offset-l1 s12" id="fd1">
+                    <h6>Contact Us</h6>
+                    <ul>
+                        <li>adwaitvinay.t17@iiits.in</li>
+                        <li>thoyiba.s17@iiits.in</li>
+                        <li>vasudha.a17@iiits.in</li>
+                        <li>armin.p17@iiits.in</li>
+                        <li>nikhil.d17@iiits.in</li>
+                        <li>bharath.s17@iiits.in</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="footer-copyright" id="f2">
+            <div class="container">
+                Copyright CodeCracker
+            </div>
+        </div>
     </footer>
-  {% endblock footer %}
+{% endblock footer %}
 
-  {% block nav_eof_scripts %}
-<script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
-  <script>
-      $(document).ready(function(){
-        $('.fixed-action-btn').floatingActionButton({
-          direction: 'bottom',
-          hoverEnabled: false,
+
+{% block nav_eof_scripts %}
+    <script>
+        if (performance.navigation.type == 2) {
+            location.reload(true);
+        }
+    </script>
+    <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.sidenav').sidenav({
+                edge: 'right',
+            });
+
+            $('.fixed-action-btn').floatingActionButton({
+                direction: 'bottom',
+                hoverEnabled: false,
+            });
+
+            $(".dropdown-trigger").dropdown({
+                coverTrigger: false,
+                constrainWidth: false,
+            });
+
+            $('.tooltipped').tooltip();
+
         });
-        $('.tooltipped').tooltip();
-      });
+    </script>
+    <script>
+        notification_bar = document.getElementById('notification-container');
+        notification_loader = document.getElementById('notification-loader')
+        {% if user.is_authenticated %}
+            function get_all_notifications() {
+                notification_bar.innerHTML = ""
+                notification_loader.style.display = "block";
+                console.log("sending notification req")
+                setTimeout(function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: "{% url 'all_notifications' %}",
+                        data: {},
+                        dataType: 'json',
+                        success: function (result) {
+
+                            console.log(result);
+                            notification_loader.style.display = "none";
+                            for (notif of result.notifications) {
+                                single_notif = "<li><a href='" + notif[2] + "'><i class='material-icons'>" + notif[1] + "</i>" + notif[0] + "</a></li>"
+                                notification_bar.innerHTML += single_notif
+                                console.log(single_notif)
+                            }
+                        }
+                    });
+                }, 800);
+
+
+            };
+
+            function get_toast_notifications() {
+                console.log("sending unseen notification req")
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'unseen_notifications' %}",
+                    data: {},
+                    dataType: 'json',
+                    success: function (result) {
+
+                        console.log(result);
+                        console.log(result.notifications);
+
+                        for (notif of result.notifications) {
+                            var toastHTML = "<a class='valign-wrapper white-text' href='" + notif[2] + "'><i class='material-icons' style='padding-right:10px;'>" + notif[1] + "</i>" + notif[0] + "</a>";
+                            M.toast({html: toastHTML});
+
+                        }
+
+
+                    }
+                });
+            };
+
+            window.onload = function () {
+                interval_id = setInterval(get_toast_notifications, 2000);
+                {#get_toast_notifications();#}
+            }
+
+
+
+        {% endif %}
+
     </script>
 
-  {% endblock %}
+{% endblock %}
 
-  {% block custom_eof_scripts %}
+{% block custom_eof_scripts %}
 
-  {% endblock custom_eof_scripts %}
-  </body>
+{% endblock custom_eof_scripts %}
+</body>
 </html>

@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, Http404
 from .forms import RegisterForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
@@ -9,12 +9,13 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from .tokens import account_confirmation_token
 from django.core.mail import EmailMessage
+from .forms import GoogleRegisterFrom
 from django.core.mail import send_mail
 # Create your views here.
 def signup(request):
+    google_form = GoogleRegisterFrom()
     if request.method == "POST":
         new_user_form = RegisterForm(request.POST)
-
         if new_user_form.is_valid():
             new_user = User.objects.create_user(
                     username=new_user_form.cleaned_data["username"],
@@ -39,10 +40,35 @@ def signup(request):
             email.send()
             return HttpResponse('Please confirm your email address to complete the registration')
         else:
-            return render(request, 'registration/register.html', {"signup_form": new_user_form})
+            return render(request, 'registration/register.html', {"signup_form": new_user_form, "google_form":google_form})
     else:
         new_form = RegisterForm()
-        return render(request, 'registration/register.html', {"signup_form": new_form})
+        return render(request, 'registration/register.html', {"signup_form": new_form, "google_form":google_form})
+
+def google_sign_in(request):
+    if request.method == "GET":
+        raise Http404
+
+    else:
+        google_form = GoogleRegisterFrom(request.POST)
+
+        if google_form.is_valid():
+            u = User.objects.filter(email=google_form.cleaned_data["gog_email"])
+            if u.exists():
+                login(request, u[0])
+                return redirect('home')
+            else:
+                user = User.objects.create(email=google_form.cleaned_data["gog_email"],
+                                    username=google_form.cleaned_data["gog_email"].split('@')[0],
+                                    first_name=google_form.cleaned_data["gog_full_name"].split(' ')[0],
+                                    last_name=google_form.cleaned_data["gog_full_name"].split(' ')[1]
+                                    )
+
+                login(request,user)
+                return redirect('home')
+
+        else:
+            return HttpResponse("There was some error. Please try again later")
 
 def activate(request, uidb64, token):
     try:
@@ -57,3 +83,7 @@ def activate(request, uidb64, token):
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
+
+def logout_view(request):
+    logout(request)
+    return redirect('landing')
