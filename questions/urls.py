@@ -4,6 +4,7 @@ from . import views
 app_name = "questions"
 
 urlpatterns = [
+    path('', views.redirect_to_browse),
     path('browse', views.browse_questions, name="browse"),
     path('browse/<int:category>/<int:sortby>/<int:rev>', views.browse_args_questions,name="browse_args"),
     path('<slug:question_unique_id>/submit', views.submit_solution, name="submit-solution"),

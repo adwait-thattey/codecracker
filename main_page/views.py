@@ -34,7 +34,7 @@ def nav(request):
 @login_required
 def get_all_notifications(request):
     ret_data = {"notifications": list(Notification.objects.filter(user=request.user).values_list('content', 'icon', 'link'))}
-    print(ret_data)
+    # print(ret_data)
 
     return JsonResponse(ret_data)
 
@@ -42,7 +42,7 @@ def get_all_notifications(request):
 def get_unseen_notifications(request):
     qset = Notification.objects.filter(user=request.user, seen=False)
     ret_data = {"notifications": list(qset.values_list('content', 'icon', 'link'))}
-    print(ret_data)
+    # print(ret_data)
 
     for notif in qset :
         notif.seen = True;
