@@ -10,7 +10,7 @@ urlpatterns = [
     path('browse/<int:category>/<int:sortby>/<int:rev>', views.browse_args_questions,name="browse_args"),
     path('<slug:question_unique_id>/submit', views.submit_solution, name="submit-solution"),
 
-    path('<slug:question_unique_id>/submission/<int:submission_attempt>/result', views.submission_result, name="submission-result"),
+    path('<slug:question_unique_id>/<str:username>/submission/<int:submission_attempt>/result', views.submission_result, name="submission-result"),
     path('ajax/submission-result', views.ajax_get_submission_results, name="ajax-submission-result"),
     path('<slug:question_unique_id>/view/', views.view_the_question, name="view_the_question"),
     path('post/', views.post_question, name="post_question"),
@@ -28,8 +28,6 @@ urlpatterns = [
     path('ajax/rerun_test_case_submissions/<slug:question_unique_id>', views.ajax_call_rerun_all_testcase_submissions,
          name="rerun-testcase-submissions"),
 
-    #API urls
-    path('api/<slug:unique_code>', views.QuestionDetail.as_view())
 
 
 ]

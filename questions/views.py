@@ -14,10 +14,7 @@ from .background_tasks import RunAndAssert, LimitThreads
 
 from django.forms import modelformset_factory
 
-from .serializers import QuestionSerializer
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+
 
 
 
@@ -100,7 +97,7 @@ def submit_solution(request, question_unique_id):
             submission.save()
 
             start_code_run_sequence(submission)
-            return redirect('questions:submission-result', question.unique_code, submission.attempt_number)
+            return redirect('questions:submission-result', question.unique_code, request.user.username, submission.attempt_number)
 
     else:
         submission_form = SubmissionForm()
@@ -108,8 +105,10 @@ def submit_solution(request, question_unique_id):
 
 
 @login_required
-def submission_result(request, question_unique_id, submission_attempt):
-    submission = get_object_or_404(Submission, question__unique_code=question_unique_id,
+def submission_result(request, question_unique_id, username, submission_attempt):
+    submission = get_object_or_404(Submission,
+                                   user__username=username,
+                                   question__unique_code=question_unique_id,
                                    attempt_number=submission_attempt)
 
     return render(request, "questions/results.html", {"submission": submission})
@@ -354,28 +353,7 @@ def redirect_to_browse(request):
 #
 #
 
-class QuestionDetail(APIView):
 
-    def get_question(self, unique_code):
-        try:
-            return Question.objects.get(unique_code= unique_code)
-        except Question.DoesNotExist:
-            raise Http404
 
-    def get(self, request, unique_code, format=None):
-        question = self.get_question(unique_code)
-        serializer = QuestionSerializer(question)
-        return Response(serializer.data)
-
-    def put(self, request, unique_code, format=None):
-        question = self.get_question(unique_code)
-        serializer = QuestionSerializer(question, data= request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status = status.HTTP_404_BAD_REQUEST)
-            
-    def delete(self, request, unique_code, format=None):
-        question = self.get_question(unique_code)
-        question.delete()
-        return Response(status= status.HTTP_204_NO_CONTENT)      
+def say_hello():
+    return HttpResponse("Hello")
