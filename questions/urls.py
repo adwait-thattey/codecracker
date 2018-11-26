@@ -28,8 +28,6 @@ urlpatterns = [
     path('ajax/rerun_test_case_submissions/<slug:question_unique_id>', views.ajax_call_rerun_all_testcase_submissions,
          name="rerun-testcase-submissions"),
 
-    #API urls
-    path('api/<slug:unique_code>', views.QuestionDetail.as_view())
 
 
 ]

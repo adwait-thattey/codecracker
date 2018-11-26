@@ -19,6 +19,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
+from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
 
@@ -42,6 +43,8 @@ urlpatterns = [
          name='password_reset_complete'),
 
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('api-token-auth/', obtain_jwt_token),
+    path('api/', include('api.urls')),
 
 ]
 
