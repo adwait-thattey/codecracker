@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'contests',
+    'rest_framework',
 ]
 
 CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
