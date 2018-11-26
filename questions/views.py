@@ -97,7 +97,7 @@ def submit_solution(request, question_unique_id):
             submission.save()
 
             start_code_run_sequence(submission)
-            return redirect('questions:submission-result', question.unique_code, submission.attempt_number)
+            return redirect('questions:submission-result', question.unique_code, request.user.username, submission.attempt_number)
 
     else:
         submission_form = SubmissionForm()
@@ -105,8 +105,10 @@ def submit_solution(request, question_unique_id):
 
 
 @login_required
-def submission_result(request, question_unique_id, submission_attempt):
-    submission = get_object_or_404(Submission, question__unique_code=question_unique_id,
+def submission_result(request, question_unique_id, username, submission_attempt):
+    submission = get_object_or_404(Submission,
+                                   user__username=username,
+                                   question__unique_code=question_unique_id,
                                    attempt_number=submission_attempt)
 
     return render(request, "questions/results.html", {"submission": submission})
