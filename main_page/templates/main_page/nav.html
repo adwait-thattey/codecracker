@@ -69,10 +69,11 @@
                                 <div class="row" id="topbarsearch">
                                     <div class="input-field col s6 s12">
 
-                                        <form action="{% url 'questions:browse' %}" method="get">
+                                        <form action="{% url 'questions:browse' %}" method="get" autocomplete="off">
                                             <i class="material-icons prefix">search</i>
                                             <input type="text" placeholder="search" id="autocomplete-input" name="query"
                                                    class="autocomplete black-text">
+                                            <label for="question-search">Q_Search</label>
                                         </form>
                                     </div>
                                 </div>
@@ -290,6 +291,31 @@
 
         {% endif %}
 
+
+        {#    Configuration for search bar at top#}
+        $(document).ready(function () {
+            console.log("sending!")
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'questions:ajax-get_question_titles' %}",
+                data: {},
+                dataType: 'json',
+                success: function (result) {
+                    console.log("hello")
+                    title_dict = {}
+                    for (title of result.titles) {
+                        title_dict[title] = null
+                    }
+                    console.log(title_dict)
+
+                    $('input.autocomplete').autocomplete({
+                        data: title_dict,
+                    });
+                }
+            });
+
+
+        });
     </script>
 
 {% endblock %}

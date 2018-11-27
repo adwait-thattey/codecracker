@@ -27,6 +27,6 @@ urlpatterns = [
     path('ajax/rerun_test_case_submissions/<slug:question_unique_id>', views.ajax_call_rerun_all_testcase_submissions,
          name="rerun-testcase-submissions"),
 
-
+    path('ajax/get_questions_titles', views.get_question_titles, name="ajax-get_question_titles"),
 
 ]
