@@ -1,0 +1,217 @@
+{% extends 'main_page/nav.html' %}
+
+{% load static %}
+
+{% block custom_loaders %}
+    {% load static %}
+    {% load widget_tweaks %}
+{% endblock %}
+
+
+{% block title %}
+    {{contest.title}}
+{% endblock %}
+
+
+{% block custom_includes %}
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="{% static 'flipclock_js/compiled/flipclock.css' %}">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="{% static 'flipclock_js/compiled/flipclock.js' %}"></script>
+
+{% endblock %}
+
+{% block main_content %}
+
+<section>
+
+<div class="row">
+	<div class="col l10 offset-l1 s12 m12">
+		<div class="card">
+			<div class="card-content center">
+				<h3>{{contest.title}}</h3>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id= "countdown" class="clock">
+
+</div>
+
+<div class="row">
+	<div class="col l7 offset-l1 s12 m8">
+        <div class="card green lighten-5">
+            <div class="card-content" style="line-height: 2.3; font-size: 16px">
+            	<div id='description'>
+            		<b>Description:</b><br>
+            		{{contest.description|safe}}
+            	</div>
+
+            	<div id='eligibility'>
+            		<b>Eligibility:</b><br>
+            		{{contest.eligibility|safe}}
+            	</div>
+
+            	<div id="rules">
+            		<b> Rules:</b><br>
+            		{{contest.rules|safe}}
+            	</div>
+
+            	<div id="prizes">
+            		<b>Prizes</b><br>
+            		{{contest.prizes|safe}}
+            	</div>
+
+            	<div id="contacts">
+            		<b>Contacts for queries:</b><br>
+            		{{contest.contacts|safe}}
+            	</div>
+
+            </div>
+            
+        </div>
+		
+	</div>
+
+	<div class="hide-on-small-only"> 
+        <div class="col l3 m4">
+			<div class="card teal lighten-5">
+                <div class="card-content" style="font-size: medium; padding: 20px;">
+
+                	<div id="organizer">
+                		<b>Organizer:</b><br>
+                		{{contest.author}}
+                	</div>
+
+                	<div id='start_date'>
+                		<b>Start Date:</b><br>
+                		{{contest.start_date}}
+                	</div>
+
+                	<div id='end_date'>
+                		<b>End Date</b><br>
+                		{{contest.end_date}}
+                	</div>
+
+                	<div class="card teal lighten-5">
+                        <div class="card-content" style="font-size: medium; padding: 20px;">
+
+                            <span class="card-title center">
+                                <a class="waves-effect waves-light btn modal-trigger btn-large"
+                                   href="javascript:void(0);" data-target="register">Register</a> <br>
+                            </span>
+
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+        
+
+    </div>
+
+
+    <div class="hide-on-med-and-up">
+        <div class="col s12">
+        	<div class="card-content teal lighten-5" style="font-size: medium; padding: 20px;">
+        		<div id="organizer">
+            		<b>Organizer:</b><br>
+            		{{contest.author}}
+            	</div>
+
+            	<div id='start_date'>
+            		<b>Start Date:</b><br>
+            		{{contest.start_date}}
+            	</div>
+
+            	<div id='end_date'>
+            		<b>End Date</b><br>
+            		{{contest.end_date}}
+            	</div>
+
+            	<div class="card">
+                    <div class="card-content teal lighten-5">
+
+                        <span class="card-title center">
+                            <a class="waves-effect waves-light btn modal-trigger btn-large"
+                               href="javascript:void(0);" data-target="register">Register</a> <br>
+                        </span>
+
+
+                    </div>
+                </div>
+
+  
+            </div>
+
+        </div>
+
+    </div>
+	
+
+	<div id="register" class="modal bottom-sheet">
+            <div class="modal-content center" style="font-size: medium; padding: 100px;">
+                <div class="row">
+                    <div class="col l5 s12">
+                        <h4>Register</h4>
+                    </div>
+
+                    
+                    <div class="modal-footer">
+                        <a href="javascript:void(0);" class="modal-close waves-effect waves-green btn-flat right"
+                           type="submit" onclick="document.getElementById('solution_form').submit()">Submit</a>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+</section>
+
+{% endblock %}
+
+{% block custom_eof_scripts %}
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+    <script type='text/javascript'
+            src='//platform-api.sharethis.com/js/sharethis.js#property=5beee4514e83990011fd89af&product=sticky-share-buttons'
+            async='async'></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script>
+        // Or with jQuery
+        $(document).ready(function () {
+            $('select').formSelect();
+        });
+        $(document).ready(function () {
+            $('.modal').modal();
+        });
+        
+    </script>
+
+    <script type="text/javascript">
+    	var clock = $('.clock').FlipClock(3600, {
+		countdown: true
+		});
+    </script>
+
+    <script src="{% static 'flipclock_js/src/flipclock/js/libs/jquery.js' %}"></script>
+	<script src="{% static 'flipclock_js/src/flipclock/js/flipclock/flipclock.min.js' %}"></script>
+
+{% endblock custom_eof_scripts %}

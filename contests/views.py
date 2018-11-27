@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from .models import Contest
 
 # Create your views here.
 
@@ -15,3 +16,7 @@ def create_contest(request):
 
 def edit_contest(request):
     return None
+
+def view_contest_page(request, contest_unique_code):
+	contest = get_object_or_404(Contest, unique_code= contest_unique_code)
+	return render(request, 'contest_page.html', {'contest': contest})

@@ -146,13 +146,17 @@
 
             <div class="hide-on-med-and-up">
                 <div class="col s12">
-                    <div class="card">
-                        <div class="card-content center" style="font-size: medium; padding: 20px;">
-                            <div><a class="btn-large"><i class="fas fa-pencil-alt "> </i> Edit question</a></div>
-                            <br>
-                            <div><a class="btn-large"><i class="fas fa-scroll"> </i> View testcases</a></div>
-                        </div>
-                    </div>
+                    {% if user.is_authenticated %}
+                        {% if user == question.author %}
+                            <div class="card">
+                                <div class="card-content center" style="font-size: medium; padding: 20px;">
+                                    <div><a href="{% url 'questions:question-edit' question.unique_code %}" class="btn-large"><i class="fas fa-pencil-alt "> </i>Edit question</a></div>
+                                    <br>
+                                    <div><a href="{% url 'questions:testcase-view' question.unique_code %}" class="btn-large"><i class="fas fa-scroll"> </i>View testcases</a></div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
                     <div class="card">
                         <div class="card-content">
 
