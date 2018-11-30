@@ -36,6 +36,7 @@ urlpatterns = [
     path('questions/', include('questions.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('auth/', include('social_django.urls', namespace='social')),
+    path('profile/', include('Profile.urls'))
 ]
 
 urlpatterns += staticfiles_urlpatterns()

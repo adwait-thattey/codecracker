@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'questions',
     'ckeditor',
     'ckeditor_uploader',
-    'social_django'
+    'social_django',
+    'Profile'
 ]
 
 CKEDITOR_UPLOAD_PATH= "ckeditor_uploads/"

@@ -13,7 +13,7 @@ class TestRegisterForm(TestCase):
 
     def test_all_details_submitted(self):
         form_instance = RegisterForm(data={
-            "user": "Sample User",
+            "user":  User,
             "phone_number": 9999999999,
             "institute": "Sample institute",
             "designation":"STU",
