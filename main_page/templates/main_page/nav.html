@@ -31,15 +31,6 @@
 
     {% endblock %}
 
-    {% block internal_styles %}
-
-    {% endblock internal_styles %}
-
-    <title>
-        {% block title %}
-        {% endblock %}
-    </title>
-
     <style>
         .active .spinner-layer.spinner-blue-only {
             animation: fill-unfill-rotate 3000ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
@@ -51,6 +42,17 @@
             background-color: #f5f5f5;
         }
     </style>
+
+    {% block internal_styles %}
+
+    {% endblock internal_styles %}
+
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+
+
 
 </head>
 
