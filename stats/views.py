@@ -31,4 +31,4 @@ def user_submission_date_stats(request, username):
 
 
 
-    return req_stats
+    return JsonResponse(req_stats, safe=False)

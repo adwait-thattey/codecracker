@@ -42,7 +42,7 @@ urlpatterns = [
          name='password_reset_complete'),
 
     path('ckeditor/', include('ckeditor_uploader.urls')),
-
+    path('stats/', include('stats.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
