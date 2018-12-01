@@ -24,7 +24,7 @@ def user_submission_date_stats(request, username):
             if S['submitted_on__date']==cur_date:
                 cur_count+=S['count']
             else:
-                D = {"date":cur_date.strftime('%d/%m/%Y'), "count":cur_count}
+                D = {"x":cur_date.strftime('%d/%m/%Y'), "y":cur_count}
                 req_stats.append(D)
                 cur_date = S['submitted_on__date']
                 cur_count = S['count']
