@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block internal_styles %}
-    <link rel="stylesheet" href="{% static 'apex_charts/samples/assets/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'apex charts/samples/assets/styles.css' %}">
     <style>
 
         #chart {
@@ -72,16 +72,16 @@
     <script>
         var currentDate = new Date();
 
-function convertDate(date) {
-  var yyyy = date.getFullYear().toString();
-  var mm = (date.getMonth()+1).toString();
-  var dd  = date.getDate().toString();
+        function convertDate(date) {
+            var yyyy = date.getFullYear().toString();
+            var mm = (date.getMonth() + 1).toString();
+            var dd = date.getDate().toString();
 
-  var mmChars = mm.split('');
-  var ddChars = dd.split('');
+            var mmChars = mm.split('');
+            var ddChars = dd.split('');
 
-  return   (ddChars[1]?dd:"0"+ddChars[0])+ '-' + (mmChars[1]?mm:"0"+mmChars[0]) + '-' +yyyy;
-}
+            return (ddChars[1] ? dd : "0" + ddChars[0]) + '-' + (mmChars[1] ? mm : "0" + mmChars[0]) + '-' + yyyy;
+        }
 
     </script>
 
@@ -121,9 +121,9 @@ function convertDate(date) {
             dataLabels: {
                 enabled: false
             },
-            series: [{
+            series: [{% comment %}{
                 data: dataseries
-            },
+            },{% endcomment %}
 
             ],
             markers: {
@@ -152,12 +152,6 @@ function convertDate(date) {
 
         }
 
-        var chart = new ApexCharts(
-            document.querySelector("#timeline-chart"),
-            options
-        );
-
-        chart.render();
 
         var resetCssClasses = function (activeEl) {
             var els = document.querySelectorAll("button");
@@ -228,27 +222,42 @@ function convertDate(date) {
 {% block custom_eof_scripts %}
 
     <script>
-    var dataseries = {}
-        function user_submission_date_stats(request.user)
+        var dataseries = {}
 
-        {
+        function user_submission_date_stats() {
             console.log("requesting stats")
 
             $.ajax({
                 type: 'GET',
-                url: "{% url 'user-submission-stats' %}",
+                url: "{% url 'stats:user-submission-stats' user.username %}",
                 data: {},
                 dataType: 'json',
                 success: function (result) {
-                   dataseries = result
+                    dataseries = result.stats;
+
+                    options.series = [
+                        {
+                            {#data: dataseries#}
+                            data: [{ x: '05/06/2014', y: 54 }, { x: '05/08/2014', y: 17 } , { x: '05/28/2014', y: 26 }]
+
+                        },
+                    ];
+
+                    var chart = new ApexCharts(
+                        document.querySelector("#timeline-chart"),
+                        options
+                    );
+
+                    chart.render();
+
 
                 }
             });
         };
-                window.onload = function () {
-                interval_id = setInterval(user_submission_date_stats, 2000);
+        window.onload = function () {
+            interval_id = setTimeout(user_submission_date_stats, 1500);
 
-            }
+        }
 
     </script>
 

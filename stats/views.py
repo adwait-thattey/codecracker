@@ -31,4 +31,8 @@ def user_submission_date_stats(request, username):
 
 
 
-    return JsonResponse(req_stats, safe=False)
+    return JsonResponse({"stats":req_stats }, safe=False)
+
+
+def chart(request):
+    return render(request, "stats/Profile_statistics.html")
