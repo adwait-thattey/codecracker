@@ -150,7 +150,7 @@ ROOT_URLCONF = 'ase1_prj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'main_page', 'templates','main_page')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
