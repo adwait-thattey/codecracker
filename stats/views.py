@@ -2,6 +2,10 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Count, Avg
+from datetime import date
+from django.utils import timezone
+from dateutil.relativedelta import relativedelta
+
 
 # Create your views here.
 # Anybody can get anybody's stats
@@ -17,7 +21,7 @@ def user_submission_date_stats(request, username):
 
     req_stats = list()
     for S in submission_dates:
-        D = {"x":S['submitted_on__date'].strftime('%d/%m/%Y'), "y":S['count']}
+        D = {"x":S['submitted_on__date'].strftime('%m/%d/%Y'), "y":S['count']}
         req_stats.append(D)
 
     return JsonResponse({"stats":req_stats }, safe=False)
@@ -79,4 +83,15 @@ def user_avg_attempts_per_question(request, username):
     return JsonResponse({"stats":ret_stats}, safe=False)
 
 def chart(request):
-    return render(request, "stats/Profile_statistics.html")
+    current = (date.today()).strftime('%d %b %Y')
+    one_month = (date.today() + relativedelta(months=-1)).strftime('%d %b %Y')
+    six_months = (date.today() + relativedelta(months=+6)).strftime('%d %b %Y')
+    one_year = (date.today() + relativedelta(months=-12)).strftime('%d %b %Y')
+    ytd = (date.today().replace(day= 1 ,month = 1)).strftime('%d %b %Y')
+
+    print(ytd)
+    return render(request, "stats/Profile_statistics.html",{'one_month':str(one_month),
+            'six_months':str(six_months),
+            'one_year':str(one_year),
+            'current':str(current),
+            'ytd':str(ytd),})
