@@ -8,7 +8,7 @@
     }
 
     .tabs .tab a:hover{
-      background-color: grey lighten-4;
+      background-color: grey;
       color: black;
     }
     .tabs .tab a {
@@ -60,6 +60,7 @@
                     </div>
 
                     <div class="input-field col l6 s12">
+
                       {{ form.category }}
                     </div>
 
@@ -81,7 +82,7 @@
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.short_description.help_text}}</span>
                       {% endif %}
                       {% if form.short_description.errors %}
-                          <span class="helper-text red-text" style="font-size:large">{{form.short_description.errors</span>
+                          <span class="helper-text red-text" style="font-size:large">{{form.short_description.errors }}</span>
                       {% endif %}
                     </div>
                   <a href="#test-swipe-2" id="btnContinue" class="btn waves-effect right cyan darken-4 white-text">Next</a>
@@ -174,7 +175,7 @@
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.time_limit.help_text}}</span>
                       {% endif %}
                       {% if form.time_limit.errors %}
-                          <span class="helper-text red-text" style="font-size:large">{{form.time_limit.errors</span>
+                          <span class="helper-text red-text" style="font-size:large">{{form.time_limit.errors }}</span>
                       {% endif %}
                     </div>
 
@@ -227,8 +228,8 @@
 
         $('select').formSelect();
 
-        $('#textarea1').val();
-          M.textareaAutoResize($('#textarea1'));
+        {#$('#textarea1').val();#}
+        {#  M.textareaAutoResize($('#textarea1'));#}
 
         $('#icon_prefix3').characterCounter();
 

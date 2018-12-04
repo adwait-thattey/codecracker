@@ -20,6 +20,9 @@ def contest_question_create(request, contest_unique_id=None):
         if form.is_valid() and cq.is_valid():
             points= cq.cleaned_data["points"]
             cq_form = form.save()
+            cq.author = request.user
+            cq.active = False
+            cq.save()
             CQ=ContestQuestion.objects.create(question=cq_form, contest=c_id, points=points)
             CQ.save()
             return HttpResponse("Successfully added question in contest!!!")
@@ -38,7 +41,7 @@ def contest_question_edit(request, contest_unique_id, question_unique_id):
     instance1=get_object_or_404(Question, unique_code=question_unique_id)
     instance2=get_object_or_404(Contest, unique_code=contest_unique_id)
     instance = get_object_or_404(ContestQuestion, question=instance1, contest=instance2)
-    form = PostQuestionForm(request.POST or None, instance=instance1)
+    form = PostQuestionForm(request.POST or None, instance=instance1, initial={"category":instance1.category})
     cq= ContestQuestionForm(request.POST or None, instance=instance)
     if form.is_valid() and cq.is_valid():
         points= cq.cleaned_data["points"]

@@ -44,7 +44,7 @@ def edit_question(request, question_unique_id=None):
     instance = get_object_or_404(Question, unique_code=question_unique_id)
     if instance.author != request.user:
         return PermissionDenied("You can not edit this question!")
-    form = PostQuestionForm(request.POST or None, instance=instance)
+    form = PostQuestionForm(request.POST or None, instance=instance, initial={"category":instance.category})
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
