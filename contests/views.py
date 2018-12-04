@@ -11,46 +11,44 @@ from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
 def contest_question_create(request, contest_unique_id=None):
-    c_id = get_object_or_404(Contest, unique_code=contest_unique_id)
-    if (c_id.author != request.user):
+    contest_id = get_object_or_404(Contest, unique_code=contest_unique_id)
+    if (contest_id.author != request.user):
         return PermissionDenied("You can not post question in this contest!")
     if (request.method == "POST"):
         form = PostQuestionForm(request.POST)
-        cq= ContestQuestionForm(request.POST)
-        if form.is_valid() and cq.is_valid():
-            points= cq.cleaned_data["points"]
-            cq_form = form.save()
-            CQ=ContestQuestion.objects.create(question=cq_form, contest=c_id, points=points)
-            CQ.save()
+        contest_question_points= ContestQuestionForm(request.POST)
+        if form.is_valid() and contest_question_points.is_valid():
+            points= contest_question_points.cleaned_data["points"]
+            contest_question_form = form.save()
+            contest_question=ContestQuestion.objects.create(question=contest_question_form, contest=contest_id, points=points)
+            contest_question.save()
             return HttpResponse("Successfully added question in contest!!!")
     else:
         form = PostQuestionForm()
-        cq= ContestQuestionForm()
+        contest_question_points= ContestQuestionForm()
     context = {
-        'form':form,
-        'cq':cq,
+        'form': form,
+        'cq': contest_question_points,
     }
     return render(request, 'contests/create_contest_question.html', context)
 
 
 
 def contest_question_edit(request, contest_unique_id, question_unique_id):
-    instance1=get_object_or_404(Question, unique_code=question_unique_id)
-    instance2=get_object_or_404(Contest, unique_code=contest_unique_id)
-    instance = get_object_or_404(ContestQuestion, question=instance1, contest=instance2)
-    form = PostQuestionForm(request.POST or None, instance=instance1)
-    cq= ContestQuestionForm(request.POST or None, instance=instance)
-    if form.is_valid() and cq.is_valid():
-        points= cq.cleaned_data["points"]
-        cq_form = form.save(commit=False)
-        #CQ=ContestQuestion.objects.create(question=cq_form, contest=instance2, points=points)
-        #CQ.save()
-        cq_form.save()
-        cq.save()
+    question_instance=get_object_or_404(Question, unique_code=question_unique_id)
+    contest_instance=get_object_or_404(Contest, unique_code=contest_unique_id)
+    instance = get_object_or_404(ContestQuestion, question=question_instance, contest=contest_instance)
+    form = PostQuestionForm(request.POST or None, instance=question_instance)
+    contest_question_points= ContestQuestionForm(request.POST or None, instance=instance)
+    if form.is_valid() and contest_question_points.is_valid():
+        points= contest_question_points.cleaned_data["points"]
+        contest_question_form = form.save(commit=False)
+        contest_question_form.save()
+        contest_question_points.save()
         return HttpResponse("Successfully edited question in contest!!!")
     context = {
     'form': form,
-    'cq': cq
+    'cq': contest_question_points
     }
     return render(request, "contests/create_contest_question.html", context)
 

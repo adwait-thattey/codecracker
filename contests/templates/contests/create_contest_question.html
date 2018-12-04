@@ -29,7 +29,6 @@
       <div class="container">
         <div class="card hoverable grey lighten-4">
           <div class="card-content">
-            <form method="post" id="contest-question-form" action="">
 
             <ul id="tabs-swipe-demo" class="tabs grey lighten-4">
               <li class="tab col s3 " ><a href="#test-swipe-1" class="active">Basic Info</a></li>
@@ -44,8 +43,7 @@
                     <span class="red-text">{{ form.non_field_errors }}</span>
                   {% endif %}
 
-
-
+                  <form method="post">
                     {% csrf_token %}
 
                     <div class="input-field col l12 s12">
@@ -194,7 +192,6 @@
                 </div>
               </div>
             </div>
-            </form>
           </div>
         </div>
       </div>
