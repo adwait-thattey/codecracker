@@ -1,10 +1,8 @@
 from time import sleep
-
 from django.http import JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-
 from questions.docker import Docker
 from questions.models import Question, Submission, Result, TestCase, Category, QuestionView
 from questions.utils import run_in_background

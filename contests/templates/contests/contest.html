@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <form method="post">
+      {% csrf_token %}
+      {{form.media}}
+      {{form}}
+      {{cq.points}}
+      <input type="submit">
+    </form>
+  </body>
+</html>

@@ -15,19 +15,30 @@ class Contest(models.Model):
     title = models.CharField(max_length=200)
     author = models.ForeignKey(to=User, on_delete=models.PROTECT)
 
+    short_description = models.TextField(verbose_name="Short Description",
+                                         max_length=250,
+                                         help_text="A short description whch describes your contest.",
+                                         null=True,
+                                         )
+
     description = RichTextUploadingField(help_text="Give a brief or detailed description for your contest")
 
-    eligibility = RichTextField(null=True, help_text="What is the eligibility criteria for participants?")
+    eligibility = models.CharField(null=True, help_text="What is the eligibility criteria for participants?", max_length=200)
 
-    rules = RichTextField(null=True, help_text="What are the rules that all participants must follow?")
+    rules = models.CharField(null=True, help_text="What are the rules that all participants must follow?", max_length=200)
 
-    prizes = RichTextField(null=True, help_text="Mention prizes for diff positions/winners (If any)")
+    prizes = models.CharField(null=True, help_text="Mention prizes for diff positions/winners (If any)", max_length=200)
 
-    contacts = RichTextField(null=True,
+    contacts = models.EmailField(null=True,
                              help_text="Give your email, phone etc. so that people can contact you if they need to")
 
-    start_date = models.DateTimeField(verbose_name="Start Date Time")
-    end_date = models.DateTimeField(verbose_name="End Date Time")
+    start_date = models.DateField(verbose_name="Start Date")
+
+    start_time = models.TimeField(verbose_name="Start Time", null=True)
+
+    end_date = models.DateField(verbose_name="End Date")
+
+    end_time = models.TimeField(verbose_name="End Time", null=True)
 
     unique_code = models.CharField(verbose_name="Unique Code",
                                    max_length=15,
@@ -43,14 +54,13 @@ class Contest(models.Model):
                                     help_text="If you choose to make this non public, please enter a link below that participants will\
                                   click to register for the contest. It can lead to a form or a website etc. After they complete \
                                   registration, it is your responsibility to add them in the participants list via\
-                                   the REST API call")
+                                   the REST API call.")
 
     registration_link = models.URLField(verbose_name="Registration Link", blank=True)
 
     participants = models.ManyToManyField(to=User, related_name="participating_contests")
 
-
 class ContestQuestion(models.Model):
     question = models.OneToOneField(to=Question, on_delete=models.CASCADE)
     contest = models.ForeignKey(to=Contest, on_delete=models.PROTECT)
-    points = models.IntegerField(default=0)
+    points = models.IntegerField(default=0, null=False)
