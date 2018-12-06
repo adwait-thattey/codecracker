@@ -45,31 +45,31 @@
 
 <div class="row">
 	<div class="col l7 offset-l1 s12 m8">
-        <div class="card green lighten-5">
+        <div class="card " style="border: none;">
             <div class="card-content" style="line-height: 2.3; font-size: 16px">
             	<div id='description'>
             		<b>Description:</b><br>
-            		{{contest.description|safe}}
+            		{{contest.description|safe|linebreaks}}
             	</div>
 
             	<div id='eligibility'>
             		<b>Eligibility:</b><br>
-            		{{contest.eligibility|safe}}
+            		{{contest.eligibility|safe|linebreaks}}
             	</div>
 
             	<div id="rules">
             		<b> Rules:</b><br>
-            		{{contest.rules|safe}}
+            		{{contest.rules|safe|linebreaks}}
             	</div>
 
             	<div id="prizes">
             		<b>Prizes</b><br>
-            		{{contest.prizes|safe}}
+            		{{contest.prizes|safe|linebreaks}}
             	</div>
 
             	<div id="contacts">
             		<b>Contacts for queries:</b><br>
-            		{{contest.contacts|safe}}
+            		{{contest.contacts|safe|linebreaks}}
             	</div>
 
             </div>
@@ -80,7 +80,7 @@
 
 	<div class="hide-on-small-only"> 
         <div class="col l3 m4">
-			<div class="card teal lighten-5">
+			<div class="card " style="border: solid;">
                 <div class="card-content" style="font-size: medium; padding: 20px;">
 
                 	<div id="organizer">
@@ -98,7 +98,7 @@
                 		{{contest.end_date}}
                 	</div>
 
-                	<div class="card teal lighten-5">
+                	<div class="card">
                         <div class="card-content" style="font-size: medium; padding: 20px;">
 
                             <span class="card-title center">
@@ -141,7 +141,7 @@
             	</div>
 
             	<div class="card">
-                    <div class="card-content teal lighten-5">
+                    <div class="card-content">
 
                         <span class="card-title center">
                             <a class="waves-effect waves-light btn modal-trigger btn-large"
