@@ -13,6 +13,9 @@ from .background_tasks import RunAndAssert, LimitThreads
 from django.forms import modelformset_factory
 
 
+
+
+
 # Create your views here.
 def start_code_run_sequence(submission):
     # WARNING DO NOT MAKE THIS ASYNC PROCESS. THE RESULT WILL NOT RENDER IN RESULTS PAGE
@@ -92,7 +95,7 @@ def submit_solution(request, question_unique_id):
             submission.save()
 
             start_code_run_sequence(submission)
-            return redirect('questions:submission-result', question.unique_code, submission.attempt_number)
+            return redirect('questions:submission-result', question.unique_code, request.user.username, submission.attempt_number)
 
     else:
         submission_form = SubmissionForm()
@@ -100,8 +103,10 @@ def submit_solution(request, question_unique_id):
 
 
 @login_required
-def submission_result(request, question_unique_id, submission_attempt):
-    submission = get_object_or_404(Submission, question__unique_code=question_unique_id,
+def submission_result(request, question_unique_id, username, submission_attempt):
+    submission = get_object_or_404(Submission,
+                                   user__username=username,
+                                   question__unique_code=question_unique_id,
                                    attempt_number=submission_attempt)
 
     return render(request, "questions/results.html", {"submission": submission})
@@ -338,3 +343,15 @@ def ajax_call_rerun_all_testcase_submissions(request, question_unique_id):
 #    if request.
 def redirect_to_browse(request):
     return redirect('questions:browse')
+
+
+#
+#
+# API Views below    
+#
+#
+
+
+
+def say_hello():
+    return HttpResponse("Hello")
