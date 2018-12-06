@@ -1,7 +1,5 @@
-from django.urls import path, include
-
+from django.urls import path
 app_name = "api"
+urlpatterns= [
 
-urlpatterns=[
-    path('questions/', include('questions.api_urls'))
 ]
