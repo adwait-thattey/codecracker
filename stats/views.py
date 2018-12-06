@@ -52,3 +52,6 @@ def chart(request):
             'one_year':str(one_year),
             'current':str(current),
             'ytd':str(ytd),})
+
+def display_pie(request):
+    return render(request,"stats/Profile_statistics_pie.html")

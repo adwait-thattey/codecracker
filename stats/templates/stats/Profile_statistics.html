@@ -25,6 +25,12 @@
             margin-left: 45px;
         }
 
+        #chart1 {
+
+            max-width: 380px;
+            margin: 35px auto;
+        }
+
         button {
             background: #fff;
             color: #222;
@@ -61,6 +67,12 @@
             </div>
             <div id="timeline-chart"></div>
         </div>
+
+         <div id="chart1">
+
+        </div>
+
+
     </section>
 
 
@@ -259,6 +271,37 @@
         }
 
     </script>
+
+
+        <script>
+            var options1 = {
+                chart: {
+                    width: 380,
+                    type: 'pie',
+                },
+                labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+                series: [44, 55, 13, 43, 22],
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+            var chart1 = new ApexCharts(
+                document.querySelector("#chart1"),
+                options1
+            );
+
+            chart1.render();
+
+        </script>
 
 
 {% endblock %}
