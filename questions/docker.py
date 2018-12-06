@@ -20,8 +20,9 @@ class Docker:
         :param input_file: Input File
         :param time_limit: the code will be terminated if it exceeds this limit (in seconds)
         """
-        if code_file[0] != "/" or input_file[0] != "/":
-            raise ValueError("You must supply the absolute path of the code file and input file not the relative path")
+        if sys.platform == "linux":
+            if code_file[0] != "/" or input_file[0] != "/":
+                raise ValueError("You must supply the absolute path of the code file and input file not the relative path")
 
         self.CONTAINER_UNIQUE_CODE = str(unique_code)
         self.LOAD_VOLUME_DIR = os.path.join(settings.DOCKER_ROOT, self.CONTAINER_UNIQUE_CODE)
