@@ -3,33 +3,39 @@
 
 {% block internal_styles %}
     <style>
-    .tabs .indicator{
-      background-color: #006064;
-    }
+      .tabs .indicator{
+        background-color: #000000;
+      }
 
-    .tabs .tab a:hover{
-      background-color: grey lighten-4;
-      color: black;
-    }
-    .tabs .tab a {
-      color: #006064;
-    }
+      .tabs .tab a:hover{
+        color: black;
+      }
+      .tabs .tab a {
+        color: #000000;
+      }
 
-   .tabs .tab a.active{
-      color: #006064;
-    }
+     .tabs .tab a.active{
+        color: #000000;
+      }
 
+      #card{
+        border-top: 5px solid rgba(60, 186, 84, 0.8);
+      }
+
+      .input-field label{
+        color: #009688;
+      }
   </style>
 {% endblock internal_styles %}
 
 
   {% block main_content %}
     <main>
-
+    <div class="divider"></div>
       <div class="container">
-        <div class="card hoverable grey lighten-4">
+        <h4>Create Question</h4>
+        <div class="card hoverable grey lighten-4" id="card">
           <div class="card-content">
-
 
             <ul id="tabs-swipe-demo" class="tabs grey lighten-4">
               <li class="tab col s3 " ><a href="#test-swipe-1" class="active">Basic Info</a></li>
@@ -93,7 +99,7 @@
             <div id="test-swipe-2" class="col s12">
               <div class="row">
                 <div class="col l12 s12">
-                    <div class="input-field col s12 l12 m12">
+                    <div class="input-field col s12 l12 m12 center-align">
                       {{form.media}}
                       {{form.description}}
                     </div>
@@ -186,7 +192,7 @@
           </div>
         </div>
       </div>
-    </main>
+    </main><br><br>
   {% endblock main_content %}
 
   {% block custom_eof_scripts %}

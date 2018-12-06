@@ -19,6 +19,8 @@ def contest_question_create(request, contest_unique_id=None):
         contest_question_points= ContestQuestionForm(request.POST)
         if form.is_valid() and contest_question_points.is_valid():
             points= contest_question_points.cleaned_data["points"]
+            contest_question_points.author = request.user
+            contest_question_points.active = False
             contest_question_form = form.save()
             contest_question=ContestQuestion.objects.create(question=contest_question_form, contest=contest_id, points=points)
             contest_question.save()
@@ -38,7 +40,7 @@ def contest_question_edit(request, contest_unique_id, question_unique_id):
     question_instance=get_object_or_404(Question, unique_code=question_unique_id)
     contest_instance=get_object_or_404(Contest, unique_code=contest_unique_id)
     instance = get_object_or_404(ContestQuestion, question=question_instance, contest=contest_instance)
-    form = PostQuestionForm(request.POST or None, instance=question_instance)
+    form = PostQuestionForm(request.POST or None, instance=question_instance, initial={"category":question_instance.category})
     contest_question_points= ContestQuestionForm(request.POST or None, instance=instance)
     if form.is_valid() and contest_question_points.is_valid():
         points= contest_question_points.cleaned_data["points"]

@@ -4,25 +4,28 @@
 {% block internal_styles %}
     <style>
     .tabs .indicator{
-      background-color: #006064;
+      background-color: #000000;
     }
 
     .tabs .tab a:hover{
-      background-color: grey lighten-4;
-      color: black;
+      color: #000000;
     }
+
     .tabs .tab a {
-      color: #006064;
+      color: #000000;
     }
 
    .tabs .tab a.active{
-      color: #006064;
+      color: #000000;
     }
 
     #card{
-      border-top: 5px solid rgba(100, 150, 255, 1);
+      border-top: 5px solid rgba(100, 150, 255, 0.9);
     }
 
+    .input-field label{
+      color: #009688;
+    }
   </style>
 {% endblock internal_styles %}
 
@@ -48,11 +51,8 @@
                     <span class="red-text">{{ form.non_field_errors }}</span>
                   {% endif %}
 
-
                   <form method="post">
                     {% csrf_token %}
-
-
 
                     <div class="input-field col l12 s12">
                       {{form.title|add_class:"materialize-textarea"}}
@@ -77,7 +77,7 @@
                       {% endif %}
                     </div>
 
-                    <div class="input-field col s12 l12">
+                    <div class="input-field col s12 l6">
                       {{form.start_date|add_class:"datepicker"}}
                       <label for="{{form.start_date.id_for_label}}">Contest Start Date</label>
                       {% if form.start_date.help_text %}
@@ -88,7 +88,7 @@
                       {% endif %}
                     </div>
 
-                    <div class="input-field col s12 l12">
+                    <div class="input-field col s12 l6">
                       {{form.start_time|add_class:"timepicker"}}
                       <label for="{{form.start_time.id_for_label}}">Contest Start Time</label>
                       {% if form.start_time.help_text %}
@@ -111,7 +111,7 @@
                       {% endif %}
                     </div>
 
-                    <div class="input-field col s12 l12">
+                    <div class="input-field col s12 l6">
                       {{form.end_time|add_class:"timepicker"}}
                       <label for="{{form.end_time.id_for_label}}">Contest End Time</label>
                       {% if form.end_time.help_text %}
@@ -141,7 +141,7 @@
             <div id="test-swipe-2" class="col s12">
               <div class="row">
                 <div class="col l12 s12">
-                    <div class="input-field col s12 l12 m12">
+                    <div class="input-field col s12 l12 m12 center-align">
                       {{form.media}}
                       {{form.description}}
                     </div>
@@ -202,8 +202,7 @@
 
                     <div class="input-field col l12 m12 s12">
                       <label>
-                      {{ form.is_public }} <span>Is this Public Contest?</span>
-                      <!-- <label for="{{form.is_public.id_for_label}}">is_public</label> -->
+                      {{ form.is_public|attr:"id:public"}} <span>Is this Public Contest?</span>
                       </label>
                     </div>
 
@@ -220,7 +219,7 @@
 
 
                     <div class="input-field col l12 m12 s12">
-                      {{form.registration_link|add_class:"materialize-textarea"}}
+                      {{form.registration_link|add_class:"materialize-textarea"|attr:"id:link"}}
                       <label for="{{form.registration_link.id_for_label}}">Registration Link</label>
                       {% if form.registration_link.help_text %}
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.registration_link.help_text}}</span>
@@ -272,6 +271,16 @@
 
         $('#icon_prefix3').characterCounter();
 
+        $('#link').prop('disabled', true);
+
+        $('#public').change(function(){
+          if($('#public').is(':checked') == true){
+            $('#link').prop('disabled', true);
+          }
+          else{
+            $('#link').prop('disabled', false);
+          }
+        });
       });
 
       document.addEventListener('DOMContentLoaded', function() {

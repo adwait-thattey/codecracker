@@ -4,19 +4,26 @@
 {% block internal_styles %}
     <style>
     .tabs .indicator{
-      background-color: #006064;
+      background-color: #000000;
     }
 
     .tabs .tab a:hover{
-      background-color: grey lighten-4;
       color: black;
     }
     .tabs .tab a {
-      color: #006064;
+      color: #000000;
     }
 
    .tabs .tab a.active{
-      color: #006064;
+      color: #000000;
+    }
+
+    #card{
+      border-top: 5px solid rgba(60, 186, 84, 0.8);
+    }
+
+    .input-field label{
+      color: #009688;
     }
 
   </style>
@@ -25,9 +32,10 @@
 
   {% block main_content %}
     <main>
-
+      <div class="divider"></div>
       <div class="container">
-        <div class="card hoverable grey lighten-4">
+        <h4>Create Question</h4>
+        <div class="card hoverable grey lighten-4" id="card">
           <div class="card-content">
 
             <ul id="tabs-swipe-demo" class="tabs grey lighten-4">
@@ -79,7 +87,7 @@
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.short_description.help_text}}</span>
                       {% endif %}
                       {% if form.short_description.errors %}
-                          <span class="helper-text red-text" style="font-size:large">{{form.short_description.errors</span>
+                          <span class="helper-text red-text" style="font-size:large">{{form.short_description.errors }}</span>
                       {% endif %}
                     </div>
                   <a href="#test-swipe-2" id="btnContinue" class="btn waves-effect right cyan darken-4 white-text">Next</a>
@@ -91,7 +99,7 @@
             <div id="test-swipe-2" class="col s12">
               <div class="row">
                 <div class="col l12 s12">
-                    <div class="input-field col s12 l12 m12">
+                    <div class="input-field col s12 l12 m12 center-align">
                       {{form.media}}
                       {{form.description}}
                     </div>
@@ -172,7 +180,7 @@
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.time_limit.help_text}}</span>
                       {% endif %}
                       {% if form.time_limit.errors %}
-                          <span class="helper-text red-text" style="font-size:large">{{form.time_limit.errors</span>
+                          <span class="helper-text red-text" style="font-size:large">{{form.time_limit.errors }}</span>
                       {% endif %}
                     </div>
 
@@ -195,7 +203,7 @@
           </div>
         </div>
       </div>
-    </main>
+    </main><br><br>
   {% endblock main_content %}
 
   {% block custom_eof_scripts %}
@@ -224,8 +232,8 @@
 
         $('select').formSelect();
 
-        $('#textarea1').val();
-          M.textareaAutoResize($('#textarea1'));
+        {#$('#textarea1').val();#}
+        {#  M.textareaAutoResize($('#textarea1'));#}
 
         $('#icon_prefix3').characterCounter();
 
