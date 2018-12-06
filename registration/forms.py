@@ -4,6 +4,8 @@ from registration import models
 
 from django.core.validators import MinLengthValidator
 
+from registration.models import UserProfile
+
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), validators=[MinLengthValidator(8)])
@@ -30,6 +32,11 @@ class RegisterForm(forms.ModelForm):
         elif password != confirm_password:
             self.add_error("confirm_password", "Both Passwords Do Not Match!")
 
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['user' , 'phone_number','institute','designation']
 
 class GoogleRegisterFrom(forms.Form):
     gog_id = forms.CharField()
