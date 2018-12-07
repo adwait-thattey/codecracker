@@ -22,6 +22,7 @@ class TestRegisterSubmission(TestCase):
 class TestLoginSubmission(TestCase):
 
     def setUp(self):
+
         self.user = User.objects.create(username="testuser002", email="testuser002@ts.com", password="Hello World")
 
     def test_submission(self):
