@@ -4,6 +4,7 @@ from ckeditor.widgets import CKEditorWidget
 
 
 class PostQuestionForm(forms.ModelForm):
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), empty_label="Select A Category", to_field_name="name")
     class Meta:
         model = Question
         fields = ['title', 'category', 'unique_code', 'short_description', 'description', 'input_format',

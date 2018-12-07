@@ -1,0 +1,302 @@
+{% extends 'main_page/nav.html' %}
+{% load widget_tweaks %}
+
+{% block internal_styles %}
+    <style>
+    .tabs .indicator{
+      background-color: #000000;
+    }
+
+    .tabs .tab a:hover{
+      color: #000000;
+    }
+
+    .tabs .tab a {
+      color: #000000;
+    }
+
+   .tabs .tab a.active{
+      color: #000000;
+    }
+
+    #card{
+      border-top: 5px solid rgba(100, 150, 255, 0.9);
+    }
+
+    .input-field label{
+      color: #009688;
+    }
+  </style>
+{% endblock internal_styles %}
+
+
+  {% block main_content %}
+    <main>
+      <div class="divider"></div>
+      <div class="container">
+      <h4>Create Contest</h4>
+        <div class="card hoverable grey lighten-4" id="card">
+          <div class="card-content">
+
+            <ul id="tabs-swipe-demo" class="tabs grey lighten-4">
+              <li class="tab col s3 " ><a href="#test-swipe-1" class="active">Basic Info</a></li>
+              <li class="tab col s3"><a href="#test-swipe-2">Description</a></li>
+              <li class="tab col s3" ><a href="#test-swipe-3">Formats</a></li>
+            </ul>
+
+            <div id="test-swipe-1" class="col s12">
+              <div class="row">
+                <div class="col l10 offset-l1 s12">
+                  {% if form.non_field_errors %}
+                    <span class="red-text">{{ form.non_field_errors }}</span>
+                  {% endif %}
+
+                  <form method="post">
+                    {% csrf_token %}
+
+                    <div class="input-field col l12 s12">
+                      {{form.title|add_class:"materialize-textarea"}}
+                      <label for="{{form.title.id_for_label}}">Tittle</label>
+                      {% if form.title.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.title.help_text}}</span>
+                      {% endif %}
+                      {% if form.title.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.title.errors}}</span>
+                      {% endif %}
+                    </div>
+
+
+                    <div class="input-field col l12 s12">
+                      {{form.unique_code|add_class:"materialize-textarea"}}
+                      <label for="{{form.unique_code.id_for_label}}">Unique Code</label>
+                      {% if form.unique_code.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.unique_code.help_text}}</span>
+                      {% endif %}
+                      {% if form.unique_code.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.unique_code.errors}}</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="input-field col s12 l6">
+                      {{form.start_date|add_class:"datepicker"}}
+                      <label for="{{form.start_date.id_for_label}}">Contest Start Date</label>
+                      {% if form.start_date.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.start_date.help_text}}</span>
+                      {% endif %}
+                      {% if form.start_date.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.start_date.errors}}</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="input-field col s12 l6">
+                      {{form.start_time|add_class:"timepicker"}}
+                      <label for="{{form.start_time.id_for_label}}">Contest Start Time</label>
+                      {% if form.start_time.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.start_time.help_text}}</span>
+                      {% endif %}
+                      {% if form.start_time.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.start_time.errors}}</span>
+                      {% endif %}
+                    </div>
+
+
+                    <div class="input-field col s12 l6">
+                      {{form.end_date|add_class:"datepicker"}}
+                      <label for="{{form.start_date.id_for_label}}" >Contest End Date</label>
+                      {% if form.end_date.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.end_date.help_text}}</span>
+                      {% endif %}
+                      {% if form.end_date.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.end_date.errors}}</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="input-field col s12 l6">
+                      {{form.end_time|add_class:"timepicker"}}
+                      <label for="{{form.end_time.id_for_label}}">Contest End Time</label>
+                      {% if form.end_time.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.end_time.help_text}}</span>
+                      {% endif %}
+                      {% if form.end_time.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.end_time.errors}}</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="input-field col s12">
+                      {{form.short_description|add_class:"materialize-textarea"|attr:"id:icon_prefix3"}}
+                      <label for="{{form.short_description.id_for_label}}">Short Description</label>
+                      {% if form.short_description.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.short_description.help_text}}</span>
+                      {% endif %}
+                      {% if form.short_description.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.short_description.errors}}</span>
+                      {% endif %}
+                    </div>
+                  <a href="#test-swipe-2" id="btnContinue" class="btn waves-effect right cyan darken-4 white-text">Next</a>
+                </div>
+              </div>
+            </div>
+
+
+            <div id="test-swipe-2" class="col s12">
+              <div class="row">
+                <div class="col l12 s12">
+                    <div class="input-field col s12 l12 m12 center-align">
+                      {{form.media}}
+                      {{form.description}}
+                    </div>
+                    <a href="#test-swipe-3" id="btnContinue2" class="btn waves-effect right cyan darken-4 white-text">Next</a>
+                    <a href="#test-swipe-1" id="btnBack" class="btn waves-effect left cyan darken-4 white-text">Back</a>
+                </div>
+              </div>
+            </div>
+
+
+            <div id="test-swipe-3" class="col s12">
+              <div class="row">
+                <div class="col l10 offset-l1 s12">
+
+                    <div class="input-field col l12 m12 s12">
+                      {{form.eligibility|add_class:"materialize-textarea"}}
+                      <label for="{{form.eligibility.id_for_label}}">Eligibility criteria</label>
+                      {% if form.eligibility.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.eligibility.help_text}}</span>
+                      {% endif %}
+                      {% if form.eligibility.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.eligibility.errors}}</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="input-field col l12 m12 s12">
+                      {{form.rules|add_class:"materialize-textarea"}}
+                      <label for="{{form.rules.id_for_label}}">Rules</label>
+                      {% if form.rules.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.rules.help_text}}</span>
+                      {% endif %}
+                      {% if form.rules.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.rules.errors }}</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="input-field col l12 m12 s12">
+                      {{form.prizes|add_class:"materialize-textarea"}}
+                      <label for="{{form.prizes.id_for_label}}">Prizes</label>
+                      {% if form.prizes.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.prizes.help_text}}</span>
+                      {% endif %}
+                      {% if form.prizes.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.prizes.errors }}</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="input-field col l12 m12 s12">
+                      {{form.contacts|add_class:"materialize-textarea"}}
+                      <label for="{{form.contacts.id_for_label}}">contacts</label>
+                      {% if form.contacts.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.contacts.help_text}}</span>
+                      {% endif %}
+                      {% if form.contacts.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.contacts.errors }}</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="input-field col l12 m12 s12">
+                      <label>
+                      {{ form.is_public|attr:"id:public"}} <span>Is this Public Contest?</span>
+                      </label>
+                    </div>
+
+                    <div class="input-field col l12 m12 s12">
+                      <span class="col s12 l12 " style="padding-top:3vh;">
+                      {% if form.is_public.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.is_public.help_text}}</span>
+                      {% endif %}
+                      {% if form.is_public.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.is_public.errors }}</span>
+                      {% endif %}
+                      </span>
+                    </div>
+
+
+                    <div class="input-field col l12 m12 s12">
+                      {{form.registration_link|add_class:"materialize-textarea"|attr:"id:link"}}
+                      <label for="{{form.registration_link.id_for_label}}">Registration Link</label>
+                      {% if form.registration_link.help_text %}
+                          <span class="helper-text" data-error="wrong" data-success="right">{{form.registration_link.help_text}}</span>
+                      {% endif %}
+                      {% if form.registration_link.errors %}
+                          <span class="helper-text red-text" style="font-size:large">{{form.registration_link.errors }}</span>
+                      {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn waves-effect right cyan darken-4 white-text" name="submit">Post</button>
+                    <a href="#test-swipe-2" id="btnBack2" class="btn waves-effect left cyan darken-4 white-text">Back</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main><br><br>
+  {% endblock main_content %}
+
+  {% block custom_eof_scripts %}
+      <script>
+      $(document).ready(function(){
+
+        $('ul.tabs').tabs({
+          swipeable: false,
+        });
+
+        $("#btnContinue").click(function() {
+          $('ul.tabs').tabs('select', 'test-swipe-2');
+        });
+
+        $("#btnContinue2").click(function() {
+            $('ul.tabs').tabs('select', 'test-swipe-3');
+        });
+
+        $("#btnBack").click(function() {
+          $('ul.tabs').tabs('select', 'test-swipe-1');
+        });
+
+        $("#btnBack2").click(function() {
+          $('ul.tabs').tabs('select', 'test-swipe-2');
+        });
+
+        $('select').formSelect();
+
+        $('#textarea1').val();
+          M.textareaAutoResize($('#textarea1'));
+
+        $('#icon_prefix3').characterCounter();
+
+        $('#link').prop('disabled', true);
+
+        $('#public').change(function(){
+          if($('#public').is(':checked') == true){
+            $('#link').prop('disabled', true);
+          }
+          else{
+            $('#link').prop('disabled', false);
+          }
+        });
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.datepicker');
+        options = {
+          "format": "yyyy-mm-dd"
+        }
+        var instances = M.Datepicker.init(elems, options);
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.timepicker');
+        options = {
+          "twelveHour": false
+        }
+        var instances = M.Timepicker.init(elems, options);
+      });
+    </script>
+  {% endblock custom_eof_scripts %}
