@@ -60,7 +60,7 @@ class Docker:
 
         main_cmd = f"timeout {self.time_limit}s bash -c 'cat {settings.DOCKER_MOUNT_PATH}/{self.input_file_name} | python3.6 {settings.DOCKER_MOUNT_PATH}/{self.code_file_name} > output.txt' ; echo $? > exit_code.txt"
 
-        print(main_cmd)
+        # print(main_cmd)
         fe = open(self.error_file, "w")
         dock_ex = subprocess.run(
             ["docker", "exec", "-t", self.CONTAINER_UNIQUE_CODE, "sh", "-c", main_cmd],
@@ -70,7 +70,7 @@ class Docker:
         fe.close()
 
         if is_file_empty(self.error_file) is False:
-            print("Code Errored")
+            # print("Code Errored")
             # f = open(self.error_file, "r")
             # print(f.readlines())
             # f.close()
