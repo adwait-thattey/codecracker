@@ -131,11 +131,19 @@
                     <div class="card" style="border: none;">
                         <div class="card-content" style="border: none;">
 
+                            {% if user.is_authenticated %}
+                                <span class="card-title center">
+                                    <a class="waves-effect waves-light btn modal-trigger btn-large"
+                                       href="javascript:void(0);" data-target="solve">Solve</a> <br>
+                                </span>
+                            {% endif %}
 
-                            <span class="card-title center">
-                                <a class="waves-effect waves-light btn modal-trigger btn-large"
-                                   href="javascript:void(0);" data-target="solve">Solve</a> <br>
-                            </span>
+                            {% if user.is_authenticated == False %}
+                                <span class="card-title center">
+                                    <a class="waves-effect waves-light btn btn-large"
+                                       href="{% url 'registration:login' %}" >Log in to solve</a>
+                                </span>
+                            {% endif %}
 
                         </div>
                     </div>

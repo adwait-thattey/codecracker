@@ -82,6 +82,8 @@ def edit_contest(request, contest_unique_id):
         'form': form
     }
     return render(request, "contests/create_contest.html", context)
+
+
 def view_contest_page(request, contest_unique_code):
 	contest = get_object_or_404(Contest, unique_code= contest_unique_code)
 	return render(request, 'contest_page.html', {'contest': contest})
