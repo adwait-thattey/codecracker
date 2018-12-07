@@ -244,12 +244,12 @@
                         dataType: 'json',
                         success: function (result) {
 
-                            console.log(result);
+                            {#console.log(result);#}
                             notification_loader.style.display = "none";
                             for (notif of result.notifications) {
                                 single_notif = "<li><a href='" + notif[2] + "'><i class='material-icons'>" + notif[1] + "</i>" + notif[0] + "</a></li>"
                                 notification_bar.innerHTML += single_notif
-                                console.log(single_notif)
+                                {#console.log(single_notif)#}
                             }
                         }
                     });
@@ -267,8 +267,8 @@
                     dataType: 'json',
                     success: function (result) {
 
-                        console.log(result);
-                        console.log(result.notifications);
+                        {#console.log(result);#}
+                        {#console.log(result.notifications);#}
 
                         for (notif of result.notifications) {
                             var toastHTML = "<a class='valign-wrapper white-text' href='" + notif[2] + "'><i class='material-icons' style='padding-right:10px;'>" + notif[1] + "</i>" + notif[0] + "</a>";
@@ -282,7 +282,7 @@
             };
 
             window.onload = function () {
-                interval_id = setInterval(get_toast_notifications, 2000);
+                interval_id = setInterval(get_toast_notifications, 3500);
                 {#get_toast_notifications();#}
             }
 
