@@ -12,7 +12,7 @@ class LogoutViewTest(TestCase):
         self.createduser = User.objects.create_user(username="testnormaluser", email="testnormaluser@ts.com",
                                                     password="Test Hello World")
         self.client = None
-      #  self.request_url = '/registration/log'
+         #  self.request_url = '/registration/log'
         # Create clients on the fly in the tests as login/logout is required
 
     def test_logout_view(self):

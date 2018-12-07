@@ -71,3 +71,17 @@ class LoginUrlTest(TestCase):
         response = self.client.get('registration/login/blahblah')
         self.assertEqual(response.status_code, 404)
 
+
+class LogoutUrlTest(TestCase):
+
+    def setUp(self):
+        self.createduser = User.objects.create_user(username="testnormaluser", email="testnormaluser@ts.com",
+                                                    password="Test Hello World")
+        self.client = None
+        self.request_url = '/registration/logout'
+
+    def test_authenticated_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get(self.request_url)
+        self.assertRedirects(response, expected_url="/index")

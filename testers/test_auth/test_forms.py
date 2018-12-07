@@ -1,7 +1,7 @@
 from django.http import request
 
 from registration.forms import RegisterForm, UserProfileForm
-from registration.models import UserProfile
+from registration.models import UserProfile, Institute
 from django.contrib.auth.models import User
 from django.test import TestCase
 
@@ -11,27 +11,29 @@ class TestUserProfileForm(TestCase):
 
     def setUp(self):
         self.user = User.objects.create(username="testuser002", email="testuser002@ts.com", password="Hello World")
+        self.name = Institute.objects.create(name="sample institution")
 
     def test_all_details_submitted(self):
-        form_instance = UserProfileForm(data={
-            "user": "Sample User",
-            "phone_number": 9999999999,
-            "institute": "Sample institute",
+        form_instance = UserProfileForm(instance=self.user.userprofile, data={
+            "user": self.user.id,
+            "phone_number": "9999999999",
+            "institute": self.name.id,
             "designation":"STU",
         })
 
+        if not form_instance.is_valid():
+            print(form_instance.errors)
         self.assertEqual(form_instance.is_valid(), True)
 
         register = form_instance.save(commit=False)
 
         register.save()
 
-       # model_instance = UserProfile.objects.get(**********)
         model_instance = UserProfile.objects.get(user = "Sample User")
 
         self.assertEqual(model_instance.user, "Sample User")
         self.assertEqual(model_instance.phone_number, 9999999999)
-        self.assertEqual(model_instance.institute, "Sample institute")
+        self.assertEqual(model_instance.institute, self.name)
         self.assertEqual(model_instance.designation, "STU")
 
     def test_missing_user(self):
@@ -158,7 +160,6 @@ class TestRegisterForm(TestCase):
         self.assertEqual(form_instance.is_valid(), False)
         self.assertNotEqual(form_instance.errors.get("password"), None)
 
-
     def test_missing_confirm_password(self):
         form_instance = RegisterForm(data={
             "first_name": "test",
@@ -171,8 +172,6 @@ class TestRegisterForm(TestCase):
         self.assertEqual(form_instance.is_valid(), False)
         self.assertNotEqual(form_instance.errors.get("confirm_password"), None)
 
-
-
     def test_duplicate_username(self):
         form_instance = RegisterForm(data={
             "first_name": "test",
@@ -184,9 +183,6 @@ class TestRegisterForm(TestCase):
         })
 
         self.assertEqual(form_instance.is_valid(),False)
-        # self.assertFormError(response=404,form = RegisterForm,field= "username",msg_prefix="This username already exists. Please choose another")
-
-
 
     def test_duplicate_email(self):
         form_instance = RegisterForm(data={
@@ -199,7 +195,6 @@ class TestRegisterForm(TestCase):
         })
 
         self.assertEqual(form_instance.is_valid(),False)
-        # self.assertFormError(response=404,form = RegisterForm,field= "email",msg_prefix="A user with this email already exists. Please login to your account")
 
     def test_passwords_donot_match(self):
         form_instance = RegisterForm(data={
@@ -212,4 +207,4 @@ class TestRegisterForm(TestCase):
         })
 
         self.assertEqual(form_instance.is_valid(), False)
-        # self.assertFormError(response=404,form = RegisterForm,field= "confirm_password",msg_prefix="Both Passwords Do Not Match!")
+

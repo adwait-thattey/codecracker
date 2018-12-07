@@ -11,11 +11,12 @@ class TestRegisterSubmission(TestCase):
 
     def test_submission(self):
         self.client = Client()
-        response = self.client.post('registration/register',
-                                    {"user": "Sample User",
-                                     "phone_number": 9999999999,
-                                     "institute": "Sample institute",
-                                     "designation": "STU", })
+        response = self.client.post('/registration/register',
+                                    {"first_name": "test",
+                                     "last_name": "user",
+                                     "username": "testuser002",
+                                     "email": "testuser002@ts.com",
+                                     "password": "Hello World", })
         self.assertEqual(response.status_code, 200)
 
 
@@ -27,7 +28,7 @@ class TestLoginSubmission(TestCase):
 
     def test_submission(self):
         self.client = Client()
-        response = self.client.post('registration/login',
+        response = self.client.post('/registration/login',
                                     {"username": "testuser002",
                                      "password": "Hello World"})
         self.assertEqual(response.status_code, 200)
