@@ -17,11 +17,13 @@ from questions.utils import run_in_background
 def image_upload_url(instance, filename):
     return os.path.join("catgories", str(instance.id), "logo", filename)
 
+
 def back_image_upload_url(instance, filename):
     return os.path.join("catgories", str(instance.id), "back_img", filename)
+
+
 # Create your models here.
 class Category(models.Model):
-    
     name = models.CharField(max_length=25,
                             unique=True
                             )
@@ -31,7 +33,7 @@ class Category(models.Model):
                              null=True
                              )
 
-    back_image = models.ImageField(upload_to=back_image_upload_url,blank=True,null=True)
+    back_image = models.ImageField(upload_to=back_image_upload_url, blank=True, null=True)
     description = models.TextField()
 
     @property
@@ -48,17 +50,20 @@ unique_code_validator = RegexValidator(r'^[0-9a-z]*$',
 
 class Question(models.Model):
     DIFFICULTY = (
-        (None,'Choose Difficulty Level'),
+        (None, 'Choose Difficulty Level'),
         ('Unknown', 'Unknown'),
         ('Easy', 'Easy'),
         ('Medium', 'Medium'),
         ('Hard', 'Hard'),
-        )
+    )
     author = models.ForeignKey(verbose_name="Question Poster",
                                to=DefaultUser,
                                null=True,
                                on_delete=models.SET_NULL
                                )
+
+    active = models.BooleanField(verbose_name="Is Active?", default=True, db_index=True,
+                                 help_text="Keep questions inactive until their contests start!")
 
     title = models.CharField(verbose_name="Title",
                              max_length=80
@@ -82,10 +87,10 @@ class Question(models.Model):
 
     sample_output = models.TextField(verbose_name="Sample output", null='True')
 
-    difficulty = models.CharField(verbose_name="Difficulty level", 
-                                  choices= DIFFICULTY,
+    difficulty = models.CharField(verbose_name="Difficulty level",
+                                  choices=DIFFICULTY,
                                   max_length=15,
-                                    default="Easy",
+                                  default="Easy",
                                   )
 
     category = models.ForeignKey(verbose_name="Category",
@@ -112,11 +117,10 @@ class Question(models.Model):
                                    help_text="A unique code for your question. between 3-15 characters. May contain only \
                                    lowercase characters and numbers. For example if the question name is 'Sorting Array', \
                                    you may name the code SORTARR")
-       
 
-    view_count= models.IntegerField(verbose_name= 'Question View Count',
-                                 default=0,
-                                 )
+    view_count = models.IntegerField(verbose_name='Question View Count',
+                                     default=0,
+                                     )
 
     submission_count = models.IntegerField(verbose_name="Submissions", default=0)
 
@@ -125,6 +129,9 @@ class Question(models.Model):
 
     def __str__(self):
         return self.unique_code
+
+    class Meta:
+        ordering = ['-create_timestamp']
 
 
 def get_testcase_input_upload_path(instance, filename):
@@ -333,15 +340,17 @@ def recalc_number(instance, *args, **kwargs):
 
     recalc_question_all_submissions_async(question)
 
+
 class QuestionView(models.Model):
-    question= models.ForeignKey( verbose_name='question',
+    question = models.ForeignKey(verbose_name='question',
                                  to=Question,
                                  on_delete=models.CASCADE
-                                )
-    user= models.ForeignKey( verbose_name= 'User',
-                            to=DefaultUser,
-                            on_delete=models.CASCADE
-                            )
+                                 )
+    user = models.ForeignKey(verbose_name='User',
+                             to=DefaultUser,
+                             on_delete=models.CASCADE
+                             )
+
 
 @receiver(post_save, sender=Submission)
 def get_attempt_number(sender, instance, created, **kwargs):
