@@ -7,6 +7,8 @@ from questions.forms import PostQuestionForm
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime
+from .cron import ContestStatus
 
 # Create your views here.
 
@@ -85,5 +87,15 @@ def edit_contest(request, contest_unique_id):
 
 
 def view_contest_page(request, contest_unique_code):
-	contest = get_object_or_404(Contest, unique_code= contest_unique_code)
-	return render(request, 'contests/contest_page.html', {'contest': contest})
+    contest = get_object_or_404(Contest, unique_code= contest_unique_code)
+    C= Contest.objects.get(unique_code= contest_unique_code)
+    dt = datetime.combine(C.start_date, C.start_time)
+    starttime = dt.strftime("%d %B %Y %H:%M:%S")
+    ContestStatus(contest_unique_code)
+
+
+
+
+
+    
+        

@@ -58,7 +58,7 @@
 
 
 
-
+{% if status == 0 %}
 <div id= "countdown" class="row center" style="font-family: sans-serif;">
     <h4><br>Contest starts in:</h4>
     <div class="col offset-l2 l2 card m3">
@@ -82,10 +82,17 @@
         </div>
     </div>    
 </div>
+{% endif %}
 
-	
+{% if status == 1 %}
+<h4><br>Contest is active</h4>
 
+{% endif %}
 
+{% if status == -1 %}
+<h4><br>Contest is completed</h4>
+
+{% endif %}
 
 
 <div class="row">
@@ -188,7 +195,8 @@
         }
         //
         $("#countdown").countdown({
-            date: "09 December 2018 14:23:15", // change date/time here - do not change the format!
+            date: "{{starttime}}", // change date/time here - do not change the format!
+            //09 December 2018 14:23:15
             format: "on"
         });
     });
@@ -214,7 +222,7 @@
                     if(eventDate < currentDate){
                         
                         clearInterval(interval)
-                        console.log("the hell is here")
+                        window.location.reload()
                         n.call(this);
                     }
                     //
