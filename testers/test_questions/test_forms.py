@@ -197,9 +197,88 @@ class TestPostQuestionForm(TestCase):
         self.assertEqual(form_instance.is_valid(), False)
 
 
-class TestSubmissionForm(TestCase):
-    pass
+'''class TestSubmissionForm(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username="testuser002", email="testuser002@ts.com", password="Hello World")
+    def test_all_details_submitted(self):
+        form_instance = SubmissionForm(data={
+            "langauage":"Samplelangauage",
+            "code":"Samplecode"
+        })
 
+        self.assertEqual(form_instance.is_valid(), True)
 
+        question = form_instance.save(commit=False)
+        question.author = self.user
+        question.save()
+
+        model_instance = Submission.objects.get(langauage="Samplelangauage")
+
+        self.assertEqual(model_instance.code, "Samplecode")
+
+    def test_missing_langauage(self):
+        form_instance = SubmissionForm(data={
+            "code": "Samplecode",
+
+        })
+
+        self.assertEqual(form_instance.is_valid(), False)
+        self.assertNotEqual(form_instance.errors.get("langauage"), None)
+
+    def test_missing_code(self):
+        form_instance = SubmissionForm(data={
+            "langauage": "Samplelangauage",
+
+        })
+
+        self.assertEqual(form_instance.is_valid(), False)        
+        self.assertNotEqual(form_instance.errors.get("code"), None)
 class TestTestCaseForm(TestCase):
-    pass
+    def setUp(self):
+        self.user = User.objects.create(username="testuser002", email="testuser002@ts.com", password="Hello World")
+    def test_all_details_submitted(self):
+        form_instance = TestCaseCreateForm(data={
+            "input_file":"Sampleinputfile",
+            "output_file":"Sampleoutputfile",
+            "points":2,
+        })
+
+        self.assertEqual(form_instance.is_valid(), True)
+
+        question = form_instance.save(commit=False)
+        question.author = self.user
+        question.save()
+
+        model_instance = TestCase.objects.get(input_file="Sampleinputfile")
+
+        self.assertEqual(model_instance.output_file, "Sampleoutputfile")
+        self.assertEqual(model_instance.points, 2)
+
+    def test_missing_input_file(self):
+        form_instance = TestCaseCreateForm(data={
+            "output_file": "Sampleoutputfile",
+            "points":2,
+
+        })
+
+        self.assertEqual(form_instance.is_valid(), False)
+        self.assertNotEqual(form_instance.errors.get("input_file"), None)        
+
+    def test_missing_output_file(self):
+        form_instance = TestCaseCreateForm(data={
+            "input_file": "Sampleinputfile",
+            "points":2,
+
+        })
+        self.assertEqual(form_instance.is_valid(), False)
+        self.assertNotEqual(form_instance.errors.get("output_file"), None)
+    def test_missing_points(self):
+        form_instance = TestCaseCreateForm(data={
+            "input_file": "Sampleinputfile",
+            "output_file":"Sampleoutputfile",
+
+        })
+
+        self.assertEqual(form_instance.is_valid(), False)        
+
+        self.assertNotEqual(form_instance.errors.get("points"), None)'''
