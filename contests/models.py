@@ -62,6 +62,9 @@ class Contest(models.Model):
 
     participants = models.ManyToManyField(to=User, related_name="participating_contests")
 
+    def __str__(self):
+        return self.unique_code
+
 class ContestQuestion(models.Model):
     question = models.OneToOneField(to=Question, on_delete=models.CASCADE)
     contest = models.ForeignKey(to=Contest, on_delete=models.PROTECT)

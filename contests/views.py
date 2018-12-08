@@ -86,4 +86,4 @@ def edit_contest(request, contest_unique_id):
 
 def view_contest_page(request, contest_unique_code):
 	contest = get_object_or_404(Contest, unique_code= contest_unique_code)
-	return render(request, 'contest_page.html', {'contest': contest})
+	return render(request, 'contests/contest_page.html', {'contest': contest})

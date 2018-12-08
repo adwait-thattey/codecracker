@@ -25,7 +25,7 @@
 
 {% block main_content %}
     <section>
-
+        
         <div class="row">
             <div class="col l7 offset-l1 s12 m8 ">
                 <div class="card green lighten-5">
@@ -239,7 +239,8 @@
 
 {% block custom_eof_scripts %}
     <script>
-        var disqus_config = function () {
+        var disqus_config = function () 
+        {
             this.page.url = 'http://localhost:8000/questions/{{question.unique_code}}/view/';  // Replace PAGE_URL with your page's canonical URL variable
             this.page.identifier = {{question.unique_code}}; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };
