@@ -235,6 +235,10 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "adwaitthatteytemp@gmail.com"
 EMAIL_HOST_PASSWORD = "Hello World"
 
+#Thread Limit
+
+CODE_THREAD_LIMIT = 1
+
 # Docker conf
 
 DOCKER_ROOT = os.path.join(BASE_DIR, "docker")

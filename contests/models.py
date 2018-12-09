@@ -72,9 +72,9 @@ class Contest(models.Model):
 
     participants = models.ManyToManyField(to=User, related_name="participating_contests")
 
-
     def __str__(self):
         return self.unique_code
+
 
 class ContestQuestion(models.Model):
     question = models.OneToOneField(to=Question, on_delete=models.CASCADE)
@@ -84,6 +84,7 @@ class ContestQuestion(models.Model):
     def __str__(self):
         return self.question.unique_code
 
+
 class ContestLiveSubmission(models.Model):
     submission = models.OneToOneField(to=Submission, on_delete=models.CASCADE)
     score = models.DecimalField(default=0, max_digits=8, decimal_places=2)
@@ -91,6 +92,7 @@ class ContestLiveSubmission(models.Model):
 
     def __str__(self):
         return str(self.id)
+
 
 class ContestQuestionTopSubmission(models.Model):
     contestsubmission = models.OneToOneField(to=ContestLiveSubmission, on_delete=models.CASCADE)
@@ -102,9 +104,9 @@ class ContestQuestionTopSubmission(models.Model):
     class Meta:
         unique_together = ['user', 'contest_question']
 
-
     def __str__(self):
         return str(self.id)
+
 
 class LeaderBoard(models.Model):
     contest = models.ForeignKey(to=Contest, on_delete=models.CASCADE)
@@ -118,11 +120,12 @@ class LeaderBoard(models.Model):
     def __str__(self):
         return self.contest.unique_code + ":" + self.user.username
 
+
 def calc_contest_submission_score(submission):
     percentage = submission.total_score
     points = submission.question.contestquestion.points
 
-    return points * (percentage / decimal.Decimal(100.0))
+    return decimal.Decimal(points) * (decimal.Decimal(percentage) / decimal.Decimal(100.0))
 
 
 def update_top_contest_submission(contestsubmission):

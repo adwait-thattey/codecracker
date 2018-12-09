@@ -1,12 +1,17 @@
 import threading
 import subprocess
 import time
+from collections import deque
+
+from django.conf import settings
 
 from .docker import Docker
 from django.db import connection
 
 from .models import TestCase
 import os
+
+CURRENT_PARALLEL_THREADS = 0
 
 
 class RunAndAssert(threading.Thread):
@@ -46,15 +51,18 @@ class RunAndAssert(threading.Thread):
             time_limit=self.result.submission.question.time_limit
         )
 
+
+
     def run_code(self):
+
         # fi = open(self.result.testcase.input_file.path, mode="r")
         # fo = open(self.output, mode="w")
         # fe = open(self.error, mode="w")
 
         # try:
 
-            # code_result = subprocess.run(["python3", self.code], stdin=fi, stdout=fo, stderr=fe,
-            #                              timeout=self.result.submission.question.time_limit)
+        # code_result = subprocess.run(["python3", self.code], stdin=fi, stdout=fo, stderr=fe,
+        #                              timeout=self.result.submission.question.time_limit)
 
         # TODO Add support for more languages
 
@@ -98,6 +106,9 @@ class RunAndAssert(threading.Thread):
         return result
 
     def run(self):
+        global CURRENT_PARALLEL_THREADS
+        CURRENT_PARALLEL_THREADS += 1
+        print(CURRENT_PARALLEL_THREADS)
 
         self.result.pass_fail = 5
         self.result.save()
@@ -129,6 +140,27 @@ class RunAndAssert(threading.Thread):
     def teardown(self):
         self.docker_instance.delete_dir()
         connection.close()
+        global CURRENT_PARALLEL_THREADS
+        CURRENT_PARALLEL_THREADS -= 1
+        print(CURRENT_PARALLEL_THREADS)
+
+
+class Scheduler(threading.Thread):
+    def __init__(self, threadlist):
+        super().__init__()
+        self.threadlist = threadlist
+
+    def run(self):
+        th_pointer = 0
+        while th_pointer < len(self.threadlist):
+            if CURRENT_PARALLEL_THREADS < settings.CODE_THREAD_LIMIT:
+                th = self.threadlist[th_pointer]
+                th.start()
+                th_pointer+=1
+
+        for th in self.threadlist:
+            th.join()
+
 
 class RunAndReCalc(threading.Thread):
     def __init__(self, thread_id, result_instance, code_file=None):
@@ -142,6 +174,7 @@ class RunAndReCalc(threading.Thread):
         thr.run()
 
         self.result.submission.recalc_score()
+
 
 class LimitThreads(threading.Thread):
     def __init__(self, thread_id, thread_list):
@@ -173,11 +206,15 @@ class ThreadRunner(threading.Thread):
         self.thread_list = thread_list
 
     def run(self):
+
         for th in self.thread_list:
+            while CURRENT_PARALLEL_THREADS > settings.CODE_THREAD_LIMIT:
+                pass
             th.start()
 
         for th in self.thread_list:
             th.join()
+
 
 class SubmissionRunnerController(threading.Thread):
     def __init__(self, thread_id, submission):
@@ -186,7 +223,6 @@ class SubmissionRunnerController(threading.Thread):
         self.submission = submission
 
     def run(self):
-
         result_set = self.submission.result_set.all()
         thread_list = list()
         for R in result_set:
