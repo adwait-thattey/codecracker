@@ -29,7 +29,7 @@
     <section>
         <div class="container">
             <div class="center-align">
-                <h1 class="title flow-text">Test Cases for <a href="{% url 'home' %}">{{ question.title }}</a></h1>
+                <h1 class="title flow-text">Test Cases for <a href="{% url 'questions:view_the_question' question.unique_code %}">{{ question.title }}</a></h1>
             </div>
             <div class="row">
                 {% for testcase in testcases %}

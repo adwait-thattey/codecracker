@@ -1,5 +1,7 @@
 import threading
 import subprocess
+import time
+
 from .docker import Docker
 from django.db import connection
 
@@ -128,6 +130,18 @@ class RunAndAssert(threading.Thread):
         self.docker_instance.delete_dir()
         connection.close()
 
+class RunAndReCalc(threading.Thread):
+    def __init__(self, thread_id, result_instance, code_file=None):
+        super().__init__()
+        self.result = result_instance
+        self.code_file = code_file
+        self.thr_id = thread_id
+
+    def run(self):
+        thr = RunAndAssert(self.thr_id, self.result, self.code_file)
+        thr.run()
+
+        self.result.submission.recalc_score()
 
 class LimitThreads(threading.Thread):
     def __init__(self, thread_id, thread_list):
@@ -143,8 +157,43 @@ class LimitThreads(threading.Thread):
 
     def run(self):
         # print("chunk start")
-        for thr in self.thread_list:
-            thr.start()
-            thr.join()
+        for th in self.thread_list:
+            th.start()
+
+        for th in self.thread_list:
+            th.join()
 
         # print("chunk end")
+
+
+class ThreadRunner(threading.Thread):
+    def __init__(self, thread_id, thread_list):
+        super().__init__()
+        self.thread_id = thread_id
+        self.thread_list = thread_list
+
+    def run(self):
+        for th in self.thread_list:
+            th.start()
+
+        for th in self.thread_list:
+            th.join()
+
+class SubmissionRunnerController(threading.Thread):
+    def __init__(self, thread_id, submission):
+        super().__init__()
+        self.thread_id = thread_id
+        self.submission = submission
+
+    def run(self):
+
+        result_set = self.submission.result_set.all()
+        thread_list = list()
+        for R in result_set:
+            thread_temp = RunAndAssert(thread_id=R.testcase.id, result_instance=R)
+            thread_list.append(thread_temp)
+
+        tr = ThreadRunner(self.thread_id + self.submission.id, thread_list)
+        tr.run()
+
+        self.submission.recalc_score()

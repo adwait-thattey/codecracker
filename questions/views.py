@@ -8,7 +8,7 @@ from questions.models import Question, Submission, Result, TestCase, Category, Q
 from questions.utils import run_in_background
 from .forms import SubmissionForm, TestCaseCreateForm, PostQuestionForm, QuestionsFilterForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .background_tasks import RunAndAssert, LimitThreads
+from .background_tasks import RunAndAssert, LimitThreads, SubmissionRunnerController, RunAndReCalc
 
 from django.forms import modelformset_factory
 
@@ -23,8 +23,10 @@ def start_code_run_sequence(submission):
 
     for testcase in submission.question.testcase_set.all():
         R = Result.objects.create(testcase=testcase, submission=submission)
-        thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
-        thread_temp.start()
+
+    controller = SubmissionRunnerController(thread_id=submission.id, submission=submission)
+
+    controller.start()
 
 
 @login_required
@@ -71,7 +73,7 @@ def rerun_all_testcase_submissions(testcase):
         thread_list = list()
         for submission in submission_chunk:
             R = Result.objects.create(testcase=testcase, submission=submission)
-            thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
+            thread_temp = RunAndReCalc(thread_id=testcase.id, result_instance=R)
             thread_list.append(thread_temp)
 
         thread_chunk = LimitThreads(thread_id=0, thread_list=thread_list)
