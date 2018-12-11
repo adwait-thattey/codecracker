@@ -34,14 +34,6 @@ class RunAndAssert(threading.Thread):
         else:
             self.code = code_file
 
-        # dir = os.path.dirname(self.code)
-        # dir = os.path.join(dir, str(self.result.testcase.id))
-        #
-        # if not os.path.exists(dir):
-        #     os.makedirs(dir)
-
-        # self.error = os.path.join(dir, "error.txt")
-        # self.output = os.path.join(dir, "output.txt")
         self.result_code = -1
 
         self.docker_instance = Docker(
@@ -55,15 +47,6 @@ class RunAndAssert(threading.Thread):
 
     def run_code(self):
 
-        # fi = open(self.result.testcase.input_file.path, mode="r")
-        # fo = open(self.output, mode="w")
-        # fe = open(self.error, mode="w")
-
-        # try:
-
-        # code_result = subprocess.run(["python3", self.code], stdin=fi, stdout=fo, stderr=fe,
-        #                              timeout=self.result.submission.question.time_limit)
-
         # TODO Add support for more languages
 
         code_status = self.docker_instance.run_code_and_return_status()
@@ -76,19 +59,9 @@ class RunAndAssert(threading.Thread):
         else:
             self.result_code = 0
 
-        #     # fe.close()
-        #     if os.stat(self.error).st_size == 0:
-        #         self.result_code = 0
-        #     else:
-        #         self.result_code = -1
-        #
-        # except subprocess.TimeoutExpired:
-        #     self.result_code = -5
 
         # TODO Set timeout
 
-        # fi.close()
-        # fo.close()
 
     def assert_output(self):
         exp_output = self.result.testcase.output_file.path
