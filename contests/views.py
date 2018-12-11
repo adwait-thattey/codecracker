@@ -18,11 +18,13 @@ def contest_question_create(request, contest_unique_id=None):
         form = PostQuestionForm(request.POST)
         contest_question_points= ContestQuestionForm(request.POST)
         if form.is_valid() and contest_question_points.is_valid():
-            points= contest_question_points.cleaned_data["points"]
-            contest_question_points.author = request.user
-            contest_question_points.active = False
-            contest_question_form = form.save()
-            contest_question=ContestQuestion.objects.create(question=contest_question_form, contest=contest_id, points=points)
+            question = form.save(commit=False)
+            question.author = request.user
+            question.active = False
+            question.save()
+            contest_question = contest_question_points.save(commit=False)
+            contest_question.contest = contest_id
+            contest_question.question = question
             contest_question.save()
             return HttpResponse("Successfully added question in contest!!!")
     else:

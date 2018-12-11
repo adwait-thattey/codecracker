@@ -36,3 +36,8 @@ class GoogleRegisterFrom(forms.Form):
     gog_email = forms.EmailField()
     gog_full_name = forms.CharField()
     gog_profile_pic = forms.URLField(required=False)
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = models.UserProfile
+        fields = ['phone_number', 'institute', 'picture', 'about']

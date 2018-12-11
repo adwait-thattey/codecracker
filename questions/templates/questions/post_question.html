@@ -25,15 +25,19 @@
       .input-field label{
         color: #009688;
       }
+
+      body {
+        background: linear-gradient(180deg, #ff9800 30%, white 30%);
+      }
+
   </style>
 {% endblock internal_styles %}
 
 
   {% block main_content %}
     <main>
-    <div class="divider"></div>
       <div class="container">
-        <h4>Create Question</h4>
+        <h4 class="black-text">Create Question</h4>
         <div class="card hoverable grey lighten-4" id="card">
           <div class="card-content">
 
@@ -180,7 +184,7 @@
                           <span class="helper-text" data-error="wrong" data-success="right">{{form.time_limit.help_text}}</span>
                       {% endif %}
                       {% if form.time_limit.errors %}
-                          <span class="helper-text red-text" style="font-size:large">{{form.time_limit.errors</span>
+                          <span class="helper-text red-text" style="font-size:large">{{form.time_limit.errors}}</span>
                       {% endif %}
                     </div>
 

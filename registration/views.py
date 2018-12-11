@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
-from .forms import RegisterForm
+from .forms import RegisterForm, ProfileEditForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.contrib.sites.shortcuts import get_current_site
@@ -8,9 +8,13 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from .tokens import account_confirmation_token
+from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
-from .forms import GoogleRegisterFrom
+from .forms import GoogleRegisterFrom, ProfileEditForm
 from django.core.mail import send_mail
+from .models import UserProfile
+from questions.models import Question, Submission
+from contests.models import Contest
 # Create your views here.
 def signup(request):
     google_form = GoogleRegisterFrom()
@@ -87,3 +91,24 @@ def activate(request, uidb64, token):
 def logout_view(request):
     logout(request)
     return redirect('landing')
+
+@login_required
+def profile(request):
+    instance = get_object_or_404(UserProfile, user= request.user)
+    questions= Question.objects.filter(author= request.user)
+    contests= Contest.objects.filter(author= request.user)
+    submissions= Submission.objects.filter(user= request.user).order_by('-submitted_on')
+    recent_submissions= submissions[:4]
+    form = ProfileEditForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        return HttpResponse("edited successfully!!!")
+    context = {
+        'form': form,
+        'questions':questions,
+        'contests':contests,
+        'submissions':submissions,
+        "recent_submissions":recent_submissions,
+    }
+    return render(request, 'registration/profile.html', context)

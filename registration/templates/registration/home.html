@@ -1,0 +1,301 @@
+{% extends 'main_page/nav.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block internal_styles %}
+  <style>
+    #link:hover{
+      text-decoration: underline;
+    }
+
+    body {
+      background: linear-gradient(120deg, white 50%, white 50%);
+    }
+
+    is the card with will appear on hover.
+
+   CSS Properties to be added
+   /* entire container, keeps perspective */
+   .flip-container {
+       perspective: 1000px;
+   }
+       /* flip the pane when hovered */
+   .flip-container:hover .flipper{
+           transform: rotateX(180deg);
+           transition: 1s;
+       }
+   .flip-container, .front, .back {
+      position:relative;
+       width: 100%;
+       height: 200px;
+   }
+   /* flip speed goes here */
+   .flipper {
+       transition: 1.5s;
+       transform-style: preserve-3d;
+       position: relative;
+   }
+   /* hide back of pane during swap */
+   .front, .back {
+       backface-visibility: hidden;
+       position: absolute;
+       top: 0;
+       left: 0;
+   }
+   /* front pane, placed above back */
+   .front {
+       z-index: 2;
+       /* for firefox 31 */
+       transform: rotateX(0deg);
+   }
+   /* back, initially hidden pane */
+   .back {
+       transform: translateY(-100%) rotateX(180deg);
+   }
+
+   #card:hover{
+     transform: translateY(-4%);
+     border-bottom: 4px solid #ff5252;
+     transition: 0.5s;
+   }
+
+  </style>
+{% endblock internal_styles %}
+
+
+  {% block main_content %}
+
+  <div class="container">
+      <!--   Icon Section   -->
+    <div class="row center">
+      <h3 class="header center black-text">Categories</h3>
+    </div>
+
+    <!--All catergories displaying-->
+    <div class="row">
+      <!--Each Catergory-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text">
+                      <p class="center"><i class="fas fa-sliders-h fa-3x" style="color:#ff5252"></i></p>
+                      <h6 class="center">Category Name 1</h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center">Card Title</p>
+                    <p class="center">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Another category-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text">
+                      <p class="center"><i class="fas fa-cogs fa-3x" style="color:#ff5252"></i></p>
+                      <h6 class="center">Category Name2</h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center">Card Title</p>
+                    <p class="center">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Another category-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text">
+                      <p class="center"><i class="far fa-comments fa-3x" style="color:#ff5252"></i></p>
+                      <h6 class="center">Category Name3</h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center">Card Title</p>
+                    <p class="center">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Another category-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text">
+                      <p class="center"><i class="far fa-edit fa-3x" style="color:#ff5252"></i></p>
+                      <h6 class="center">Category Name4</h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center">Card Title</p>
+                    <p class="center">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Another category-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text">
+                      <p class="center"><i class="far fa-calendar-alt fa-3x" style="color:#ff5252"></i></p>
+                      <h6 class="center">Category Name 5</h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center">Card Title</p>
+                    <p class="center">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Another category-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text">
+                      <p class="center"><i class="fas fa-flag-checkered fa-3x" style="color:#ff5252"></i></p>
+                      <h6 class="center">Category Name 6</h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center">Card Title</p>
+                    <p class="center">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!--   Icon Section   -->
+      <div class="row center">
+        <h3 class="header center black-text">Contests</h3>
+      </div>
+      <div class="row">
+        <div class="col s12 m6 l6">
+          <div class="card hoverable" id="card">
+            <div class="card-image waves-effect waves-block waves-light">
+              <img class="activator" src="{% static 'registration/img/img1.png' %}">
+            </div>
+            <div class="card-content">
+              <span class="card-title cyan-text text-darken-4"><b> Contest Name</b></span>
+              <div class="divider"></div><br>
+              <p class="grey-text text-darken-2">Short Description of Contest</p><br>
+              <table class="responsive-table striped">
+                <tbody>
+                  <tr>
+                    <th class="center-align"> Start_Date : Date</th>
+                    <th class="center-align"> End_Date : Date</th>
+                  </tr>
+                  <tr>
+                    <th class="center-align"> Start_Time : Time</th>
+                    <th class="center-align"> End_End : Time</th>
+                  </tr>
+                  <tr>
+                    <td class="left-align"><i class="fas fa-arrow-right fa-sm"></i><a href="#" class="black-text" id="link"> Get Into Contest</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m6 l6">
+          <div class="card hoverable" id="card">
+            <div class="card-image waves-effect waves-block waves-light">
+              <img class="activator" src="{% static 'registration/img/img1.png' %}">
+            </div>
+            <div class="card-content">
+              <span class="card-title cyan-text text-darken-4"><b> Contest Name</b></span>
+              <div class="divider"></div><br>
+              <p class="grey-text text-darken-2">Short Description of Contest</p><br>
+              <table class="responsive-table striped">
+                <tbody>
+                  <tr>
+                    <th class="center-align"> Start_Date : Date</th>
+                    <th class="center-align"> End_Date : Date</th>
+                  </tr>
+                  <tr>
+                    <th class="center-align"> Start_Time : Time</th>
+                    <th class="center-align"> End_End : Time</th>
+                  </tr>
+                  <tr>
+                    <td class="left-align"><i class="fas fa-arrow-right fa-sm"></i><a href="#" class="black-text" id="link"> Get Into Contest</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  {% endblock main_content %}
+
+  {% block custom_eof_scripts %}
+  {% endblock custom_eof_scripts %}

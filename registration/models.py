@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.db.models import signals
 from django.urls import reverse
 from django.utils import timezone
+import os
 
 
 # from django.db import models
@@ -31,6 +32,8 @@ def phone_number_validator(phone_number):
     if not 10 <= len(phone_number) <= 11:
         raise ValidationError("Length of phone number must be either 10 or 11")
 
+def get_profile_picture_upload_path(instance, filename):
+    return os.path.join('profiles', instance.username, 'profile_pic' + filename)
 
 class UserProfile(models.Model):
     DESIGNATION_CHOICES = (
@@ -61,6 +64,10 @@ class UserProfile(models.Model):
                                    choices=DESIGNATION_CHOICES,
                                    default="STU"
                                    )
+
+    picture = models.ImageField(upload_to=get_profile_picture_upload_path, default="/profiles/default.png")
+
+    about = models.TextField(verbose_name="About User", max_length=500, null=True)
 
     def __str__(self):
         return self.user.get_full_name() + "<" + self.user.username + ">"

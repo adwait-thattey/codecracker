@@ -7,7 +7,6 @@
 {% block custom_includes %}
     <link rel="stylesheet" href="{% static 'questions/css/browsequestion_style2.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css">
-
 {% endblock %}
 
 {% block internal_styles %}
@@ -211,24 +210,10 @@
     <script src="{% static 'common_assests/imakewebthings-waypoints-34d9f6d/lib/jquery.waypoints.min.js' %}"></script>
     <script src="{% static 'common_assests/imakewebthings-waypoints-34d9f6d/lib/shortcuts/infinite.min.js' %}"></script>
     <script>
-        $(document).ready(function () {
-            $('.sidenav').sidenav();
-        });
-
-        $(document).ready(function () {
-            $('.collapsible').collapsible();
-        });
-
-        $(document).ready(function () {
-            $('.tooltipped').tooltip();
-        });
         /*select--*/
-
         $(document).ready(function () {
             $('select').formSelect();
         });
-
-        $('.dropdown-trigger').dropdown();
 
         var infinite = new Waypoint.Infinite({
             element: $('.infinite-container')[0],
