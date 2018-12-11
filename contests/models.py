@@ -56,6 +56,8 @@ class Contest(models.Model):
                                   registration, it is your responsibility to add them in the participants list via\
                                    the REST API call.")
 
+    is_active = models.BooleanField(default=True)
+
     registration_link = models.URLField(verbose_name="Registration Link", blank=True)
 
     participants = models.ManyToManyField(to=User, related_name="participating_contests")
