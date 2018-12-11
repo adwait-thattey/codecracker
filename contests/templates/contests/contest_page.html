@@ -58,7 +58,7 @@
 
 
 
-{% if status == 0 %}
+{% if contest.status == -1 %}
 <div id= "countdown" class="row center" style="font-family: sans-serif;">
     <h4><br>Contest starts in:</h4>
     <div class="col offset-l2 l2 card m3">
@@ -84,13 +84,13 @@
 </div>
 {% endif %}
 
-{% if status == 1 %}
-<h4><br>Contest is active</h4>
+{% if contest.status == 0 %}
+    <center><h4><br>Contest is active</h4></center>
 
 {% endif %}
 
-{% if status == -1 %}
-<h4><br>Contest is completed</h4>
+{% if contest.status == 1 %}
+    <center><h4><br>Contest is completed</h4></center>
 
 {% endif %}
 
@@ -223,6 +223,7 @@
                         
                         clearInterval(interval)
                         window.location.reload()
+
                         n.call(this);
                     }
                     //
