@@ -18,6 +18,8 @@ class ContestStatus(CronJobBase):
                 c.status = 1
                 c.save()
 
-            elif datetime.now() > datetime.combine(c.end_date, c.end_time):
+        contests = Contest.objects.filter(status=1)
+        for c in contests:
+            if datetime.now() > datetime.combine(c.end_date, c.end_time):
                 c.status = 2
                 c.save()
