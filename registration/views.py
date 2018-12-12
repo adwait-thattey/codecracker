@@ -1,3 +1,4 @@
+from django.db.models import Count,Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from .forms import RegisterForm, ProfileEditForm
@@ -125,6 +126,77 @@ def logout_view(request):
     logout(request)
     return redirect('landing')
 
+
+
+def user_submission_date_stats(request):
+    user = request.user
+    # user = get_object_or_404(User, username=username)
+    all_submissions = user.submission_set.all()
+    # all_submissions = Submission.objects
+    submission_dates = all_submissions.values('submitted_on__date').annotate(count=Count('id')).values('submitted_on__date', 'count').order_by('submitted_on__date')
+
+    req_stats = list()
+    for S in submission_dates:
+        D = {"x":S['submitted_on__date'].strftime('%m/%d/%Y'), "y":S['count']}
+        req_stats.append(D)
+
+    return req_stats
+
+
+def user_submission_percentage(request):
+    # user = get_object_or_404(User, username=username)
+    user = request.user
+    submission_set = user.submission_set
+    total_submissions = submission_set.count()
+    correct_submissions = submission_set.filter(total_score__gte=99).count()
+
+    req_stats = [
+         correct_submissions, total_submissions
+    ]
+
+    return req_stats
+
+def user_per_question_attempts_stats(request):
+    # user = get_object_or_404(User, username=username)
+    user = request.user
+    user_submissions= user.submission_set
+
+    question_submission_count = list(user_submissions.values('question').annotate(count=Count('id')).values('question', 'count').order_by('question'))
+
+    ret_stats = {
+        "question_submission_count": question_submission_count
+    }
+
+    return ret_stats
+
+def user_question_attempts_stats(request):
+    # user = get_object_or_404(User, username=username)
+    user = request.user
+    submission_set = user.submission_set
+
+    total_question_count = len(submission_set.values('question').annotate(count=Count('id')).values('question', 'count').order_by('question'))
+
+    correct_question_count = len(submission_set.filter(total_score__gte = 99).values('question').annotate(count=Count('id')).values('question', 'count').order_by('question'))
+
+    ret_stats = [
+         correct_question_count, total_question_count
+    ]
+
+    return ret_stats
+
+def user_avg_attempts_per_question(request):
+    # user = get_object_or_404(User, username=username)
+    user = request.user
+    submission_set = user.submission_set
+
+    avg = submission_set.values('question').annotate(count=Count('question')).values('question', 'count').order_by('question').aggregate(Avg('count'))
+
+    ret_stats = {
+        "avg": avg
+    }
+
+    return ret_stats
+
 @login_required
 @email_confirmation_required
 def profile(request):
@@ -134,6 +206,12 @@ def profile(request):
     submissions= Submission.objects.filter(user= request.user).order_by('-submitted_on')
     recent_submissions= submissions[:4]
     form = ProfileEditForm(request.POST or None, instance=instance)
+    submission_date_stats = user_submission_date_stats(request)
+    submission_percentage_stats = user_submission_percentage(request)
+    user_per_question_attempts = user_per_question_attempts_stats(request)
+    user_question_attempts = user_question_attempts_stats(request)
+    avg_attempts_per_question = user_avg_attempts_per_question(request)
+
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -144,5 +222,11 @@ def profile(request):
         'contests':contests,
         'submissions':submissions,
         "recent_submissions":recent_submissions,
+        "submission_date_stats":submission_date_stats,
+        "submission_percentage_stats":submission_percentage_stats,
+        "user_per_question_attempts":user_per_question_attempts,
+        "user_question_attempts":user_question_attempts,
+        "avg_attempts_per_question":avg_attempts_per_question
     }
     return render(request, 'registration/profile.html', context)
+
