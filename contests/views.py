@@ -90,12 +90,12 @@ def edit_contest(request, contest_unique_id):
 def view_contest_page(request, contest_unique_code):
     contest = get_object_or_404(Contest, unique_code= contest_unique_code)
     C= Contest.objects.get(unique_code= contest_unique_code)
-    dt = datetime.combine(C.start_date, C.start_time) + timedelta(minutes=1)
-    starttime = dt.strftime("%d %B %Y %H:%M:%S")
+    sdt = datetime.combine(C.start_date, C.start_time) + timedelta(minutes=1)
+    starttime = sdt.strftime("%d %B %Y %H:%M:%S")
+    edt = datetime.combine(C.end_date, C.end_time)
+    endtime = edt.strftime("%d %B %Y %H:%M:%S")
     return render(request, 'contests/contest_page.html',
-                   {'contest': contest, "starttime": starttime})
-
-
+                   {'contest': contest, "starttime": starttime, 'endtime': endtime})
 
 
 
