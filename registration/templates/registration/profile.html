@@ -88,19 +88,9 @@
           <div class="modal-content">
             <h4 class="center-align cyan-text text-darken-4">Edit Profile</h4>
             <div class="row">
-              <form class="col s12" method="post">
+              <form class="col s12" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row">
-
-                  <div class="input-field col l12 s12">
-                    {{form.phone_number}}
-                    <label for="{{form.phone_number.id_for_label}}">Phone Number</label>
-                  </div>
-
-                  <div class="input-field col s12">
-                    {{form.institute}}
-                    <label for="{{form.institute.id_for_label}}">Institute</label>
-                  </div>
 
                   <div class="input-field file-field">
                       <div class="row">
@@ -135,6 +125,18 @@
 
                       </div>
                   </div>
+
+
+                  <div class="input-field col l12 s12">
+                    {{form.phone_number}}
+                    <label for="{{form.phone_number.id_for_label}}">Phone Number</label>
+                  </div>
+
+                  <div class="input-field col s12">
+                    {{form.institute}}
+                    <label for="{{form.institute.id_for_label}}">Institute</label>
+                  </div>
+
 
                   <div class="input-field col s12">
                     {{form.about|add_class:"materialize-textarea"}}
@@ -230,7 +232,7 @@
       <div class="col s12 l8">
         <div class="card hoverable">
           <div class="card-content cyan darken-4">
-              <h6><p class="center-align">Explore your activities!!</p></h6>
+              <h6><p class="center-align white-text"><b>Explore your activities!!</b></p></h6>
           </div>
           <div class="card-tabs">
             <!-- links -->

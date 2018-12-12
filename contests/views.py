@@ -36,7 +36,7 @@ def contest_question_create(request, contest_unique_id=None):
             contest_question.contest = contest_id
             contest_question.question = question
             contest_question.save()
-            return HttpResponse("Successfully added question in contest!!!")
+            return redirect('questions:view_the_question', question.unique_code)
     else:
         form = PostQuestionForm()
         contest_question_points = ContestQuestionForm()
@@ -62,7 +62,7 @@ def contest_question_edit(request, contest_unique_id, question_unique_id):
         contest_question_form = form.save(commit=False)
         contest_question_form.save()
         contest_question_points.save()
-        return HttpResponse("Successfully edited question in contest!!!")
+        return redirect('questions:view_the_question', question.unique_code)
     context = {
         'form': form,
         'cq': contest_question_points
@@ -79,12 +79,11 @@ def create_contest(request):
             contest = form.save(commit=False)
             contest.author = request.user
             contest.save()
-            return HttpResponse('contest saved!!')
+            return redirect('contests:view-contest', contest.unique_code)
         else:
             print(form.errors)
     else:
         form = HostContestForm()
-
     return render(request, 'contests/create_contest.html', {'form':form})
 
 @login_required
@@ -97,7 +96,7 @@ def edit_contest(request, contest_unique_id):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        return HttpResponse("edited!!")
+        return redirect('contests:view-contest', contest.unique_code)
     context = {
         'instance': instance,
         'form': form
@@ -173,5 +172,3 @@ def participants(request, contest_unique_id):
     participants = contest.participants.all()
 
     return render(request,"contests/p1.html",{'d1':participants})
-
-

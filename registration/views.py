@@ -133,11 +133,10 @@ def profile(request):
     contests= Contest.objects.filter(author= request.user)
     submissions= Submission.objects.filter(user= request.user).order_by('-submitted_on')
     recent_submissions= submissions[:4]
-    form = ProfileEditForm(request.POST or None, instance=instance)
+    form = ProfileEditForm(request.POST, request.FILES, instance=instance)
     if form.is_valid():
-        instance = form.save(commit=False)
-        instance.save()
-        return render(request, 'registration/profile.html', {'form':form})
+        instance = form.save()
+        return redirect('registration:profile')
     context = {
         'form': form,
         'questions':questions,
@@ -145,4 +144,4 @@ def profile(request):
         'submissions':submissions,
         "recent_submissions":recent_submissions,
     }
-    return render(request, 'registration/home.html', context)
+    return render(request, 'registration/profile.html', context)

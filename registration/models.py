@@ -33,7 +33,7 @@ def phone_number_validator(phone_number):
         raise ValidationError("Length of phone number must be either 10 or 11")
 
 def get_profile_picture_upload_path(instance, filename):
-    return os.path.join('profiles', instance.username, 'profile_pic' + filename)
+    return os.path.join('profiles', instance.user.username, 'profile_pic' + filename)
 
 class UserProfile(models.Model):
     DESIGNATION_CHOICES = (

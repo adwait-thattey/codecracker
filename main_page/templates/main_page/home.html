@@ -1,242 +1,298 @@
 {% extends 'main_page/nav.html' %}
+{% load widget_tweaks %}
 {% load static %}
-{% block custom_includes %}
-    <link rel="stylesheet" type="text/css"
-          href="{% static 'main_page/fonts/font-awesome-4.3.0/css/font-awesome.min.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'main_page/css/demo.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'main_page/css/style2.css' %}"/>
-    <script src="{% static 'main_page/js/modernizr-custom.js' %}"></script>
-{% endblock %}
 
-{% block title %}
-    Dashboard
-{% endblock %}
-{% block main_content %}
+{% block internal_styles %}
+  <style>
+    a:hover{
+      text-decoration: underline;
+    }
 
-    <section>
-        <div class="container-custom">
-            <header class="codrops-header">
+    body {
+      background: linear-gradient(120deg, white 50%, white 50%);
+    }
 
-                <h4>CATEGORIES</h4>
+   /* entire container, keeps perspective */
+   .flip-container {
+       perspective: 1000px;
+   }
+       /* flip the pane when hovered */
+   .flip-container:hover .flipper{
+           transform: rotateX(180deg);
+           transition: 1s;
+       }
+   .flip-container, .front, .back {
+      position:relative;
+       width: 100%;
+       height: 200px;
+   }
+   /* flip speed goes here */
+   .flipper {
+       transition: 1.5s;
+       transform-style: preserve-3d;
+       position: relative;
+   }
+   /* hide back of pane during swap */
+   .front, .back {
+       backface-visibility: hidden;
+       position: absolute;
+       top: 0;
+       left: 0;
+   }
+   /* front pane, placed above back */
+   .front {
+       z-index: 2;
+       /* for firefox 31 */
+       transform: rotateX(0deg);
+   }
+   /* back, initially hidden pane */
+   .back {
+       transform: translateY(-100%) rotateX(180deg);
+   }
 
-            </header>
-            <div class="content">
-                <div class="grid ">
-                    {% for category in categories %}
-                        <a href='{% url "questions:browse" %}?category={{ category.id }}'>
-                            <div class="grid__item" data-size="3000x2000"
-                                 onclick="location.href='{% url "questions:browse" %}?category={{ category.id }}'">
-                                <a href="{{ category.logo.url }}" class="img-wrap"><img
-                                        src="{{ category.logo.url }}" alt="img06"/>
-                                    <div class="description description--grid description-item">
-                                        <h3 style="display: none">{{ category.title }}</h3>
+   #card:hover{
+     transform: translateY(-4%);
+     border-bottom: 4px solid #ff5252;
+     transition: 0.5s;
+   }
 
-                                    </div>
-                                </a>
-                            </div>
-                        </a>
-                    {% endfor %}
-                    {% comment %}<div class="grid__item" data-size="5184x3456">
-                        <a href="{% static 'main_page/img/original/datastruct.jpg' %}" class="img-wrap"><img
-                                src="{% static 'main_page/img/thumbs/datastruct.jpg' %}" alt="img07"/>
-                            <div class="description description--grid">
-                                <h3>CATEGORY 2</h3>
+  </style>
+{% endblock internal_styles %}
 
-                            </div>
-                        </a>
+
+  {% block main_content %}
+<main>
+  <div class="container">
+      <!--   Icon Section   -->
+    <div class="row center">
+      <h3 class="header center cyan-text text-darken-4">Categories</h3>
+    </div>
+
+    <!--All catergories displaying-->
+    <div class="row">
+      <!--Each Catergory-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text center">
+                      <img src="{% static 'registration/img/data_structures.png' %}" style="width:100px; height:100px;" class="responsive-img">
+                      <h6 class="center" style="color:#ff5252"><b>Category Name 1</b></h6>
                     </div>
-                    <div class="grid__item" data-size="1366x768">
-                        <a href="{% static 'main_page/img/original/code4.jpg' %}" class="img-wrap"><img
-                                src="{% static 'main_page/img/thumbs/code4.jpg' %}" alt="img08"/>
-                            <div class="description description--grid">
-                                <h3>CATEGORY 3</h3>
-
-                            </div>
-                        </a>
-                    </div>
-                    <div class="grid__item" data-size="1366x768">
-                        <a href="{% static 'main_page/img/original/land5.jpg' %}" class="img-wrap"><img
-                                src="{% static 'main_page/img/thumbs/land5.jpg' %}" alt="img09"/>
-                            <div class="description description--grid">
-                                <h3>CATEGORY 4</h3>
-
-                            </div>
-                        </a>
-                    </div>
-                    <div class="grid__item" data-size="1366x768">
-                        <a href="{% static 'main_page/img/original/code3.jpg' %}" class="img-wrap"><img
-                                src="{% static 'main_page/img/thumbs/code3.jpg' %}" alt="img10"/>
-                            <div class="description description--grid">
-                                <h3>CATEGORY 5</h3>
-
-                            </div>
-                        </a>
-                    </div>
-                    <div class="grid__item" data-size="3811x3337">
-                        <a href="{% static 'main_page/img/original/graph.jpg' %}" class="img-wrap"><img
-                                src="{% static 'main_page/img/thumbs/graph.jpg' %}" alt="img11"/>
-                            <div class="description description--grid">
-                                <h3>CATEGORY 6</h3>
-
-                            </div>
-                        </a>
-                    </div>
-                    <div class="grid__item" data-size="5184x3456">
-                        <a href="{% static 'main_page/img/original/land4.jpg' %}" class="img-wrap"><img
-                                src="{% static 'main_page/img/thumbs/land4.jpg' %}" alt="img07"/>
-                            <div class="description description--grid">
-                                <h3>CATEGORY 7</h3>
-
-                            </div>
-                        </a>
-                    </div>
-                    <div class="grid__item" data-size="5184x3456">
-                        <a href="{% static 'main_page/img/original/appdev.jpg' %}" class="img-wrap"><img
-                                src="{% static 'main_page/img/thumbs/appdev.jpg' %}" alt="img07"/>
-                            <div class="description description--grid">
-                                <h3>CATEGORY 8</h3>
-
-                            </div>
-                        </a>
-                    </div>{% endcomment %}
-
                 </div>
-                <!-- /grid -->
-                <div class="preview">
-                    <button class="action action--close" id="close-button"><i class="fa fa-times"></i><span
-                            class="text-hidden">Close</span>
-                    </button>
-                    <div class="description description--preview"></div>
-                </div>
-                <!-- /preview -->
+              </div>
             </div>
-            <!-- /content -->
-            {% comment %}<div class="carousel_div">
-                <header class="codrops-header">
-                    <h1>CONTESTS</h1>
-                </header>
-                <div class="carousel">
-                    <a class="carousel-item" href="#"><img src="{% static 'main_page/img/original/code4.jpg' %}"></a>
-                    <a class="carousel-item" href="#"><img src="{% static 'main_page/img/original/code3.jpg' %}"></a>
-                    <a class="carousel-item" href="#"><img src="{% static 'main_page/img/original/land4.jpg' %}"></a>
-                    <a class="carousel-item" href="#"><img src="{% static 'main_page/img/original/land5.jpg' %}"></a>
-                    <a class="carousel-item" href="#"><img src="{% static 'main_page/img/original/code4.jpg' %}"></a>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center"><a href="#">Card Title</a></p>
+                    <p class="center grey-text text-darken-2">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
                 </div>
-
-            </div>{% endcomment %}
-
-
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- /container -->
-    </section>
-{% endblock %}
-{% block custom_eof_scripts %}
-    <script>
-        $('.grid-item').each(function () {
-            console.log("called");
-            this.addEventListener('onclick', function () {
-                console.log("called");
-                $('.description-item').each(function () {
-                    this.style.display = "block";
-                });
-            });
-        });
-        document.body.classList.add('demo-2')
-    </script>
-    <script src="{% static 'main_page/js/imagesloaded.pkgd.min.js' %}"></script>
-    <script src="{% static 'main_page/js/masonry.pkgd.min.js' %}"></script>
-    <script src="{% static 'main_page/js/classie.js' %}"></script>
-    <script src="{% static 'main_page/js/main.js' %}"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
-    <script>
-        $('.carousel').carousel({
-            padding: 200
-        });
-        autoplay();
+      </div>
 
-        function autoplay() {
-            $('.carousel').carousel('next');
-            setTimeout(autoplay, 1500);
-        }
-    </script>
+      <!--Another category-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text center">
+                      <img src="{% static 'registration/img/algorithms.png' %}" style="width:100px; height:100px;" class="responsive-img">
+                      <h6 class="center" style="color:#ff5252"><b>Category Name2</b></h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center">Card Title</p>
+                    <p class="center">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Another category-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text center">
+                      <img src="{% static 'registration/img/AI.png' %}" style="width:100px; height:100px;" class="responsive-img">
+                      <h6 class="center" style="color:#ff5252"><b>Category Name3</b></h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center">Card Title</p>
+                    <p class="center">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Another category-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text center">
+                      <img src="{% static 'registration/img/math.png' %}" style="width:100px; height:100px;" class="responsive-img">
+                      <h6 class="center" style="color:#ff5252"><b>Category Name3</b></h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center">Card Title</p>
+                    <p class="center">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Another category-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text center">
+                      <img src="{% static 'registration/img/regex.png' %}" style="width:100px; height:100px;" class="responsive-img">
+                      <h6 class="center" style="color:#ff5252"><b>Category Name3</b></h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center">Card Title</p>
+                    <p class="center">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Another category-->
+      <div class="col s12 l4">
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-content black-text center">
+                      <img src="{% static 'registration/img/IP.png' %}" style="width:100px; height:100px;" class="responsive-img">
+                      <h6 class="center" style="color:#ff5252"><b>Category Name3</b></h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col s12">
+                    <p class="center">Card Title</p>
+                    <p class="center">I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <script>
-        (function () {
-            var support = {transitions: Modernizr.csstransitions},
-                // transition end event name
-                transEndEventNames = {
-                    'WebkitTransition': 'webkitTransitionEnd',
-                    'MozTransition': 'transitionend',
-                    'OTransition': 'oTransitionEnd',
-                    'msTransition': 'MSTransitionEnd',
-                    'transition': 'transitionend'
-                },
-                transEndEventName = transEndEventNames[Modernizr.prefixed('transition')],
-                onEndTransition = function (el, callback) {
-                    var onEndCallbackFn = function (ev) {
-                        if (support.transitions) {
-                            if (ev.target !== this) return;
-                            this.removeEventListener(transEndEventName, onEndCallbackFn);
-                        }
-                        if (callback && typeof callback === 'function') {
-                            callback.call(this);
-                        }
-                    };
-                    if (support.transitions) {
-                        el.addEventListener(transEndEventName, onEndCallbackFn);
-                    }
-                    else {
-                        onEndCallbackFn();
-                    }
-                };
+      <!--   Icon Section   -->
+      <div class="row center">
+        <h3 class="header center cyan-text text-darken-4">Contests</h3>
+      </div>
+      <div class="row">
+        <div class="col s12 m6 l6">
+          <div class="card hoverable" id="card">
+            <div class="card-image waves-effect waves-block waves-light">
+              <img class="activator" src="{% static 'registration/img/img1.png' %}">
+            </div>
+            <div class="card-content">
+              <span class="card-title cyan-text text-darken-4"><b> Contest Name</b></span>
+              <div class="divider"></div><br>
+              <p class="grey-text text-darken-2">Short Description of Contest</p><br>
+              <table class="responsive-table striped">
+                <tbody>
+                  <tr>
+                    <th class="center-align"> Start_Date : Date</th>
+                    <th class="center-align"> End_Date : Date</th>
+                  </tr>
+                  <tr>
+                    <th class="center-align"> Start_Time : Time</th>
+                    <th class="center-align"> End_End : Time</th>
+                  </tr>
+                  <tr>
+                    <td class="left-align"><i class="fas fa-arrow-right fa-sm"></i><a href="#" class="black-text" id="link"> Get Into Contest</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m6 l6">
+          <div class="card hoverable" id="card">
+            <div class="card-image waves-effect waves-block waves-light">
+              <img class="activator" src="{% static 'registration/img/img1.png' %}">
+            </div>
+            <div class="card-content">
+              <span class="card-title cyan-text text-darken-4"><b> Contest Name</b></span>
+              <div class="divider"></div><br>
+              <p class="grey-text text-darken-2">Short Description of Contest</p><br>
+              <table class="responsive-table striped">
+                <tbody>
+                  <tr>
+                    <th class="center-align"> Start_Date : Date</th>
+                    <th class="center-align"> End_Date : Date</th>
+                  </tr>
+                  <tr>
+                    <th class="center-align"> Start_Time : Time</th>
+                    <th class="center-align"> End_End : Time</th>
+                  </tr>
+                  <tr>
+                    <td class="left-align"><i class="fas fa-arrow-right fa-sm"></i><a href="#" class="black-text" id="link"> Get Into Contest</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            new GridFx(document.querySelector('.grid'), {
-                imgPosition: {
-                    x: -0.5,
-                    y: 1
-                },
-                onOpenItem: function (instance, item) {
-                    instance.items.forEach(function (el) {
-                        if (item !== el) {
-                            var delay = Math.floor(Math.random() * 50);
-                            el.style.WebkitTransition = 'opacity .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1), -webkit-transform .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1)';
-                            el.style.transition = 'opacity .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1), transform .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1)';
-                            el.style.WebkitTransform = 'scale3d(0.1,0.1,1)';
-                            el.style.transform = 'scale3d(0.1,0.1,1)';
-                            el.style.opacity = 0;
-                        }
-                    });
-                },
-                onCloseItem: function (instance, item) {
-                    instance.items.forEach(function (el) {
-                        if (item !== el) {
-                            el.style.WebkitTransition = 'opacity .4s, -webkit-transform .4s';
-                            el.style.transition = 'opacity .4s, transform .4s';
-                            el.style.WebkitTransform = 'scale3d(1,1,1)';
-                            el.style.transform = 'scale3d(1,1,1)';
-                            el.style.opacity = 1;
+    </div>
+</main>
+  {% endblock main_content %}
 
-                            onEndTransition(el, function () {
-                                el.style.transition = 'none';
-                                el.style.WebkitTransform = 'none';
-                            });
-                        }
-                    });
-                }
-            });
-        })();
-    </script>
-    <script>
-        $('.grid-item').each(function () {
-            console.log("called");
-            this.addEventListener('onclick', function () {
-                console.log("called");
-                $('.description-item').each(function () {
-                    this.style.display = "block";
-                });
-            });
-        });
-    </script>
-{% endblock %}
-
+  {% block custom_eof_scripts %}
+  {% endblock custom_eof_scripts %}
