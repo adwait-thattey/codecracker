@@ -267,7 +267,7 @@ EMAIL_HOST_PASSWORD = "Hello World"
 
 #Thread Limit
 
-CODE_THREAD_LIMIT = 8
+CODE_THREAD_LIMIT = 2
 
 # Docker conf
 

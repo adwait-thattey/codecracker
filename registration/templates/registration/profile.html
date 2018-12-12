@@ -382,7 +382,7 @@
                                                 class="fas fa-flag-checkered fa-sm"></i> {{ question.difficulty }}</td>
                                         <td class="right-align">
                                             <div class="chip">
-                                                <img src="{% static 'registration/img/img1.png' %}"> {{ question.category }}
+                                                <img src="{{ question.category.logo.url }}"> {{ question.category }}
                                             </div>
                                         </td>
                                     </tr>

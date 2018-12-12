@@ -66,7 +66,7 @@ def contest_question_edit(request, contest_unique_id, question_unique_id):
         contest_question_form = form.save(commit=False)
         contest_question_form.save()
         contest_question_points.save()
-        return redirect('questions:view_the_question', question.unique_code)
+        return redirect('questions:view_the_question', question_instance.unique_code)
     context = {
         'form': form,
         'cq': contest_question_points

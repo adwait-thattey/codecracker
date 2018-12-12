@@ -183,7 +183,7 @@ class ThreadRunner(threading.Thread):
     def run(self):
 
         for th in self.thread_list:
-            while CURRENT_PARALLEL_THREADS > settings.CODE_THREAD_LIMIT:
+            while CURRENT_PARALLEL_THREADS >= settings.CODE_THREAD_LIMIT:
                 pass
             th.start()
 
@@ -210,7 +210,7 @@ class SubmissionRunnerController(threading.Thread):
         self.submission.recalc_score()
 
         send_notification(user=self.submission.user,
-                          content=f"Your submission for question {self.submission.question.unique_code} has completed running.",
+                          content=f"submission for {self.submission.question.unique_code} has finished.",
                           link=reverse("questions:submission-result", args=[self.submission.question.unique_code, self.submission.user.username, self.submission.attempt_number ]),
                           icon="check"
                         )
