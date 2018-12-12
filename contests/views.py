@@ -106,23 +106,26 @@ def edit_contest(request, contest_unique_id):
 
 def view_contest_page(request, contest_unique_code):
     contest = get_object_or_404(Contest, unique_code=contest_unique_code)
-    questions = ContestQuestion.objects.filter(contest__unique_code=contest_unique_code)
+
     C= Contest.objects.get(unique_code=contest_unique_code)
-    sdt = datetime.combine(C.start_date, C.start_time) + timedelta(minutes=1)
+    sdt = datetime.combine(C.start_date, C.start_time)
     starttime = sdt.strftime("%d %B %Y %H:%M:%S")
     edt = datetime.combine(C.end_date, C.end_time)
     endtime = edt.strftime("%d %B %Y %H:%M:%S")
-    return render(request, 'contests/contest_page.html',
-                   {'contest': contest, 'questions': questions, "starttime": starttime, 'endtime': endtime})
-
-
-
-def leaderboard(request, contest_unique_code):
-    contest = get_object_or_404(Contest, unique_code=contest_unique_code)
 
     leaderboard = LeaderBoard.objects.filter(contest=contest).order_by('total_time').order_by('-total_score')
 
-    return render(request, 'contests/leaderboard.html', {"leaderboard": leaderboard})
+    return render(request, 'contests/contest_page.html',
+                   {'contest': contest, "starttime": starttime, 'endtime': endtime, 'leaderboard': leaderboard})
+
+
+
+# def leaderboard(request, contest_unique_code):
+#     contest = get_object_or_404(Contest, unique_code=contest_unique_code)
+#
+#     leaderboard = LeaderBoard.objects.filter(contest=contest).order_by('total_time').order_by('-total_score')
+#
+#     return render(request, 'contests/leaderboard.html', {"leaderboard": leaderboard})
 
 
 def browse_contests(request):
@@ -186,7 +189,23 @@ def register_for_contest(request, contest_unique_id):
 @email_confirmation_required
 def unregister_from_contest(request, contest_unique_id):
     contest = get_object_or_404(Contest, unique_code=contest_unique_id)
-    if request.user in contest.participants.all():
-        contest.participants.remove(request.user)
+    contest.participants.remove(request.user)
 
     return redirect('contests:view-contest', contest_unique_id)
+<<<<<<< HEAD
+=======
+
+
+def refresh_contest_state(request, contest_unique_id):
+    contest = get_object_or_404(Contest, unique_code=contest_unique_id)
+    if contest.status == 0:
+        if datetime.now() > datetime.combine(contest.start_date, contest.start_time):
+            contest.status=1
+            contest.save()
+    elif contest.status == 1:
+        if datetime.now() > datetime.combine(contest.end_date, contest.end_time):
+            contest.status=2
+            contest.save()
+
+    return redirect('contests:view-contest', contest_unique_id)
+>>>>>>> 22ace5643ee42422aa12f01c7a8c2b43229df2ca
