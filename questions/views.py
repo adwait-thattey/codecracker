@@ -87,6 +87,10 @@ def rerun_all_testcase_submissions(testcase):
 def submit_solution(request, question_unique_id):
     # question
     question = get_object_or_404(Question, unique_code=question_unique_id)
+    if hasattr(question,'contestquestion'):
+        if question.contestquestion.contest.status!=1:
+            return HttpResponse("Contest Has Ended!. You can not submit any more solutions")
+
     if request.method == "POST":
         submission_form = SubmissionForm(request.POST, request.FILES)
 
