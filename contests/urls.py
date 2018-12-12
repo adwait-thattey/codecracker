@@ -14,11 +14,13 @@ urlpatterns = [
     path('<slug:contest_unique_id>/questions/<slug:question_unique_id>/edit', views.contest_question_edit,
          name="contest-question-edit"),
     path('<slug:contest_unique_code>/view', views.view_contest_page, name="view-contest"),
+
     path('<slug:contest_unique_code>/leaderboard', views.leaderboard, name="leaderboard"),
     path('browse', views.browse_contests, name="browse"),
     path('<slug:contest_unique_id>/register', views.register_for_contest, name="register"),
     path('<slug:contest_unique_id>/unregister', views.unregister_from_contest, name="unregister"),
     path('<slug:contest_unique_id>/refresh_contest_state', views.refresh_contest_state, name="refresh")
+
 
 ]
 
