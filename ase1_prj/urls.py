@@ -20,6 +20,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.conf.urls import handler500
+from rest_framework.documentation import include_docs_urls
+
 from main_page import views as main_views
 from rest_framework_jwt.views import obtain_jwt_token
 
@@ -51,6 +53,7 @@ urlpatterns = [
 
     path('api-token-auth/', obtain_jwt_token),
     path('api/', include('api.urls')),
+    path('docs/', include_docs_urls(title="CodeCracker REST API"))
 ]
 
 urlpatterns += staticfiles_urlpatterns()
