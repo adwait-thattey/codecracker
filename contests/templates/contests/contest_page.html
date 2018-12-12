@@ -104,7 +104,29 @@
 {% endif %}
 
 {% if contest.status == 1 %}
-    <center><h4><br>Contest is active</h4></center>
+    <center><h4><br>Contest is active and ends in</h4></center>
+    <div id= "countdown" class="row center" style="font-family: sans-serif;">
+    <div class="col offset-l2 l2 card m3">
+        <div class="card-content">
+            <h1><span class="numbers days">00</span></h1> <br> Days
+        </div>
+    </div>
+    <div class="col l2 card m3">
+        <div class="card-content">
+            <h1><span class="numbers hours">00</span></h1> <br> Hours
+        </div>
+    </div>
+    <div class="col l2 card m3">
+        <div class="card-content">
+            <h1><span class="numbers minutes">00</span></h1> <br> Minutes
+        </div>
+    </div>
+    <div class="col l2 card m3">
+        <div class="card-content">
+            <h1><span class="numbers seconds">00</span></h1> <br> Seconds
+        </div>
+    </div>
+</div>
 {% endif %}
 
 
@@ -274,7 +296,7 @@
                             {{contest.contacts|safe|linebreaks}}
                         </div>
                 </div>
-                
+
                 <div id="Leaderboard_author_view" class="col s12 ">
                 <table class="striped">
 
