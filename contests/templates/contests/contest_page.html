@@ -468,7 +468,7 @@
                     if(eventDate < currentDate){
                         
                         clearInterval(interval)
-                        window.location.reload()
+                        window.location = "{% url 'contests:refresh' contest.unique_code %}";
 
                         n.call(this);
                     }
