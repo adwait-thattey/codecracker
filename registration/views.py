@@ -205,17 +205,14 @@ def profile(request):
     contests= Contest.objects.filter(author= request.user)
     submissions= Submission.objects.filter(user= request.user).order_by('-submitted_on')
     recent_submissions= submissions[:4]
-<<<<<<< HEAD
     form = ProfileEditForm(request.POST, request.FILES, instance=instance)
-=======
-    form = ProfileEditForm(request.POST or None, instance=instance)
+
     submission_date_stats = user_submission_date_stats(request)
     submission_percentage_stats = user_submission_percentage(request)
     user_per_question_attempts = user_per_question_attempts_stats(request)
     user_question_attempts = user_question_attempts_stats(request)
     avg_attempts_per_question = user_avg_attempts_per_question(request)
 
->>>>>>> 5cd4a7925f8f56245726bc94bcc9e66ec10e49b5
     if form.is_valid():
         instance = form.save()
         return redirect('registration:profile')
@@ -232,7 +229,3 @@ def profile(request):
         "avg_attempts_per_question":avg_attempts_per_question
     }
     return render(request, 'registration/profile.html', context)
-<<<<<<< HEAD
-=======
-
->>>>>>> 5cd4a7925f8f56245726bc94bcc9e66ec10e49b5
