@@ -145,4 +145,4 @@ def profile(request):
         'submissions':submissions,
         "recent_submissions":recent_submissions,
     }
-    return render(request, 'registration/home.html', context)
+    return render(request, 'registration/profile.html', context)
