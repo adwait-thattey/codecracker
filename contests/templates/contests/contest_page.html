@@ -61,8 +61,17 @@
 					<div align="center">
 						{{contest.short_description}} <br><br><br>
                         {% if user.is_authenticated %}
-                            <a class="waves-effect waves-light btn modal-trigger btn-large"
-                            href="javascript:void(0);" data-target="register">Register</a> <br>
+                            {% if user == contest.author %}
+                                <a class="waves-effect waves-light btn modal-trigger btn-large"
+                                href="{% url 'contests:contest-edit' contest.unique_code %}" data-target="register">Edit Contest</a> <br>
+                            {% elif user in contest.participants.all %}
+
+                                <a class="waves-effect waves-light btn modal-trigger btn-large"
+                                href="{% url 'contests:unregister' contest.unique_code %}" data-target="register">Unregister</a> <br>
+                            {% else %}
+                                <a class="waves-effect waves-light btn modal-trigger btn-large"
+                                href="{% url 'contests:register' contest.unique_code %}" data-target="register">Register</a> <br>
+                            {% endif %}
                         {% endif %}
                         {% if user.is_authenticated == False %}
                             <a class="waves-effect waves-light btn btn-large"
@@ -186,8 +195,9 @@
         <div class="col l10 offset-l1 m12 s12">
             <div class="card" style="border: none;">
                 <ul id="tabs-swipe-demo" class="tabs">
-                    <li class="tab col s6"><a class="active" href="#About">About</a></li>
-                    <li class="tab col s6"><a href="#Leaderboard">Leaderboard</a></li>
+                    <li class="tab col s4"><a class="active" href="#About">About</a></li>
+                    <li class="tab col s4"><a href="#Leaderboard">Leaderboard</a></li>
+                    <li class="tab col s4"><a href="#Questions">Questions</a></li>
                 </ul>
                 <div id="About" class="col s12 grey lighten-4" style="padding: 30px " >
                         <div id="organizer">
@@ -251,6 +261,28 @@
                     </table>
 
                 </div>
+                <div id="Questions" class="col s12">
+                  <div class="row">
+                        <table class="responsive-table">
+                          <tbody>
+                            {% for question in questions %}
+                            <tr style="border-left: 4px solid #006064">
+                              <th><a href="#" class="cyan-text text-darken-4" id="link"><h6>{{question.title}}</h6></a></th>
+                              <td class="center-align"><i class="far fa-eye fa-sm"></i> {{question.view_count}}</td>
+                              <td class="center-align"><i class="far fa-check-circle fa-sm"></i> {{question.submission_count}}</td>
+                              <td class="center-align"><i class="fas fa-flag-checkered fa-sm"></i> {{question.difficulty}}</td>
+                              <td class="right-align">
+                                <div class="chip">
+                                    <img src="{% static 'registration/img/img1.png' %}"> {{question.category}}
+                                </div>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                </div>
+
 
             </div>
         </div>
@@ -410,8 +442,8 @@
         }
         //
         $("#countdown").countdown({
-            date: "{{endtime}}", // change date/time here - do not change the format!
-            //09 December 2018 14:23:15
+            date: "{{endtime}}", // change date/time here - do not change the format
+            //09 December 2018 14:23:15 <-- Like this
             format: "on"
         });
     });
@@ -436,7 +468,7 @@
                     if(eventDate < currentDate){
                         
                         clearInterval(interval)
-                        window.location.reload()
+                        window.location = "{% url 'contests:refresh' contest.unique_code %}";
 
                         n.call(this);
                     }

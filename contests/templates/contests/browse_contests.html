@@ -120,7 +120,7 @@
                                                     <span class="flow-text left">{{ contest.title }}</span>
                                                 </div>
 
-                                                <div class="col s6">
+                                                <div class="col s8">
                                                     <div class="row valign-wrapper center" style="padding-top: 2vh;">
                                                         <div class="col s2">
                                                         <i class="fas fa-users fa-2x"
@@ -143,12 +143,7 @@
                                                         {#                                                        style="font-size: large;font-weight: normal">{{ question.difficulty }}</span></i>#}
                                                     </div>
                                                 </div>
-                                                <div class="col s2 rignt-align">
-                                                    {#                                                <div class="chip">#}
-                                                    {#                                                    <img src="{{ question.author.userprofile. }}"#}
-                                                    {#                                                         alt="ContactPerson">{{ question.category.name }}#}
-                                                    {#                                                </div>#}
-                                                </div>
+
                                             </div>
                                         </div>
                                         <div class="collapsible-body">
@@ -156,7 +151,7 @@
                                             <br>
                                             <a class="waves-effect waves-light btn-small black right "
                                                href="{% url 'contests:view-contest' contest.unique_code %}"><i
-                                                    class="material-icons">assignment</i>&nbspSolve</a>
+                                                    class="material-icons">assignment</i>&nbspRegister</a>
                                             <br>
                                         </div>
                                     </li>
