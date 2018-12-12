@@ -7,6 +7,7 @@ from registration.models import *
 
 # Create your views here.
 from questions.models import Category
+from contests.models import Contest
 from registration.views import email_confirmation_required
 
 
@@ -20,9 +21,14 @@ def redirect_to_landing(request):
 
 
 def home(request):
-
     categories = Category.objects.all()
-    return render(request, 'main_page/home.html', {"categories": categories})
+    contest = Contest.objects.all()
+    coming_contests= contest[:4]
+    context={
+        'categories': categories,
+        'coming_contests': coming_contests,
+    }
+    return render(request, 'main_page/home.html', context)
 
 
 def redirect_to_home(request):
@@ -58,4 +64,3 @@ def error_404(request):
 
 def error_500(request):
     return render(request, "main_page/500.html")
-

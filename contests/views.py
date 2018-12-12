@@ -96,7 +96,7 @@ def edit_contest(request, contest_unique_id):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        return redirect('contests:view-contest', contest.unique_code)
+        return redirect('contests:view-contest', instance.unique_code)
     context = {
         'instance': instance,
         'form': form

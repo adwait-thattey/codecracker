@@ -71,6 +71,7 @@
     <!--All catergories displaying-->
     <div class="row">
       <!--Each Catergory-->
+    {% for category in categories%}
       <div class="col s12 l4">
         <div class="flip-container">
           <div class="flipper">
@@ -78,8 +79,8 @@
               <div class="row">
                 <div class="col s12 m12">
                     <div class="card-content black-text center">
-                      <img src="{% static 'registration/img/data_structures.png' %}" style="width:100px; height:100px;" class="responsive-img">
-                      <h6 class="center" style="color:#ff5252"><b>Category Name 1</b></h6>
+                      <img src="{{category.logo.url}}" style="width:100px; height:100px;" class="responsive-img">
+                      <h6 class="center" style="color:#ff5252"><b>{{category.name}}</b></h6>
                     </div>
                 </div>
               </div>
@@ -87,146 +88,15 @@
             <div class="back">
               <div class="row">
                 <div class="col s12">
-                    <p class="center"><a href="#">Card Title</a></p>
-                    <p class="center grey-text text-darken-2">I am a very simple card. I am good at containing small bits of information.
-                      I am convenient because I require little markup to use effectively.</p>
+                    <p class="center"><a href="#">{{category.name}}</a></p>
+                    <p class="center grey-text text-darken-2">{{category.description}}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!--Another category-->
-      <div class="col s12 l4">
-        <div class="flip-container">
-          <div class="flipper">
-            <div class="front">
-              <div class="row">
-                <div class="col s12 m12">
-                    <div class="card-content black-text center">
-                      <img src="{% static 'registration/img/algorithms.png' %}" style="width:100px; height:100px;" class="responsive-img">
-                      <h6 class="center" style="color:#ff5252"><b>Category Name2</b></h6>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="back">
-              <div class="row">
-                <div class="col s12">
-                    <p class="center">Card Title</p>
-                    <p class="center">I am a very simple card. I am good at containing small bits of information.
-                      I am convenient because I require little markup to use effectively.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--Another category-->
-      <div class="col s12 l4">
-        <div class="flip-container">
-          <div class="flipper">
-            <div class="front">
-              <div class="row">
-                <div class="col s12 m12">
-                    <div class="card-content black-text center">
-                      <img src="{% static 'registration/img/AI.png' %}" style="width:100px; height:100px;" class="responsive-img">
-                      <h6 class="center" style="color:#ff5252"><b>Category Name3</b></h6>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="back">
-              <div class="row">
-                <div class="col s12">
-                    <p class="center">Card Title</p>
-                    <p class="center">I am a very simple card. I am good at containing small bits of information.
-                      I am convenient because I require little markup to use effectively.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--Another category-->
-      <div class="col s12 l4">
-        <div class="flip-container">
-          <div class="flipper">
-            <div class="front">
-              <div class="row">
-                <div class="col s12 m12">
-                    <div class="card-content black-text center">
-                      <img src="{% static 'registration/img/math.png' %}" style="width:100px; height:100px;" class="responsive-img">
-                      <h6 class="center" style="color:#ff5252"><b>Category Name3</b></h6>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="back">
-              <div class="row">
-                <div class="col s12">
-                    <p class="center">Card Title</p>
-                    <p class="center">I am a very simple card. I am good at containing small bits of information.
-                      I am convenient because I require little markup to use effectively.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--Another category-->
-      <div class="col s12 l4">
-        <div class="flip-container">
-          <div class="flipper">
-            <div class="front">
-              <div class="row">
-                <div class="col s12 m12">
-                    <div class="card-content black-text center">
-                      <img src="{% static 'registration/img/regex.png' %}" style="width:100px; height:100px;" class="responsive-img">
-                      <h6 class="center" style="color:#ff5252"><b>Category Name3</b></h6>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="back">
-              <div class="row">
-                <div class="col s12">
-                    <p class="center">Card Title</p>
-                    <p class="center">I am a very simple card. I am good at containing small bits of information.
-                      I am convenient because I require little markup to use effectively.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--Another category-->
-      <div class="col s12 l4">
-        <div class="flip-container">
-          <div class="flipper">
-            <div class="front">
-              <div class="row">
-                <div class="col s12 m12">
-                    <div class="card-content black-text center">
-                      <img src="{% static 'registration/img/IP.png' %}" style="width:100px; height:100px;" class="responsive-img">
-                      <h6 class="center" style="color:#ff5252"><b>Category Name3</b></h6>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="back">
-              <div class="row">
-                <div class="col s12">
-                    <p class="center">Card Title</p>
-                    <p class="center">I am a very simple card. I am good at containing small bits of information.
-                      I am convenient because I require little markup to use effectively.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    {% endfor %}
     </div>
 
       <!--   Icon Section   -->
@@ -234,60 +104,36 @@
         <h3 class="header center cyan-text text-darken-4">Contests</h3>
       </div>
       <div class="row">
+      {% for contest in coming_contests %}
         <div class="col s12 m6 l6">
           <div class="card hoverable" id="card">
             <div class="card-image waves-effect waves-block waves-light">
               <img class="activator" src="{% static 'registration/img/img1.png' %}">
             </div>
             <div class="card-content">
-              <span class="card-title cyan-text text-darken-4"><b> Contest Name</b></span>
+              <span class="card-title cyan-text text-darken-4"><b> {{contest.title}}</b></span>
               <div class="divider"></div><br>
-              <p class="grey-text text-darken-2">Short Description of Contest</p><br>
+              <p class="grey-text text-darken-2">{{contest.short_description}}</p><br>
               <table class="responsive-table striped">
                 <tbody>
                   <tr>
-                    <th class="center-align"> Start_Date : Date</th>
-                    <th class="center-align"> End_Date : Date</th>
+                    <th class="center-align"> Start_Date : {{contest.start_date}}</th>
+                    <th class="center-align"> End_Date : {{contest.end_date}}</th>
                   </tr>
                   <tr>
-                    <th class="center-align"> Start_Time : Time</th>
-                    <th class="center-align"> End_End : Time</th>
+                    <th class="center-align"> Start_Time : {{contest.start_time}}</th>
+                    <th class="center-align"> End_End : {{contest.end_time}}</th>
                   </tr>
                   <tr>
-                    <td class="left-align"><i class="fas fa-arrow-right fa-sm"></i><a href="#" class="black-text" id="link"> Get Into Contest</a></td>
+                    <td class="left-align"><i class="fas fa-arrow-right fa-sm"></i><a href="{% url 'contests:view-contest' contest.unique_code %}" id="link"> Get Into Contest</a></td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
-        <div class="col s12 m6 l6">
-          <div class="card hoverable" id="card">
-            <div class="card-image waves-effect waves-block waves-light">
-              <img class="activator" src="{% static 'registration/img/img1.png' %}">
-            </div>
-            <div class="card-content">
-              <span class="card-title cyan-text text-darken-4"><b> Contest Name</b></span>
-              <div class="divider"></div><br>
-              <p class="grey-text text-darken-2">Short Description of Contest</p><br>
-              <table class="responsive-table striped">
-                <tbody>
-                  <tr>
-                    <th class="center-align"> Start_Date : Date</th>
-                    <th class="center-align"> End_Date : Date</th>
-                  </tr>
-                  <tr>
-                    <th class="center-align"> Start_Time : Time</th>
-                    <th class="center-align"> End_End : Time</th>
-                  </tr>
-                  <tr>
-                    <td class="left-align"><i class="fas fa-arrow-right fa-sm"></i><a href="#" class="black-text" id="link"> Get Into Contest</a></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+      {% endfor %}
+
       </div>
 
     </div>

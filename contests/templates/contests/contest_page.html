@@ -387,23 +387,21 @@
     <script type='text/javascript'
             src='//platform-api.sharethis.com/js/sharethis.js#property=5beee4514e83990011fd89af&product=sticky-share-buttons'
             async='async'></script>
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
     <script>
         // Or with jQuery
         $(document).ready(function () {
             $('select').formSelect();
-        });
-        $(document).ready(function () {
-            $('.modal').modal();
-        });
-        $(document).ready(function(){
-            $('.tabs').tabs();
-        });
-        $('ul.tabs').tabs({
-          swipeable: false,
-        });
 
+            $('.modal').modal();
+
+            $('.tabs').tabs();
+
+            $('ul.tabs').tabs({
+              swipeable: false,
+            });
+        });
     </script>
 
     {% if contest.status == 0 %}
@@ -518,6 +516,8 @@
 
     });
     </script>
+
+    <!-- ---- -->
 
 
 {% endblock custom_eof_scripts %}
