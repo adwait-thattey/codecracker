@@ -9,7 +9,11 @@ from questions.forms import PostQuestionForm
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+
+from datetime import datetime
+from datetime import timedelta
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
 
 
 # Create your views here.
@@ -92,8 +96,15 @@ def edit_contest(request, contest_unique_id):
 
 
 def view_contest_page(request, contest_unique_code):
-    contest = get_object_or_404(Contest, unique_code=contest_unique_code)
-    return render(request, 'contest_page.html', {'contest': contest})
+    contest = get_object_or_404(Contest, unique_code= contest_unique_code)
+    C= Contest.objects.get(unique_code= contest_unique_code)
+    sdt = datetime.combine(C.start_date, C.start_time) + timedelta(minutes=1)
+    starttime = sdt.strftime("%d %B %Y %H:%M:%S")
+    edt = datetime.combine(C.end_date, C.end_time)
+    endtime = edt.strftime("%d %B %Y %H:%M:%S")
+    return render(request, 'contests/contest_page.html',
+                   {'contest': contest, "starttime": starttime, 'endtime': endtime})
+
 
 
 def leaderboard(request, contest_unique_code):
@@ -144,3 +155,4 @@ def browse_contests(request):
     # print(question_page)
     return render(request, "contests/browse_contests.html",
                   {"contests": contests_page, "filter_form": contest_filter_form})
+

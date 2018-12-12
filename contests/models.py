@@ -65,6 +65,7 @@ class Contest(models.Model):
                                   registration, it is your responsibility to add them in the participants list via\
                                    the REST API call.")
 
+
     status = models.IntegerField(default=0, help_text="0-Yet to start, 1- live, 2- ended",
                                  validators=[MinValueValidator(0), MaxValueValidator(2)])
 
@@ -74,7 +75,6 @@ class Contest(models.Model):
 
     def __str__(self):
         return self.unique_code
-
 
 class ContestQuestion(models.Model):
     question = models.OneToOneField(to=Question, on_delete=models.CASCADE)

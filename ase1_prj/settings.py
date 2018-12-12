@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'contests',
     'rest_framework',
     'api',
+    'django_cron'
 ]
 
 CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
@@ -145,6 +146,22 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Django_cron conf
+
+CRON_CLASSES = [
+    'contests.cron.ContestStatus',
+
+]
+DJANGO_CRON_CACHE = 'default'
+
+DJANGO_CRON_LOCK_BACKEND = 'django_cron.backends.lock.cache.CacheLock'
+
+DJANGO_CRON_LOCKFILE_PATH = '/tmp'
+
+DJANGO_CRON_LOCK_TIME = 24 * 60 * 60
+
+#
 
 ROOT_URLCONF = 'ase1_prj.urls'
 
