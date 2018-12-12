@@ -195,6 +195,7 @@
         total_score = document.getElementById('total_score');
         progress_bar = document.getElementById('progress_bar');
         overall_status = document.getElementById('overall_status');
+        final_iter = 0;
 
         var interval_id = 0;
 
@@ -286,39 +287,42 @@
                     }
 
                     if (completion_check == 0) {
-                        clearInterval(interval_id);
-                        M.Toast.dismissAll();
-                        total_score.innerHTML = data.score + "%";
-                        progress_bar.classList.remove('indeterminate');
-                        progress_bar.classList.add('determinate');
-                        progress_bar.classList.remove('amber');
-                        progress_bar.classList.remove('lighten-1');
-                        progress_bar.classList.add('green');
-                        progress_bar.style.width = data.score + "%";
-                        if (data.score > 99) {
-                            overall_status.innerHTML = "Correct Answer";
-                            overall_status.classList.add("green-text")
+                        if (final_iter===1) {
+                            clearInterval(interval_id);
+                            M.Toast.dismissAll();
+                            total_score.innerHTML = data.score + "%";
+                            progress_bar.classList.remove('indeterminate');
+                            progress_bar.classList.add('determinate');
+                            progress_bar.classList.remove('amber');
+                            progress_bar.classList.remove('lighten-1');
+                            progress_bar.classList.add('green');
+                            progress_bar.style.width = data.score + "%";
+                            if (data.score > 99) {
+                                overall_status.innerHTML = "Correct Answer";
+                                overall_status.classList.add("green-text")
+                            }
+                            else {
+                                overall_status.innerHTML = "Wrong Answer";
+                                overall_status.classList.add("red-text")
+                            }
+                            {#progress_bar.style.width = "67%";#}
+
+                            {% comment %} $('#total_score').each(function () {
+                                 $(this).prop('Counter', 0).animate({
+                                     Counter: $(this).text()
+                                 }, {
+                                     duration: 2000,
+                                     easing: 'swing',
+                                     step: function (now) {
+                                         $(this).text(now.toFixed(2));
+                                         progress_bar.style.width = now.toFixed(2) + "%";
+                                     }
+                                 });
+                             });{% endcomment %}
                         }
-                        else {
-                            overall_status.innerHTML = "Wrong Answer";
-                            overall_status.classList.add("red-text")
+                        else{
+                            final_iter=1;
                         }
-                        {#progress_bar.style.width = "67%";#}
-
-                        {% comment %} $('#total_score').each(function () {
-                             $(this).prop('Counter', 0).animate({
-                                 Counter: $(this).text()
-                             }, {
-                                 duration: 2000,
-                                 easing: 'swing',
-                                 step: function (now) {
-                                     $(this).text(now.toFixed(2));
-                                     progress_bar.style.width = now.toFixed(2) + "%";
-                                 }
-                             });
-                         });{% endcomment %}
-
-
 
 
                         {#$('#progress_bar').each(function () {#}

@@ -8,7 +8,7 @@ from questions.models import Question, Submission, Result, TestCase, Category, Q
 from questions.utils import run_in_background
 from .forms import SubmissionForm, TestCaseCreateForm, PostQuestionForm, QuestionsFilterForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .background_tasks import RunAndAssert, LimitThreads
+from .background_tasks import RunAndAssert, LimitThreads, SubmissionRunnerController, RunAndReCalc, Scheduler
 
 from django.forms import modelformset_factory
 
@@ -23,8 +23,10 @@ def start_code_run_sequence(submission):
 
     for testcase in submission.question.testcase_set.all():
         R = Result.objects.create(testcase=testcase, submission=submission)
-        thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
-        thread_temp.start()
+
+    controller = SubmissionRunnerController(thread_id=submission.id, submission=submission)
+
+    controller.start()
 
 
 @login_required
@@ -64,18 +66,14 @@ def rerun_all_testcase_submissions(testcase):
     R_set = Result.objects.filter(testcase=testcase)
     R_set.delete()
 
-    def chunker(seq, size):
-        return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+    thread_list = list()
+    for submission in testcase.question.submission_set.all():
+        R = Result.objects.create(testcase=testcase, submission=submission)
+        thread_temp = RunAndReCalc(thread_id=testcase.id, result_instance=R)
+        thread_list.append(thread_temp)
 
-    for submission_chunk in chunker(testcase.question.submission_set.all(), 10):
-        thread_list = list()
-        for submission in submission_chunk:
-            R = Result.objects.create(testcase=testcase, submission=submission)
-            thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
-            thread_list.append(thread_temp)
-
-        thread_chunk = LimitThreads(thread_id=0, thread_list=thread_list)
-        thread_chunk.run()
+    thread_chunk = Scheduler(threadlist=thread_list)
+    thread_chunk.run()
 
     # TODO Send mail after all submissions have been re-run
     print("done!")
@@ -166,7 +164,7 @@ def browse_questions(request):
     # Just did this to make sure clean is called
 
     if "category" in question_filter_form.cleaned_data:
-        if question_filter_form.cleaned_data["category"]:
+        if question_filter_form.cleaned_data["category"]: #make sure incoming value is not none
             questions = questions.filter(category=question_filter_form.cleaned_data["category"])
     if "sort_by" in question_filter_form.cleaned_data:
         # print("sortby",question_filter_form.cleaned_data["sort_by"])

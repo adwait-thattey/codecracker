@@ -13,3 +13,23 @@ class ContestQuestionForm(forms.ModelForm):
     class Meta:
         model = ContestQuestion
         fields = ['points']
+
+class ContestFilterForm(forms.Form):
+    SORT_CHOICES = (
+        ('1', 'Start Time'),
+        ('2', 'End Time'),
+        ('3', 'Status'),
+    )
+
+    STATUS_CHOICES = (
+        (None, 'Status'),
+        ('1', 'Live Contests'),
+        ('0', 'Upcoming Contests'),
+        ('2', 'Past Contests')
+    )
+    status = forms.ChoiceField(choices=STATUS_CHOICES, required=False)
+
+    sort_by = forms.ChoiceField(choices=SORT_CHOICES, widget=forms.RadioSelect())
+
+    reverse = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
+    # query = forms.CharField(required=False)
