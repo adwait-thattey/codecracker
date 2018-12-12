@@ -97,7 +97,8 @@ def submit_solution(request, question_unique_id):
             submission.save()
 
             start_code_run_sequence(submission)
-            return redirect('questions:submission-result', question.unique_code, request.user.username, submission.attempt_number)
+            return redirect('questions:submission-result', question.unique_code, request.user.username,
+                            submission.attempt_number)
 
     else:
         submission_form = SubmissionForm()
@@ -352,6 +353,16 @@ def redirect_to_browse(request):
     return redirect('questions:browse')
 
 
+
+def get_question_titles(request):
+    q_titles = list(Question.objects.all().values_list('title'))
+
+    ret_dict = {
+        'titles': q_titles
+    }
+
+    return JsonResponse(ret_dict)
+
 #
 #
 # API Views below
@@ -359,6 +370,6 @@ def redirect_to_browse(request):
 #
 
 
-
 def say_hello():
     return HttpResponse("Hello")
+

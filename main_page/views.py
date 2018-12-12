@@ -20,6 +20,7 @@ def redirect_to_landing(request):
 
 
 def home(request):
+
     categories = Category.objects.all()
     return render(request, 'main_page/home.html', {"categories": categories})
 
@@ -51,3 +52,10 @@ def get_unseen_notifications(request):
         notif.seen = True;
         notif.save()
     return JsonResponse(ret_data)
+
+def error_404(request):
+    return render(request, "main_page/404.html")
+
+def error_500(request):
+    return render(request, "main_page/500.html")
+

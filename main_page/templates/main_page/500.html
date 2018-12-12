@@ -1,0 +1,73 @@
+{% extends 'main_page/nav.html' %}
+{% load static %}
+{% block custom_includes %}
+    <link href="https://fonts.googleapis.com/css?family=Chakra+Petch:400,700" rel="stylesheet">
+{% endblock %}
+
+{% block internal_styles %}
+    <style>
+        @keyframes strike{
+            0%   { width : 0; }
+            100% { width: 100%; }
+        }
+        .strike {
+            position: relative;
+        }
+        .strike:after {
+            content: ' ';
+            position: absolute;
+            top: 35%;
+            left: 0;
+            width: 100%;
+            height: 0.8vh;
+            background: black;
+            animation-name: strike;
+            animation-duration: 1.3s;
+            animation-timing-function: linear;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+        }
+
+        body{
+            background-color: #ffffff;
+        }
+    </style>
+{% endblock %}
+{% block main_content %}
+    <section>
+        <div class="container">
+        <div class="row center no-pad-bot">
+            <h2 class="no-padding" style="font-family: 'Chakra Petch', sans-serif; font-weight: bold;">SERVER ERROR 500!</h2>
+        </div>
+        <div class="row no-pad-top center">
+            <div class="col s12 l5 push-l7 no-padding center-align" style="height:auto;" >
+
+                <img src="{% static 'main_page/img/server_error.jpg' %}" alt="" style=" max-width: 100%;;">
+
+            </div>
+            <div class="col s12 l7 pull-l5"  style="height:55vh;font-size:250%;vertical-align: middle; display: table; ">
+
+                <span style="vertical-align:middle; display:table-cell">
+                    Something seems to have broken. We will have our <span id="striker" class="strike blue-text text-darken-4" style="font-family: 'Roboto', sans-serif; font-weight: bold; font-style: italic;">DEVELOPERS</span> fix it ASAP!
+                </span>
+            </div>
+
+        </div>
+    </div>
+    </section>
+{% endblock %}
+
+{% block custom_eof_scripts %}
+    <script>
+        function rep_eng(){
+            txt = document.getElementById('striker');
+            txt.classList.remove('strike');
+            txt.classList.remove('blue-text');
+            txt.classList.add('red-text');
+            txt.innerHTML = "ENGINEERS";
+        }
+        window.onload = function(){
+            setTimeout(rep_eng, 1550)
+        }
+    </script>
+{% endblock %}

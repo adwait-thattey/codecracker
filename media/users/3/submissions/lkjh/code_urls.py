@@ -19,9 +19,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
-from django.conf.urls import handler500
-from main_page import views as main_views
-from rest_framework_jwt.views import obtain_jwt_token
 
 
 urlpatterns = [
@@ -29,35 +26,21 @@ urlpatterns = [
     path('', include('main_page.urls')),
     path('admin/', admin.site.urls),
     path('registration/', include('registration.urls')),
-    path('questions/', include('questions.urls')),
-    path('contests/', include('contests.urls')),
-    path('password_reset/', auth_views.PasswordResetView.as_view(template_name="registration/password_reset_form.html"),
-         name='password_reset'),
+    path('password_reset/', auth_views.PasswordResetView.as_view(template_name = "registration/password_reset_form.html"), name='password_reset'),
 
-    path('password_reset/done/',
-         auth_views.PasswordResetDoneView.as_view(template_name="registration/password_reset_done.html"),
-         name='password_reset_done'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name = "registration/password_reset_done.html"), name='password_reset_done'),
 
     path('reset/<uidb64>/<token>',
-         auth_views.PasswordResetConfirmView.as_view(template_name="registration/password_reset_confirm.html"),
-         name='password_reset_confirm'),
-    path('reset/done/',
-         auth_views.PasswordResetCompleteView.as_view(template_name="registration/password_reset_complete.html"),
-         name='password_reset_complete'),
-
+         auth_views.PasswordResetConfirmView.as_view(template_name = "registration/password_reset_confirm.html"), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name = "registration/password_reset_complete.html"), name='password_reset_complete'),
+    path('questions/', include('questions.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-
-    path('stats/', include('stats.urls')),
-
-    path('api-token-auth/', obtain_jwt_token),
-    path('api/', include('api.urls')),
+    path('auth/', include('social_django.urls', namespace='social')),
+    path('profile/', include('Profile.urls'))
 ]
 
 urlpatterns += staticfiles_urlpatterns()
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-# handler404 = 'main_views.error_404'
-handler500 = main_views.error_500

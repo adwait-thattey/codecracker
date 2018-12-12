@@ -1,0 +1,308 @@
+{% extends 'main_page/nav.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block custom_includes %}
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+{% endblock %}
+
+{% block title %}
+    Area Chart - Datetime X-Axis
+{% endblock %}
+
+{% block internal_styles %}
+    <link rel="stylesheet" href="{% static 'apex charts/samples/assets/styles.css' %}">
+    <style>
+
+        #chart {
+            max-width: 650px;
+            margin: 35px auto;
+        }
+
+        .toolbar {
+            margin-left: 45px;
+        }
+
+        #chart1 {
+
+            max-width: 380px;
+            margin: 35px auto;
+        }
+
+        button {
+            background: #fff;
+            color: #222;
+            border: 1px solid #e7e7e7;
+            border-bottom: 2px solid #ddd;
+            border-radius: 2px;
+            padding: 4px 17px;
+        }
+
+        button.active {
+            color: #fff;
+            background: #008FFB;
+            border: 1px solid blue;
+            border-bottom: 2px solid blue;
+        }
+
+        button:focus {
+            outline: 0;
+        }
+    </style>
+{% endblock internal_styles %}
+
+
+{% block main_content %}
+    <section>
+
+        <div id="chart">
+            <div class="toolbar">
+                <button id="one_month">1M</button>
+                <button id="six_months">6M</button>
+                <button id="one_year" class="active">1Y</button>
+                <button id="ytd">YTD</button>
+                <button id="all">ALL</button>
+            </div>
+            <div id="timeline-chart"></div>
+        </div>
+
+         <div id="chart1">
+
+        </div>
+
+
+    </section>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src={% static "apex charts/samples/assets/series1000.js" %}></script>
+
+
+    <script>
+        var options = {
+            annotations: {
+                yaxis: [{
+                    y: 1,
+                    borderColor: '#999',
+                    label: {
+                        show: true,
+                        text: 'Support',
+                        style: {
+                            color: "#fff",
+                            background: '#00E396'
+                        }
+                    }
+                }],
+                xaxis: [{
+                    x:new Date('{{ current }}').getTime(),
+                    borderColor: '#999',
+                    yAxisIndex: 0,
+                    label: {
+                        show: true,
+                        text: 'Rally',
+                        style: {
+                            color: "#fff",
+                            background: '#775DD0'
+                        }
+                    }
+                }]
+            },
+            chart: {
+                type: 'area',
+                height: 350,
+            },
+            dataLabels: {
+                enabled: false
+            },
+            series: [{% comment %}{
+                data: dataseries
+            },{% endcomment %}
+
+            ],
+            markers: {
+                size: 0,
+                style: 'hollow',
+            },
+            xaxis: {
+                type: 'datetime',
+                min: undefined,
+                tickAmount: 6,
+            },
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy'
+                }
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.9,
+                    stops: [0, 100]
+                }
+            },
+
+        }
+
+
+        var resetCssClasses = function (activeEl) {
+            var els = document.querySelectorAll("button");
+            Array.prototype.forEach.call(els, function (el) {
+                el.classList.remove('active');
+            });
+
+            activeEl.target.classList.add('active')
+        }
+
+        document.querySelector("#one_month").addEventListener('click', function (e) {
+            resetCssClasses(e)
+            chart.updateOptions({
+                xaxis: {
+                    {#min: new Date('28 Jan 2013').getTime(),#}
+                    {#max: new Date('27 Feb 2013').getTime(),#}
+                    min: new Date('{{ one_month }}').getTime(),
+                    max:new Date('{{ current }}').getTime(),
+
+                }
+            })
+        })
+
+        document.querySelector("#six_months").addEventListener('click', function (e) {
+            resetCssClasses(e)
+            chart.updateOptions({
+                xaxis: {
+                {#    min: new Date('27 Sep 2012').getTime(),#}
+                {#    max: new Date('27 Feb 2013').getTime(),#}
+                    min:new Date('{{ six_months }}').getTime(),
+                    max:new Date('{{ current }}').getTime(),
+                }
+            })
+        })
+
+        document.querySelector("#one_year").addEventListener('click', function (e) {
+            resetCssClasses(e)
+            chart.updateOptions({
+                xaxis: {
+                    {#min: new Date('27 Feb 2012').getTime(),#}
+                    {#max: new Date('27 Feb 2013').getTime(),#}
+                    min:new Date('{{ one_year }}').getTime(),
+                    max:new Date('{{ current }}').getTime(),
+
+
+                }
+            })
+
+        })
+
+        document.querySelector("#ytd").addEventListener('click', function (e) {
+            resetCssClasses(e)
+            chart.updateOptions({
+                xaxis: {
+                    {#min: new Date('01 Jan 2013').getTime(),#}
+                    {#max: new Date('27 Feb 2013').getTime(),#}
+                    min:new Date('{{ ytd }}').getTime(),
+                    max:new Date('{{ current }}').getTime(),
+
+
+                }
+            })
+        })
+
+        document.querySelector("#all").addEventListener('click', function (e) {
+            resetCssClasses(e)
+            chart.updateOptions({
+                xaxis: {
+                    min: undefined,
+                    max: undefined,
+                }
+            })
+        })
+
+        document.querySelector("#ytd").addEventListener('click', function () {
+
+        })
+    </script>
+
+{% endblock main_content %}
+
+{% block custom_eof_scripts %}
+
+    <script>
+        var dataseries = {}
+
+        function user_submission_date_stats() {
+            console.log("requesting stats")
+
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'stats:user-submission-stats' user.username %}",
+                data: {},
+                dataType: 'json',
+                success: function (result) {
+                    dataseries = result.stats;
+                    console.log(result.stats);
+                    options.series = [
+                        {
+                            data: result.stats
+
+                            {#data: [{x:'05/06/2017',y:35},{ x: '05/15/2018', y: 54 }, { x: '05/08/2018', y: 17 } , { x: '05/28/2018', y: 26 },{x:'05/06/2015',y:35},{ x: '08/15/2016', y: 54 }, { x: '01/01/2018', y: 17 } , { x: '05/28/2017', y: 2 }]#}
+
+                        },
+                    ];
+
+                    var chart = new ApexCharts(
+                        document.querySelector("#timeline-chart"),
+                        options
+                    );
+
+                    chart.render();
+
+
+                }
+            });
+        };
+        window.onload = function () {
+            interval_id = setTimeout(user_submission_date_stats, 1500);
+
+        }
+
+    </script>
+
+
+        <script>
+            var options1 = {
+                chart: {
+                    width: 380,
+                    type: 'pie',
+                },
+                labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+                series: [44, 55, 13, 43, 22],
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+            var chart1 = new ApexCharts(
+                document.querySelector("#chart1"),
+                options1
+            );
+
+            chart1.render();
+
+        </script>
+
+
+{% endblock %}

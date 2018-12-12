@@ -31,6 +31,18 @@
 
     {% endblock %}
 
+    <style>
+        .active .spinner-layer.spinner-blue-only {
+            animation: fill-unfill-rotate 3000ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+            border-color: #006064;
+
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+    </style>
+
     {% block internal_styles %}
 
     {% endblock internal_styles %}
@@ -40,13 +52,8 @@
         {% endblock %}
     </title>
 
-    <style>
-        .active .spinner-layer.spinner-blue-only {
-            animation: fill-unfill-rotate 3000ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
-            border-color: #006064;
 
-        }
-    </style>
+
 </head>
 
 <body>
@@ -69,10 +76,11 @@
                                 <div class="row" id="topbarsearch">
                                     <div class="input-field col s6 s12">
 
-                                        <form action="{% url 'questions:browse' %}" method="get">
+                                        <form action="{% url 'questions:browse' %}" method="get" autocomplete="off">
                                             <i class="material-icons prefix">search</i>
                                             <input type="text" placeholder="search" id="autocomplete-input" name="query"
                                                    class="autocomplete black-text">
+
                                         </form>
                                     </div>
                                 </div>
@@ -287,6 +295,31 @@
 
         {% endif %}
 
+
+        {#    Configuration for search bar at top#}
+        $(document).ready(function () {
+            console.log("sending!")
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'questions:ajax-get_question_titles' %}",
+                data: {},
+                dataType: 'json',
+                success: function (result) {
+                    console.log("hello")
+                    title_dict = {}
+                    for (title of result.titles) {
+                        title_dict[title] = null
+                    }
+                    console.log(title_dict)
+
+                    $('input.autocomplete').autocomplete({
+                        data: title_dict,
+                    });
+                }
+            });
+
+
+        });
     </script>
 
 {% endblock %}
