@@ -1,13 +1,26 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser
-
-from questions.models import Question, TestCase
-from .serializers import QuestionSerializer, TestCaseSerializer
+from rest_framework.renderers import JSONRenderer
+from questions.models import Question, TestCase, Result
+from .serializers import QuestionSerializer, TestCaseSerializer, ResultSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+
+class ResultDetail(APIView):
+
+    def get_result(self, question_unique_id):
+        try:
+            return Result.objects.get(question__unique_code=question_unique_id)
+        except Question.DoesNotExist:
+            raise Http404
+
+    def get(self, request, question_unique_id, format=None):
+        result = self.get_result(question_unique_id)
+        serializer = ResultSerializer(result)
+        return Response(serializer.data)
 
 class QuestionDetail(APIView):
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Question, Category, TestCase
+from .models import Question, Category, TestCase,Result
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -14,3 +14,9 @@ class TestCaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestCase
         fields = ('input_file', 'output_file', 'points')
+
+
+class ResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Result
+        fields = ('testcase', 'submission', 'pass_fail', 'errors')
