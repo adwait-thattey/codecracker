@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
+from django.core.exceptions import PermissionDenied
+from contests.models import Contest
 
 # Create your views here.
 
@@ -15,3 +17,13 @@ def create_contest(request):
 
 def edit_contest(request):
     return None
+def participants(request, contest_unique_id):
+	contest = get_object_or_404(Contest,unique_code=contest_unique_id)
+	participants = contest.participants.all()
+
+	return render(request,"contests/p1.html",{'d1':participants})
+
+
+
+
+	  

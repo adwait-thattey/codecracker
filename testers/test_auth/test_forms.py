@@ -1,4 +1,3 @@
-
 from registration.forms import RegisterForm
 from registration.models import UserProfile
 from django.contrib.auth.models import User
