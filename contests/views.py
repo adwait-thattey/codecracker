@@ -219,3 +219,4 @@ def register_user_from_author(request, contest_unique_id):
         print("found")
 
     return redirect('contests:view-contest', contest_unique_id)
+

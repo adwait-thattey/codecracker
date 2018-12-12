@@ -18,6 +18,9 @@ class SubmitSolutionUrlTest(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+
         self.client = None
         self.request_url = '/questions/' + self.question.unique_code + "/submit"
         # Create clients on the fly in the tests as login/logout is required
@@ -28,17 +31,17 @@ class SubmitSolutionUrlTest(TestCase):
 
         self.assertRedirects(response, expected_url="/registration/login?next=" + self.request_url)
 
-    # def test_authenticated_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.get(self.request_url)
-    #     self.assertEqual(response.status_code, 200)
+    def test_authenticated_ping(self):
+         self.client = Client()
+         self.client.force_login(self.createduser)
+         response = self.client.get(self.request_url)
+         self.assertEqual(response.status_code, 200)
 
-    # def test_authenticated_random_id_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.get('/questions/blblah/submit')
-    #     self.assertEqual(response.status_code, 404)
+    def test_authenticated_random_id_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get('/questions/blblah/submit')
+        self.assertEqual(response.status_code, 404)
 
 class QuestionBrowseUrlTest(TestCase):
 
@@ -48,6 +51,9 @@ class QuestionBrowseUrlTest(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+
         self.client = None
         self.request_url = '/questions/browse'
         # Create clients on the fly in the tests as login/logout is required
@@ -57,6 +63,11 @@ class QuestionBrowseUrlTest(TestCase):
         response = self.client.get(self.request_url)
 
         self.assertEqual(response.status_code,200)
+    def test_authenticated_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get(self.request_url)
+        self.assertEqual(response.status_code, 200)
 
              
 class QuestionPostUrlTest(TestCase):
@@ -78,18 +89,18 @@ class QuestionPostUrlTest(TestCase):
         self.assertRedirects(response, expected_url="/registration/login?next=" + self.request_url)
 
     
-    # def test_authenticated_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.get(self.request_url)
-    #     self.assertEqual(response.status_code, 200)
+    def test_authenticated_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get(self.request_url)
+        self.assertEqual(response.status_code, 200)
 
 
-    # def test_authenticated_random_id_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.get('/questions/blahblah/post/')
-    #     self.assertEqual(response.status_code, 404)
+    def test_authenticated_random_id_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get('/questions/blahblah/post/')
+        self.assertEqual(response.status_code, 404)
 class ViewQuestion(TestCase):
 
     def setUp(self):
@@ -110,11 +121,11 @@ class ViewQuestion(TestCase):
 
         self.assertEqual(response.status_code,200)
 
-    # def test_authenticated_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.get(self.request_url)
-    #     self.assertEqual(response.status_code, 200)
+    def test_authenticated_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get(self.request_url)
+        self.assertEqual(response.status_code, 200)
 
     def test_authenticated_random_id_ping(self):
         self.client = Client()
@@ -129,6 +140,10 @@ class TestCaseView(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+
+
         self.client = None
         self.request_url = '/questions/' + self.question.unique_code + '/testcases/view'
         # Create clients on the fly in the tests as login/logout is required
@@ -138,17 +153,17 @@ class TestCaseView(TestCase):
         response = self.client.get(self.request_url)
         self.assertRedirects(response, expected_url="/registration/login?next=" + self.request_url)
 
-    # def test_authenticated_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.get(self.request_url)
-    #     self.assertEqual(response.status_code, 200)
+    def test_authenticated_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get(self.request_url)
+        self.assertEqual(response.status_code, 200)
     
-    # def test_authenticated_random_id_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.get('/questions/blahblah/testcases/view')
-    #     self.assertEqual(response.status_code, 404)
+    def test_authenticated_random_id_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get('/questions/blahblah/testcases/view')
+        self.assertEqual(response.status_code, 404)
 class TestCaseNew(TestCase):
 
     def setUp(self):
@@ -157,6 +172,9 @@ class TestCaseNew(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+
         self.client = None
         self.request_url = '/questions/' + self.question.unique_code + '/testcases/new'
         # Create clients on the fly in the tests as login/logout is required
@@ -166,17 +184,17 @@ class TestCaseNew(TestCase):
         response = self.client.get(self.request_url)
         self.assertRedirects(response, expected_url="/registration/login?next=" + self.request_url)
 
-    # def test_authenticated_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.get(self.request_url)
-    #     self.assertEqual(response.status_code, 200)
+    def test_authenticated_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get(self.request_url)
+        self.assertEqual(response.status_code, 200)
     
-    # def test_authenticated_random_id_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.get('/questions/blahblah/testcases/new')
-    #     self.assertEqual(response.status_code, 404)
+    def test_authenticated_random_id_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get('/questions/blahblah/testcases/new')
+        self.assertEqual(response.status_code, 404)
 class SubmissionResultUrlTest(TestCase):
 
     def setUp(self):
@@ -185,6 +203,9 @@ class SubmissionResultUrlTest(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+
         
         self.client = None
         self.request_url = '/questions/ajax/submission-result'
@@ -206,7 +227,7 @@ class SubmissionResultUrlTest(TestCase):
 
     #TODO Make Post Request Submission tests
        
-'''class TestCase(TestCase):
+class TestCase(TestCase):
 
     def setUp(self):
          self.createduser = User.objects.create_user(username="testnormaluser", email="testnormaluser@ts.com",
@@ -215,23 +236,20 @@ class SubmissionResultUrlTest(TestCase):
                                                  short_description="Sample Short Desc", description="Sample Descrption",
                                                  unique_code="sq")
          self.client = None
-         #self.request_url = '/questions/' + self.question.unique_code + '/testcases/'
+         self.request_url = '/questions/' + self.question.unique_code + '/testcases/'
          # Create clients on the fly in the tests as login/logout is required
 
     def test_anonymous_ping(self):
          self.client = Client()
-         response = self.client.post("/questions/sq/testcases/")
-         self.assertRedirects(self,response, expected_url="/questions/sq/testcases/view",status_code=302,target_status_code=200,host=None, msg_prefix='',
-                      fetch_redirect_response=True)
-         #self, response, expected_url, status_code=302,
-                       # target_status_code=200, host=None, msg_prefix='',
-                      #  fetch_redirect_response=True
+         response = self.client.get(self.request_url)
+         self.assertEqual(response.status_code,302)
+
     
-    def test_authenticated_ping(self):
-         self.client = Client()
-         self.client.force_login(self.createduser)
-         response = self.client.post("/questions/sq/testcases/")
-         self.assertRedirects(response, expected_url="/questions/sq/testcases/view")'''
+    # def test_authenticated_ping(self):
+    #      self.client = Client()
+    #      self.client.force_login(self.createduser)
+    #      response = self.client.get(self.request_url)
+    #      self.assertRedirects(response, expected_url="/questions/sq/testcases/view")
 
 class TestCaseSubmissionUrlTest(TestCase):
 
@@ -241,6 +259,9 @@ class TestCaseSubmissionUrlTest(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+
         self.client = None
         self.request_url = '/questions/ajax/rerun_test_case_submissions/' + self.question.unique_code 
         
@@ -252,11 +273,11 @@ class TestCaseSubmissionUrlTest(TestCase):
 
         self.assertEquals(response.status_code,200)
 
-    # def test_authenticated_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.get(self.request_url)
-    #     self.assertEqual(response.status_code, 200)
+    def test_authenticated_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get(self.request_url)
+        self.assertEqual(response.status_code, 200)
 
     def test_authenticated_random_id_ping(self):
         self.client = Client()
@@ -272,6 +293,9 @@ class EditUrlTest(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+
         self.client = None
         self.request_url = '/questions/' + self.question.unique_code +'/edit'
         
@@ -282,11 +306,11 @@ class EditUrlTest(TestCase):
         response = self.client.get(self.request_url)
 
         self.assertRedirects(response, expected_url="/registration/login?next=" + self.request_url)
-    # def test_authenticated_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.get(self.request_url)
-    #     self.assertEqual(response.status_code, 200)
+    def test_authenticated_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.get(self.request_url)
+        self.assertEqual(response.status_code, 200)
 class TestCaseDeleteUrlTest(TestCase):
 
     def setUp(self):
@@ -295,26 +319,37 @@ class TestCaseDeleteUrlTest(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+        TC.objects.create(
+            question=self.question,
+            number=1,
+            input_file="code_tests/sample_input.txt",
+            output_file="code_tests/sample_output.txt",
+            points=25
+        )
+        
+
         
         self.client = None
         
         
-        #<slug:question_unique_id>/testcase/<int:test_case_number>/delete
+        
         
         # Create clients on the fly in the tests as login/logout is required
 
     def test_anonymous_ping(self):
         self.client = Client()
-        response = self.client.post("/questions/sq/testcase/4/delete")
+        response = self.client.post("/questions/sq/testcase/1/delete")
         
 
-        self.assertRedirects(response,expected_url="/registration/login?next=/questions/sq/testcase/4/delete")
+        self.assertRedirects(response,expected_url="/registration/login?next=/questions/sq/testcase/1/delete")
 
-    # def no_test_authenticated_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.post("/questions/sq/testcase/4/delete")
-    #     self.assertEqual(response.status_code, 200)
+    def test_no_authenticated_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.post("/questions/sq/testcase/1/delete/")
+        self.assertEqual(response.status_code, 404)
 
 # class SubmissionResultUrlTest(TestCase):
 
@@ -351,6 +386,9 @@ class TestCaseEditUrlTest(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+
 
         TC.objects.create(
             question=self.question,
@@ -369,25 +407,44 @@ class TestCaseEditUrlTest(TestCase):
 
     def test_anonymous_ping(self):
         self.client = Client()
-        response = self.client.post("/questions/sq/testcase/4/edit")
+        response = self.client.post('/questions/sq/testcase/1/edit')
         
 
-        self.assertRedirects(response,expected_url="/registration/login?next=/questions/sq/testcase/4/edit")
+        self.assertRedirects(response,expected_url="/registration/login?next=/questions/sq/testcase/1/edit")
 
-    # def no_test_authenticated_ping(self):
-    #     self.client = Client()
-    #     self.client.force_login(self.createduser)
-    #     response = self.client.post("/questions/sq/testcase/4/edit")
-    #     self.assertEqual(response.status_code, 404)
-
+    def test_authenticated_ping(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+        response = self.client.post('/questions/sq/testcase/1/edit')
+        self.assertEqual(response.status_code, 200)
 class UrlTest(TestCase):
 
-    
+    def setUp(self):
+        self.createduser = User.objects.create_user(username="testnormaluser", email="testnormaluser@ts.com",
+                                                    password="Test Hello World")
+
+        self.question = Question.objects.create(author=self.createduser, title="Sample Question",
+                                                short_description="Sample Short Desc", description="Sample Descrption",
+                                                unique_code="sq")
+
+
+        self.client = None
+        self.request_url = '/questions/' 
+        # Create clients on the fly in the tests as login/logout is required
+
     def test_anonymous_ping(self):
         self.client = Client()
-        response = self.client.get('/questions/')
+        response = self.client.get(self.request_url)
 
         self.assertRedirects(response,expected_url="/questions/browse")
+
+    def test_authenticated_ping(self):
+         self.client = Client()
+         self.client.force_login(self.createduser)
+         response = self.client.get(self.request_url)
+         self.assertRedirects(response,expected_url="/questions/browse")
+
+
 
  
 

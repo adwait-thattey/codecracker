@@ -19,6 +19,9 @@ class SubmitSolutionTest(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+
         
         self.client = None
         self.request_url = '/questions/' + self.question.unique_code + "/submit"
@@ -72,6 +75,9 @@ class TestCaseNew(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+
         
         self.client = None
         self.request_url = '/questions/' + self.question.unique_code + '/testcases/new'
