@@ -192,8 +192,6 @@ def unregister_from_contest(request, contest_unique_id):
     contest.participants.remove(request.user)
 
     return redirect('contests:view-contest', contest_unique_id)
-<<<<<<< HEAD
-=======
 
 
 def refresh_contest_state(request, contest_unique_id):
@@ -208,4 +206,3 @@ def refresh_contest_state(request, contest_unique_id):
             contest.save()
 
     return redirect('contests:view-contest', contest_unique_id)
->>>>>>> 22ace5643ee42422aa12f01c7a8c2b43229df2ca
