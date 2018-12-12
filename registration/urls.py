@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout', views.logout_view, name='logout'),
     path('google_log_in', views.google_sign_in, name="google_sign_in"),
     path('profile', views.profile, name='profile'),
+    path('resend_activation_link', views.generate_new_activation_link, name="resend_activation_link")
 ]

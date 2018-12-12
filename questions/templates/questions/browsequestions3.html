@@ -71,7 +71,7 @@
                     </label>
                 </div>
             </form>
-            
+
             <script>
 
                 console.log('{{ filter_form.query.value }}');
@@ -213,8 +213,9 @@
     <script>
         /*select--*/
         $(document).ready(function () {
-            $('select').formSelect();
-        });
+          $('select').formSelect();
+          $('.collapsible').collapsible();
+          });
 
         var infinite = new Waypoint.Infinite({
             element: $('.infinite-container')[0],

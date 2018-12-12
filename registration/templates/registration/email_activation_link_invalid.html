@@ -10,7 +10,14 @@
 			<div class="pass_reset ">
 			<div class="row">
 				<div style="font-size: 25px">
-				    <p>Please activate your account email activation link sent to your mail.</p>
+				    <p>Invalid activation link.Please activate your account by recent email activation link.</p>
+              If you haven't recieved activation link, Click the below link.
+				</div>
+			</div>
+
+			<div class="row">
+				<div>
+				    <a href="{% url 'registration:resend_activation_link' %}">Generate a new link</a>
 				</div>
 			</div>
 		</div>

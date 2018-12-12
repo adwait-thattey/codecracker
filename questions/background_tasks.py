@@ -6,6 +6,13 @@ from django.db import connection
 from .models import TestCase
 import os
 
+def run_in_background(func):
+    def decorator(*args, **kwargs):
+        t = threading.Thread(target=func, args=args, kwargs=kwargs)
+        t.daemon = True
+        t.start()
+
+    return decorator
 
 class RunAndAssert(threading.Thread):
     def __init__(self, thread_id, result_instance, code_file=None):

@@ -13,6 +13,7 @@ unique_code_validator = RegexValidator(r'^[0-9a-z]*$',
 
 class Contest(models.Model):
     title = models.CharField(max_length=200)
+
     author = models.ForeignKey(to=User, on_delete=models.PROTECT)
 
     short_description = models.TextField(verbose_name="Short Description",
@@ -56,7 +57,8 @@ class Contest(models.Model):
                                   registration, it is your responsibility to add them in the participants list via\
                                    the REST API call.")
 
-    is_active = models.BooleanField(default=True)
+    status = models.IntegerField(default=0, help_text="0 for yet to start, 1 for in progress, \
+                                        2 for completed")
 
     registration_link = models.URLField(verbose_name="Registration Link", blank=True)
 

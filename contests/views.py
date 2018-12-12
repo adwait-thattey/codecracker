@@ -7,9 +7,11 @@ from questions.forms import PostQuestionForm
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from registration.views import email_confirmation_required
 
 # Create your views here.
-
+@login_required
+@email_confirmation_required
 def contest_question_create(request, contest_unique_id=None):
     contest_id = get_object_or_404(Contest, unique_code=contest_unique_id)
     if (contest_id.author != request.user):
@@ -37,7 +39,8 @@ def contest_question_create(request, contest_unique_id=None):
     return render(request, 'contests/create_contest_question.html', context)
 
 
-
+@login_required
+@email_confirmation_required
 def contest_question_edit(request, contest_unique_id, question_unique_id):
     question_instance=get_object_or_404(Question, unique_code=question_unique_id)
     contest_instance=get_object_or_404(Contest, unique_code=contest_unique_id)
@@ -56,6 +59,8 @@ def contest_question_edit(request, contest_unique_id, question_unique_id):
     }
     return render(request, "contests/create_contest_question.html", context)
 
+@login_required
+@email_confirmation_required
 def create_contest(request):
     if (request.method == "POST"):
         form = HostContestForm(request.POST)
@@ -69,7 +74,9 @@ def create_contest(request):
     else:
         form = HostContestForm()
     return render(request, 'contests/create_contest.html', {'form':form})
-  
+
+@login_required
+@email_confirmation_required
 def edit_contest(request, contest_unique_id):
     instance = get_object_or_404(Contest, unique_code=contest_unique_id)
     if instance.author != request.user:
