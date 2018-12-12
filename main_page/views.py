@@ -13,7 +13,7 @@ from registration.views import email_confirmation_required
 
 def landing_page(request):
     categories = Category.objects.all()
-    return render(request, 'main_page/landing_page.html', {"categories": categories})
+    return render(request, 'main_page/landing.html', {"categories": categories})
 
 
 def redirect_to_landing(request):
