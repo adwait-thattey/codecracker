@@ -15,11 +15,11 @@ urlpatterns = [
          name="contest-question-edit"),
     path('<slug:contest_unique_code>/view', views.view_contest_page, name="view-contest"),
 
-    path('<slug:contest_unique_code>/leaderboard', views.leaderboard, name="leaderboard"),
     path('browse', views.browse_contests, name="browse"),
     path('<slug:contest_unique_id>/register', views.register_for_contest, name="register"),
     path('<slug:contest_unique_id>/unregister', views.unregister_from_contest, name="unregister"),
-    path('<slug:contest_unique_id>/refresh_contest_state', views.refresh_contest_state, name="refresh")
+    path('<slug:contest_unique_id>/refresh_contest_state', views.refresh_contest_state, name="refresh"),
+    path('<slug:contest_unique_id>/register_from_author', views.register_user_from_author, name="author-register-user")
 
 
 ]

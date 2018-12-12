@@ -354,21 +354,22 @@
 
                 </div>
                 <div id="Participants" class="col s12 white">
-                    <table class="striped" id="Leaderboard" class="col s12 ">
+                    <table class="striped col s12" id="Leaderboard">
                         <thead>
                           <tr>
-                              <a class="waves-effect waves-light green btn modal-trigger" href="#modal1">Add Participant</a>
-                              <div class="modal" id="modal1">
-                                  <div class="modal-content">
-                                    <from>
-                                        <i class="material-icons prefix">account_circle</i>
-                                        UserName:<input placeholder="username" type="text">
-                                    </from>
+                              <div class="row ">
+                                   <form action="{% url 'contests:author-register-user' contest.unique_code%}" method="post">
+                                    <div class="col s2 left valign-wrapper" style="padding-top: 3vh; padding-right:0px;">
+                                  <button class="waves-effect waves-light green btn modal-trigger" href="#modal1" type="submit" onclick="document.getElementById('add-user-form').submit()">Add Participant</button>
+                                    </div>
+                                  <div class="col s2 left valign-wrapper" style="padding-left: 0px;" id="add-user-form">
+
+                                      <input type="text" placeholder="Enter Username" name="username">
+                                      {% csrf_token %}
+
                                   </div>
-                                <div class="modal-footer">
-                                  <a href="#!" class="modal-close waves-effect waves btn-flat">SUBMIT</a>
-                                </div>
-                            </div>
+                                       </form>
+                              </div>
                               <th>S.No</th>
                               <th>UserName</th>
                               <th>EmailId</th>

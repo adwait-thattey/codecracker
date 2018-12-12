@@ -1,6 +1,7 @@
 
 from time import sleep
 
+from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from contests.models import Contest, ContestQuestion, LeaderBoard
@@ -205,5 +206,17 @@ def refresh_contest_state(request, contest_unique_id):
         if datetime.now() > datetime.combine(contest.end_date, contest.end_time):
             contest.status=2
             contest.save()
+
+    return redirect('contests:view-contest', contest_unique_id)
+
+
+def register_user_from_author(request, contest_unique_id):
+    contest = get_object_or_404(Contest, unique_code=contest_unique_id)
+    username = request.POST.get("username")
+    U = User.objects.filter(username=username)
+
+    if U.exists():
+        contest.participants.add(U[0])
+        print("found")
 
     return redirect('contests:view-contest', contest_unique_id)
