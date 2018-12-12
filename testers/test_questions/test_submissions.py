@@ -13,6 +13,9 @@ class SubmitSolutionTest(TestCase):
     def setUp(self):
         self.createduser = User.objects.create_user(username="testnormaluser", email="testnormaluser@ts.com",
                                                     password="Test Hello World")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
+
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
@@ -64,6 +67,8 @@ class TestCaseNew(TestCase):
     def setUp(self):
         self.createduser = User.objects.create_user(username="testnormaluser", email="testnormaluser@ts.com",
                                                     password="Test Hello World")
+        self.createduser.emailconfirmation.email_confirmed = True
+        self.createduser.emailconfirmation.save()
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
