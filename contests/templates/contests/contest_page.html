@@ -131,7 +131,7 @@
 
 
 {% if contest.status == 2 %}
-    <center><h4><br>Contest is completed</h4></center>
+    <center><h4><br>Contest is completed.</h4><br>You can submit questions, but points are not awarded.</center>
 {% endif %}
 
 
@@ -193,7 +193,7 @@
                 <div id="About" class="col s12 grey lighten-4" style="padding: 30px " >
                         <div id="organizer">
                             <b>Organizer:</b><br>
-                            {{contest.author}}
+                            {{contest.author|safe|linebreaks}}
                         </div>
 
                         <div id='description'>
@@ -225,28 +225,22 @@
                     <table class="striped" id="Leaderboard" class="col s12 ">
                         <thead>
                           <tr>
-                              <th>Name</th>
-                              <th>Item Name</th>
-                              <th>Item Price</th>
+                              <th>Participant</th>
+                              <th>Total Score</th>
+                              <th>Total time</th>
                           </tr>
                         </thead>
 
                         <tbody>
-                          <tr>
-                            <td>Alvin</td>
-                            <td>Eclair</td>
-                            <td>$0.87</td>
-                          </tr>
-                          <tr>
-                            <td>Alan</td>
-                            <td>Jellybean</td>
-                            <td>$3.76</td>
-                          </tr>
-                          <tr>
-                            <td>Jonathan</td>
-                            <td>Lollipop</td>
-                            <td>$7.00</td>
-                          </tr>
+
+                        {% for ins in leaderboard %}
+                            <tr>
+                            <td>{{ ins.user.username }}</td>
+                            <td>{{ ins.total_score }}</td>
+                            <td>{{ ins.total_time }}</td>
+                            </tr>
+                        {% endfor %}
+
                         </tbody>
 
                     </table>
@@ -256,16 +250,18 @@
                   <div class="row">
                         <table class="responsive-table">
                           <tbody>
-                            {% for question in questions %}
+                            {% for contestquestion in contest.contestquestion_set.all %}
                             <tr style="border-left: 4px solid #006064">
-                              <th><a href="#" class="cyan-text text-darken-4" id="link"><h6>{{question.title}}</h6></a></th>
-                              <td class="center-align"><i class="far fa-eye fa-sm"></i> {{question.view_count}}</td>
-                              <td class="center-align"><i class="far fa-check-circle fa-sm"></i> {{question.submission_count}}</td>
-                              <td class="center-align"><i class="fas fa-flag-checkered fa-sm"></i> {{question.difficulty}}</td>
+                              <th><a href="#" class="cyan-text text-darken-4" id="link"><h6>{{contestquestion.question.title}}</h6></a></th>
+                              <td class="center-align"><i class="far fa-eye fa-sm"></i> {{contestquestion.question.view_count}}</td>
+                              <td class="center-align"><i class="far fa-check-circle fa-sm"></i> {{contestquestion.question.submission_count}}</td>
+                              <td class="center-align"><i class="fas fa-flag-checkered fa-sm"></i> {{contestquestion.question.difficulty}}</td>
+                              <td class="center-align"><i class="fas fa-flag-checkered fa-sm"></i> {{contestquestion.points}}</td>
                               <td class="right-align">
                                 <div class="chip">
-                                    <img src="{% static 'registration/img/img1.png' %}"> {{question.category}}
+                                    <img src="{% static 'registration/img/img1.png' %}"> {{contestquestion.question.category}}
                                 </div>
+
                               </td>
                             </tr>
                             {% endfor %}
@@ -284,14 +280,15 @@
         <div class="col l10 offset-l1 m12 s12">
             <div class="card" style="border: none;">
                 <ul id="tabs-swipe-demo" class="tabs">
-                    <li class="tab col s4"><a class="active" href="#About_author_view">About</a></li>
-                    <li class="tab col s4"><a href="#Leaderboard_author_view">Leaderboard</a></li>
-                    <li class="tab col s4"><a href="#Participants">Participants</a></li>
+                    <li class="tab col s3"><a class="active" href="#About_author_view">About</a></li>
+                    <li class="tab col s3"><a href="#Leaderboard_author_view">Leaderboard</a></li>
+                    <li class="tab col s3"><a href="#Participants">Participants</a></li>
+                    <li class="tab col s3"><a href="#Questions">Questions</a></li>
                 </ul>
-                <div id="About_author_view" class="col s12 grey lighten-4" style="padding: 30px " >
+                <div id="About_author_view" class="col s12 white" style="padding: 30px " >
                         <div id="organizer">
                             <b>Organizer:</b><br>
-                            {{contest.author}}
+                            {{contest.author|safe|linebreaks}}
                         </div>
 
                         <div id='description'>
@@ -320,42 +317,94 @@
                         </div>
                 </div>
 
-                <div id="Leaderboard_author_view" class="col s12 ">
-                <table class="striped">
+                <div id="Leaderboard_author_view" class="col s12 white">
 
-                    <thead>
-                      <tr>
-                          <th>Name</th>
-                          <th>Item Name</th>
-                          <th>Item Price</th>
-                      </tr>
-                    </thead>
+                <table class="striped" id="Leaderboard" class="col s12 ">
 
-                    <tbody>
-                      <tr>
-                        <td>Alvin</td>
-                        <td>Eclair</td>
-                        <td>$0.87</td>
-                      </tr>
-                      <tr>
-                        <td>Alan</td>
-                        <td>Jellybean</td>
-                        <td>$3.76</td>
-                      </tr>
-                      <tr>
-                        <td>Jonathan</td>
-                        <td>Lollipop</td>
-                        <td>$7.00</td>
-                      </tr>
-                    </tbody>
+                        <thead>
+                          <tr>
+                              <th>Participant</th>
+                              <th>Total Score</th>
+                              <th>Total time</th>
+                          </tr>
+                        </thead>
 
-                </table>
+                        <tbody>
+
+                        {% for ins in leaderboard %}
+                            <tr>
+                            <td>{{ ins.user.username }}</td>
+                            <td>{{ ins.total_score }}</td>
+                            <td>{{ ins.total_time }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
 
                 </div>
-                <div id="Participants" class="col s12 ">
-                    <!--To come-->
-                    To come
+                <div id="Participants" class="col s12 white">
+                    <table class="striped" id="Leaderboard" class="col s12 ">
+                        <thead>
+                          <tr>
+                              <a class="waves-effect waves-light green btn modal-trigger" href="#modal1">Add Participant</a>
+                              <div class="modal" id="modal1">
+                                  <div class="modal-content">
+                                    <from>
+                                        <i class="material-icons prefix">account_circle</i>
+                                        UserName:<input placeholder="username" type="text">
+                                    </from>
+                                  </div>
+                                <div class="modal-footer">
+                                  <a href="#!" class="modal-close waves-effect waves btn-flat">SUBMIT</a>
+                                </div>
+                            </div>
+                              <th>S.No</th>
+                              <th>UserName</th>
+                              <th>EmailId</th>
+                              <th>Institute</th>
+                          </tr>
+                        </thead>
 
+                        <tbody>
+
+                        {% for i in contest.participants.all %}
+                            <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{i.username}}</td>
+                            <td>{{i.email}}</td>
+                            <td>{{i.userprofile.institute.name}}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+                <div id="Questions" class="col s12 white">
+                  <div class="row">
+                        <table class="responsive-table">
+                          <tbody>
+                            {% for contestquestion in contest.contestquestion_set.all %}
+                            <tr style="border-left: 4px solid #006064">
+                              <th><a href="#" class="cyan-text text-darken-4" id="link"><h6>{{contestquestion.question.title}}</h6></a></th>
+                              <td class="center-align"><i class="far fa-eye fa-sm"></i> {{contestquestion.question.view_count}}</td>
+                              <td class="center-align"><i class="far fa-check-circle fa-sm"></i> {{contestquestion.question.submission_count}}</td>
+                              <td class="center-align"><i class="fas fa-flag-checkered fa-sm"></i> {{contestquestion.question.difficulty}}</td>
+                              <td class="center-align"><i class="fas fa-trophy"></i> {{contestquestion.points}}</td>
+                              <td class="right-align">
+                                <div class="chip">
+                                    <img src="{% static 'registration/img/img1.png' %}"> {{contestquestion.question.category}}
+                                </div>
+
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
                 </div>
             </div>
         </div>
@@ -394,6 +443,7 @@
         $('ul.tabs').tabs({
           swipeable: false,
         });
+
         
     </script>
 
