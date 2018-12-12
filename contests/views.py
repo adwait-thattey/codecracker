@@ -107,7 +107,7 @@ def edit_contest(request, contest_unique_id):
 
 def view_contest_page(request, contest_unique_code):
     contest = get_object_or_404(Contest, unique_code=contest_unique_code)
-    questions = ContestQuestion.objects.filter(contest=contest_unique_code)
+    questions = ContestQuestion.objects.filter(contest__unique_code=contest_unique_code)
     C= Contest.objects.get(unique_code=contest_unique_code)
     sdt = datetime.combine(C.start_date, C.start_time) + timedelta(minutes=1)
     starttime = sdt.strftime("%d %B %Y %H:%M:%S")
@@ -174,4 +174,21 @@ def participants(request, contest_unique_id):
 
     return render(request,"contests/p1.html",{'d1':participants})
 
+@login_required
+@email_confirmation_required
+def register_for_contest(request, contest_unique_id):
+    contest = get_object_or_404(Contest, unique_code=contest_unique_id)
+    if request.user not in contest.participants.all():
+        contest.participants.add(request.user)
+
+    return redirect('contests:view-contest', contest_unique_id)
+
+@login_required
+@email_confirmation_required
+def unregister_from_contest(request, contest_unique_id):
+    contest = get_object_or_404(Contest, unique_code=contest_unique_id)
+    if request.user in contest.participants.all():
+        contest.participants.remove(request.user)
+
+    return redirect('contests:view-contest', contest_unique_id)
 

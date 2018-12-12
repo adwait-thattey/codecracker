@@ -15,7 +15,9 @@ urlpatterns = [
          name="contest-question-edit"),
     path('<slug:contest_unique_code>/view', views.view_contest_page, name="view-contest"),
     path('<slug:contest_unique_code>/leaderboard', views.leaderboard, name="leaderboard"),
-    path('browse', views.browse_contests, name="browse")
+    path('browse', views.browse_contests, name="browse"),
+    path('<slug:contest_unique_code>/register', views.register_for_contest, name="register"),
+    path('<slug:contest_unique_code>/unregister', views.register_for_contest, name="unregister"),
 
 ]
 
