@@ -39,7 +39,7 @@ def post_question(request):
     else:
         form = PostQuestionForm()
     print(form.errors)
-    return render(request, "questions/post_question.html", {'form': form})
+    return render(request, "questions/questions.html", {'form': form})
 
 
 @login_required
@@ -347,7 +347,7 @@ def redirect_to_browse(request):
 
 #
 #
-# API Views below    
+# API Views below
 #
 #
 
