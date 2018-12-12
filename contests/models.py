@@ -20,6 +20,7 @@ unique_code_validator = RegexValidator(r'^[0-9a-z]*$',
 
 class Contest(models.Model):
     title = models.CharField(max_length=200)
+
     author = models.ForeignKey(to=User, on_delete=models.PROTECT)
 
     short_description = models.TextField(verbose_name="Short Description",

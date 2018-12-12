@@ -9,6 +9,7 @@ from questions.forms import PostQuestionForm
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from registration.views import email_confirmation_required
 
 from datetime import datetime
 from datetime import timedelta
@@ -17,7 +18,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 # Create your views here.
-
+@login_required
+@email_confirmation_required
 def contest_question_create(request, contest_unique_id=None):
     contest_id = get_object_or_404(Contest, unique_code=contest_unique_id)
     if (contest_id.author != request.user):
@@ -26,12 +28,13 @@ def contest_question_create(request, contest_unique_id=None):
         form = PostQuestionForm(request.POST)
         contest_question_points = ContestQuestionForm(request.POST)
         if form.is_valid() and contest_question_points.is_valid():
-            points = contest_question_points.cleaned_data["points"]
-            contest_question_points.author = request.user
-            contest_question_points.active = False
-            contest_question_form = form.save()
-            contest_question = ContestQuestion.objects.create(question=contest_question_form, contest=contest_id,
-                                                              points=points)
+            question = form.save(commit=False)
+            question.author = request.user
+            question.active = False
+            question.save()
+            contest_question = contest_question_points.save(commit=False)
+            contest_question.contest = contest_id
+            contest_question.question = question
             contest_question.save()
             return HttpResponse("Successfully added question in contest!!!")
     else:
@@ -44,6 +47,9 @@ def contest_question_create(request, contest_unique_id=None):
     return render(request, 'contests/create_contest_question.html', context)
 
 
+
+@login_required
+@email_confirmation_required
 def contest_question_edit(request, contest_unique_id, question_unique_id):
     question_instance = get_object_or_404(Question, unique_code=question_unique_id)
     contest_instance = get_object_or_404(Contest, unique_code=contest_unique_id)
@@ -64,6 +70,8 @@ def contest_question_edit(request, contest_unique_id, question_unique_id):
     return render(request, "contests/create_contest_question.html", context)
 
 
+@login_required
+@email_confirmation_required
 def create_contest(request):
     if (request.method == "POST"):
         form = HostContestForm(request.POST)
@@ -76,9 +84,11 @@ def create_contest(request):
             print(form.errors)
     else:
         form = HostContestForm()
-    return render(request, 'contests/create_contest.html', {'form': form})
 
+    return render(request, 'contests/create_contest.html', {'form':form})
 
+@login_required
+@email_confirmation_required
 def edit_contest(request, contest_unique_id):
     instance = get_object_or_404(Contest, unique_code=contest_unique_id)
     if instance.author != request.user:

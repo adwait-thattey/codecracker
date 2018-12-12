@@ -16,7 +16,7 @@ admin.site.register(Category, CategoryAdmin)
 class QuestionAdmin(admin.ModelAdmin):
 
     def authorusername(self, obj):
-        return obj.author.username
+        return obj.author
 
     list_display = ['title', 'unique_code', 'authorusername', 'time_limit' , 'difficulty']
     sortable_by = ['time_limit', 'title', ]

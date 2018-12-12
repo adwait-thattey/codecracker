@@ -11,6 +11,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .background_tasks import RunAndAssert, LimitThreads, SubmissionRunnerController, RunAndReCalc, Scheduler
 
 from django.forms import modelformset_factory
+from registration.views import email_confirmation_required
 
 
 
@@ -30,6 +31,7 @@ def start_code_run_sequence(submission):
 
 
 @login_required
+@email_confirmation_required
 def post_question(request):
     if (request.method == "POST"):
         form = PostQuestionForm(request.POST)
@@ -45,6 +47,7 @@ def post_question(request):
 
 
 @login_required
+@email_confirmation_required
 def edit_question(request, question_unique_id=None):
     instance = get_object_or_404(Question, unique_code=question_unique_id)
     if instance.author != request.user:
@@ -80,6 +83,7 @@ def rerun_all_testcase_submissions(testcase):
 
 
 @login_required
+@email_confirmation_required
 def submit_solution(request, question_unique_id):
     # question
     question = get_object_or_404(Question, unique_code=question_unique_id)
@@ -101,6 +105,7 @@ def submit_solution(request, question_unique_id):
 
 
 @login_required
+@email_confirmation_required
 def submission_result(request, question_unique_id, username, submission_attempt):
     submission = get_object_or_404(Submission,
                                    user__username=username,
@@ -211,6 +216,7 @@ def view_the_question(request, question_unique_id):
 
 
 @login_required
+@email_confirmation_required
 def create_testcase(request, question_unique_id):
     question = get_object_or_404(Question, unique_code=question_unique_id)
     if question.author != request.user:
@@ -251,6 +257,7 @@ def create_testcase(request, question_unique_id):
 
 
 @login_required
+@email_confirmation_required
 def edit_testcase(request, question_unique_id, test_case_number):
     question = get_object_or_404(Question, unique_code=question_unique_id)
     if question.author != request.user:
@@ -280,6 +287,7 @@ def edit_testcase(request, question_unique_id, test_case_number):
 
 
 @login_required
+@email_confirmation_required
 def view_testcases(request, question_unique_id):
     question = get_object_or_404(Question, unique_code=question_unique_id)
 
@@ -296,6 +304,7 @@ def redirect_to_view_testcases(request, question_unique_id):
 
 
 @login_required
+@email_confirmation_required
 def delete_test_case(request, question_unique_id, test_case_number):
     question = get_object_or_404(Question, unique_code=question_unique_id)
     if question.author != request.user:
@@ -345,7 +354,7 @@ def redirect_to_browse(request):
 
 #
 #
-# API Views below    
+# API Views below
 #
 #
 

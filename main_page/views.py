@@ -7,6 +7,7 @@ from registration.models import *
 
 # Create your views here.
 from questions.models import Category
+from registration.views import email_confirmation_required
 
 
 def landing_page(request):
@@ -32,6 +33,7 @@ def nav(request):
 
 
 @login_required
+@email_confirmation_required
 def get_all_notifications(request):
     ret_data = {"notifications": list(Notification.objects.filter(user=request.user).values_list('content', 'icon', 'link'))}
     # print(ret_data)
@@ -39,6 +41,7 @@ def get_all_notifications(request):
     return JsonResponse(ret_data)
 
 @login_required
+@email_confirmation_required
 def get_unseen_notifications(request):
     qset = Notification.objects.filter(user=request.user, seen=False)
     ret_data = {"notifications": list(qset.values_list('content', 'icon', 'link'))}
