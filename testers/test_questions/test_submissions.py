@@ -16,8 +16,7 @@ class SubmitSolutionTest(TestCase):
         self.question = Question.objects.create(author=self.createduser, title="Sample Question",
                                                 short_description="Sample Short Desc", description="Sample Descrption",
                                                 unique_code="sq")
-        input_file = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'sample_input.txt')
-        output_file = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'sample_output.txt')
+        
         self.client = None
         self.request_url = '/questions/' + self.question.unique_code + "/submit"
 
@@ -47,3 +46,67 @@ class SubmitSolutionTest(TestCase):
         response = self.client.post(self.request_url, {'language': 'PY3'})
         self.assertEqual(response.status_code, 200) #Back to same page with errors
 
+
+
+# def create_test_case(self, unique_code):
+#     	input_file = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'sample_input.txt')
+#     	output_file = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'sample_output.txt')
+#     	client = Client()
+#     	client.force_login(self.createduser)
+#     	i = open(input_file, 'r')
+#     	o = open(output_file, 'r')
+#     	client.post('/questions/' + unique_code + '/testcases/new',{'input_file':i, 'output_file':o, 'points':10})
+#     	i.close()
+#     	o.close()
+#     
+# self.create_test_case(self.question.unique_code)
+class TestCaseNew(TestCase):
+    def setUp(self):
+        self.createduser = User.objects.create_user(username="testnormaluser", email="testnormaluser@ts.com",
+                                                    password="Test Hello World")
+        self.question = Question.objects.create(author=self.createduser, title="Sample Question",
+                                                short_description="Sample Short Desc", description="Sample Descrption",
+                                                unique_code="sq")
+        
+        self.client = None
+        self.request_url = '/questions/' + self.question.unique_code + '/testcases/new'
+
+    def test_anonymous_ping(self):
+        input_file = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'sample_input.txt')
+        output_file = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'sample_output.txt')
+        client = Client()
+        client.force_login(self.createduser)
+        i = open(input_file, 'r')
+        o = open(output_file, 'r')
+        client.post(self.request_url,{'input_file':i, 'output_file':o, 'points':10})
+        i.close()
+        o.close()
+    def test_all_submitted(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+
+        input_file = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'sample_input.txt')
+        output_file = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'sample_output.txt')
+        #correct_code_path = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'sample_input.txt')
+        i=open(input_file,'r')
+        o=open(output_file,'r')
+        response = self.client.post(self.request_url, {'input_file':i, 'output_file':o, 'points':10})
+        self.assertRedirects(response, expected_url="/questions/sq/testcases/view")
+        i.close()
+        o.close()
+
+        #self.assertTrue(Submission.objects.filter(question=self.question, user=self.createduser).exists())
+
+    def test_missing_code_file(self):
+        self.client = Client()
+        self.client.force_login(self.createduser)
+
+        input_file = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'sample_input.txt')
+        output_file = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'sample_output.txt')
+        
+        i=open(input_file,'r')
+        o=open(output_file,'r')
+        response = self.client.post(self.request_url, {'input_file':i, 'output_file':o, 'points':10})
+        self.assertRedirects(response,expected_url="/questions/sq/testcases/view") 
+        i.close()
+        o.close()

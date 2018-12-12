@@ -2,6 +2,9 @@ from questions.forms import PostQuestionForm, SubmissionForm, TestCaseCreateForm
 from questions.models import Question, Submission, TestCase
 from django.contrib.auth.models import User
 from django.test import TestCase
+import os
+from django.conf import settings
+from django.core.files import File
 
 
 class TestPostQuestionForm(TestCase):
@@ -201,9 +204,11 @@ class TestPostQuestionForm(TestCase):
     def setUp(self):
         self.user = User.objects.create(username="testuser002", email="testuser002@ts.com", password="Hello World")
     def test_all_details_submitted(self):
+        f = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'correct_code.py')
+        # F = File(open(f))
         form_instance = SubmissionForm(data={
-            "langauage":"Samplelangauage",
-            "code":"Samplecode"
+            "language":"PY3",
+            "code":F
         })
 
         self.assertEqual(form_instance.is_valid(), True)
@@ -212,31 +217,32 @@ class TestPostQuestionForm(TestCase):
         question.author = self.user
         question.save()
 
-        model_instance = Submission.objects.get(langauage="Samplelangauage")
+        model_instance = Submission.objects.get(language="Samplelangauage")
 
         self.assertEqual(model_instance.code, "Samplecode")
 
-    def test_missing_langauage(self):
-        form_instance = SubmissionForm(data={
-            "code": "Samplecode",
+     def test_missing_langauage(self):
+         form_instance = SubmissionForm(data={
+             "code": "Samplecode",
 
-        })
+         })
 
-        self.assertEqual(form_instance.is_valid(), False)
-        self.assertNotEqual(form_instance.errors.get("langauage"), None)
+         self.assertEqual(form_instance.is_valid(), False)
+         self.assertNotEqual(form_instance.errors.get("language"), None)
 
-    def test_missing_code(self):
-        form_instance = SubmissionForm(data={
-            "langauage": "Samplelangauage",
+     def test_missing_code(self):
+         form_instance = SubmissionForm(data={
+             "language": "Samplelangauage",
 
-        })
+         })
 
-        self.assertEqual(form_instance.is_valid(), False)        
-        self.assertNotEqual(form_instance.errors.get("code"), None)
+         self.assertEqual(form_instance.is_valid(), False)        
+         self.assertNotEqual(form_instance.errors.get("code"), None)
 class TestTestCaseForm(TestCase):
     def setUp(self):
         self.user = User.objects.create(username="testuser002", email="testuser002@ts.com", password="Hello World")
     def test_all_details_submitted(self):
+        
         form_instance = TestCaseCreateForm(data={
             "input_file":"Sampleinputfile",
             "output_file":"Sampleoutputfile",
