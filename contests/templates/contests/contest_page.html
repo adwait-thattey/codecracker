@@ -186,8 +186,9 @@
         <div class="col l10 offset-l1 m12 s12">
             <div class="card" style="border: none;">
                 <ul id="tabs-swipe-demo" class="tabs">
-                    <li class="tab col s6"><a class="active" href="#About">About</a></li>
-                    <li class="tab col s6"><a href="#Leaderboard">Leaderboard</a></li>
+                    <li class="tab col s4"><a class="active" href="#About">About</a></li>
+                    <li class="tab col s4"><a href="#Leaderboard">Leaderboard</a></li>
+                    <li class="tab col s4"><a href="#Questions">Questions</a></li>
                 </ul>
                 <div id="About" class="col s12 grey lighten-4" style="padding: 30px " >
                         <div id="organizer">
@@ -251,6 +252,28 @@
                     </table>
 
                 </div>
+                <div id="Questions" class="col s12">
+                  <div class="row">
+                        <table class="responsive-table">
+                          <tbody>
+                            {% for question in questions %}
+                            <tr style="border-left: 4px solid #006064">
+                              <th><a href="#" class="cyan-text text-darken-4" id="link"><h6>{{question.title}}</h6></a></th>
+                              <td class="center-align"><i class="far fa-eye fa-sm"></i> {{question.view_count}}</td>
+                              <td class="center-align"><i class="far fa-check-circle fa-sm"></i> {{question.submission_count}}</td>
+                              <td class="center-align"><i class="fas fa-flag-checkered fa-sm"></i> {{question.difficulty}}</td>
+                              <td class="right-align">
+                                <div class="chip">
+                                    <img src="{% static 'registration/img/img1.png' %}"> {{question.category}}
+                                </div>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                </div>
+
 
             </div>
         </div>
@@ -410,8 +433,8 @@
         }
         //
         $("#countdown").countdown({
-            date: "{{endtime}}", // change date/time here - do not change the format!
-            //09 December 2018 14:23:15
+            date: "{{endtime}}", // change date/time here - do not change the format
+            //09 December 2018 14:23:15 <-- Like this
             format: "on"
         });
     });
