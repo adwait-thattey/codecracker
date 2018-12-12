@@ -1,7 +1,7 @@
 {% extends 'main_page/nav.html' %}
 {% load static %}
 {% block title %}
-    Questions
+    Contests
 {% endblock %}
 
 {% block custom_includes %}
@@ -20,12 +20,14 @@
 
 
 {% block main_content %}
-    <section>
 
-        <h4 class="title center cyan-text text-darken-4">Questions</h4>
-        <!--Parallax-->
+    <section>
+        <h4 class="title center cyan-text text-darken-4">Contests</h4>
         <div class="row">
             <div class="col s3">
+
+                <!--Parallax-->
+
                 <!--cards for filtering and sorting-->
                 <div class="filter">
                     <form method="get" action="" id="filter_form">
@@ -36,7 +38,7 @@
                                     <div class="card-content">
                                         <span class="card-title">Filter By</span>
                                         <div class="input-field card-title">
-                                            {{ filter_form.category }}
+                                            {{ filter_form.status }}
                                         </div>
 
                                     </div>
@@ -80,12 +82,12 @@
                     </form>
                     <script>
 
-                        console.log('{{ filter_form.query.value }}');
+                        {#console.log('{{ filter_form.query.value }}');#}
                         form = document.getElementById('filter_form');
                         document.getElementById('id_reverse').onchange = function () {
                             form.submit()
                         };
-                        document.getElementById('id_category').onchange = function () {
+                        document.getElementById('id_status').onchange = function () {
                             form.submit()
                         };
                         rad = form.sort_by;
@@ -107,41 +109,54 @@
 
                 <div style="width:1000px;margin-top:25px;">
                     <div class="infinite-container" id="all_questions">
-                        {% for question in questions %}
+                        {% for contest in contests %}
                             <div class="infinite-item">
                                 <ul class="collapsible popout">
                                     <li>
                                         <div class="collapsible-header grey lighten-5 black-text valign-wrapper"
                                              style="height: 15vh; border-left: 7px solid #006064;">
-                                            <div class="row" style="margin: 0;min-width:100%;">
-                                                <div class="col s5 left-align cyan-text text-darken-4">
-                                                    <span class="flow-text left">{{ question.title }}</span>
+                                            <div class="row valign-wrapper" style="margin: 0;min-width:100%;">
+                                                <div class="col s4 left-align cyan-text text-darken-4">
+                                                    <span class="flow-text left">{{ contest.title }}</span>
                                                 </div>
-                                                <div class="col s5 right-align">
-                                                    <i class="far fa-eye fa-2x"
-                                                       style="color:black; padding-right: 20%;"><span
-                                                            style="font-size: large">{{ question.view_count }}</span></i>
-                                                    <i class="fas fa-trophy fa-2x"
-                                                       style="color:black;padding-right: 20%;"><span
-                                                            style="font-size: large; font-weight: normal">{{ question.submission_count }}</span></i>
-                                                    <i class="fas fa-flag-checkered"
-                                                       style="color:black;padding-right: 40%;"><span
-                                                            style="font-size: large;font-weight: normal">{{ question.difficulty }}</span></i>
+
+                                                <div class="col s6">
+                                                    <div class="row valign-wrapper center" style="padding-top: 2vh;">
+                                                        <div class="col s2">
+                                                        <i class="fas fa-users fa-2x"
+                                                           style="color:black;min-width: 100%;"><span
+                                                                style="font-size: large">&nbsp;{{ contest.participants.count }}</span></i>
+                                                        </div>
+                                                        <div class="col s6">
+                                                            <i class="fas fa-calendar-alt fa-2x" style="min-width: 100%;"><span
+                                                                style="font-size: large">&nbsp;{{ contest.start_date }}</span></i>
+                                                        </div>
+                                                        <div class="col s4">
+                                                            <i class="fas fa-clock fa-2x" style="min-width: 100%;"><span
+                                                                style="font-size: large">&nbsp;{{ contest.start_time }}</span></i>
+                                                        </div>
+                                                            {#                                                <i class="fas fa-trophy fa-2x"#}
+                                                        {#                                                   style="color:black;padding-right: 20%;"><span#}
+                                                        {#                                                        style="font-size: large; font-weight: normal">{{ question.submission_count }}</span></i>#}
+                                                        {#                                                <i class="fas fa-flag-checkered"#}
+                                                        {#                                                   style="color:black;padding-right: 40%;"><span#}
+                                                        {#                                                        style="font-size: large;font-weight: normal">{{ question.difficulty }}</span></i>#}
+                                                    </div>
                                                 </div>
                                                 <div class="col s2 rignt-align">
-                                                    <div class="chip">
-                                                        <img src="{{ question.category.logo.url }}"
-                                                             alt="ContactPerson">{{ question.category.name }}
-                                                    </div>
+                                                    {#                                                <div class="chip">#}
+                                                    {#                                                    <img src="{{ question.author.userprofile. }}"#}
+                                                    {#                                                         alt="ContactPerson">{{ question.category.name }}#}
+                                                    {#                                                </div>#}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="collapsible-body">
-                                            <span>{{ question.short_description }}</span>
+                                            <span>{{ contest.short_description }}</span>
                                             <br>
                                             <a class="waves-effect waves-light btn-small black right "
-                                               href="{% url 'questions:view_the_question' question.unique_code %}"><i
-                                                    class="far fa-edit fa-2x"></i>&nbspSolve</a>
+                                               href="{% url 'contests:view-contest' contest.unique_code %}"><i
+                                                    class="material-icons">assignment</i>&nbspSolve</a>
                                             <br>
                                         </div>
                                     </li>
@@ -149,9 +164,9 @@
                             </div>
                         {% endfor %}
                     </div>
-                    {% if questions.has_next %}
+                    {% if contests.has_next %}
                         <a style="display:none;" class="infinite-more-link"
-                           href="?category={{ filter_form.category.value }}&sort_by={{ filter_form.sort_by.value }}&query={{ filter_form.query.value }}&reverse={{ filter_form.reverse.value }}&page={{ questions.next_page_number }}">More</a>
+                           href="?status={{ filter_form.status.value }}&sort_by={{ filter_form.sort_by.value }}&reverse={{ filter_form.reverse.value }}&page={{ contests.next_page_number }}">More</a>
                     {% endif %}
                     <div class="loading center center-block" style="display: none;">
                         <div class="preloader-wrapper big active">
@@ -220,14 +235,11 @@
     <script src="{% static 'common_assests/imakewebthings-waypoints-34d9f6d/lib/jquery.waypoints.min.js' %}"></script>
     <script src="{% static 'common_assests/imakewebthings-waypoints-34d9f6d/lib/shortcuts/infinite.min.js' %}"></script>
     <script>
-        $(document).ready(function () {
-            $('.sidenav').sidenav();
-        });
+
 
         $(document).ready(function () {
             $('.collapsible').collapsible();
         });
-
         $(document).ready(function () {
             $('.tooltipped').tooltip();
         });

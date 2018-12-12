@@ -1,12 +1,15 @@
+from time import sleep
+
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from contests.models import Contest, ContestQuestion, LeaderBoard
 from questions.models import Question
-from .forms import HostContestForm, ContestQuestionForm
+from .forms import HostContestForm, ContestQuestionForm, ContestFilterForm
 from questions.forms import PostQuestionForm
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 # Create your views here.
@@ -99,3 +102,45 @@ def leaderboard(request, contest_unique_code):
     leaderboard = LeaderBoard.objects.filter(contest=contest).order_by('total_time').order_by('-total_score')
 
     return render(request, 'contests/leaderboard.html', {"leaderboard": leaderboard})
+
+
+def browse_contests(request):
+    contests = Contest.objects.all()
+
+    page = request.GET.get('page', 1)
+    contest_filter_form = ContestFilterForm(request.GET)
+
+    contest_filter_form.is_valid()
+    # Just did this to make sure clean is called
+
+    if "status" in contest_filter_form.cleaned_data:
+        if contest_filter_form.cleaned_data["status"]:
+            contests = contests.filter(status=contest_filter_form.cleaned_data["status"])
+    if "sort_by" in contest_filter_form.cleaned_data:
+        # print("sortby",question_filter_form.cleaned_data["sort_by"])
+        sort_by_dict = {
+            "1": "-start_date",
+            "2": "-end_date",
+            "3": "status",
+        }
+        contests = contests.order_by(sort_by_dict[contest_filter_form.cleaned_data["sort_by"]])
+    # if "query" in question_filter_form.cleaned_data:
+    #     if question_filter_form.cleaned_data["query"] != 'None':
+    #         # print("query", question_filter_form.cleaned_data["query"])
+    #         questions = questions.filter(title__contains=question_filter_form.cleaned_data["query"])
+    if "reverse" in contest_filter_form.cleaned_data:
+        # print(contest_filter_form.cleaned_data["reverse"])
+        if contest_filter_form.cleaned_data["reverse"]:
+            contests = contests.reverse()
+
+    paginator = Paginator(contests, 7)
+    try:
+        sleep(1.5)
+        contests_page = paginator.page(page)
+    except PageNotAnInteger:
+        contests_page = paginator.page(1)
+    except EmptyPage:
+        contests_page = paginator.page(paginator.num_pages)
+    # print(question_page)
+    return render(request, "contests/browse_contests.html",
+                  {"contests": contests_page, "filter_form": contest_filter_form})

@@ -164,7 +164,7 @@ def browse_questions(request):
     # Just did this to make sure clean is called
 
     if "category" in question_filter_form.cleaned_data:
-        if question_filter_form.cleaned_data["category"]:
+        if question_filter_form.cleaned_data["category"]: #make sure incoming value is not none
             questions = questions.filter(category=question_filter_form.cleaned_data["category"])
     if "sort_by" in question_filter_form.cleaned_data:
         # print("sortby",question_filter_form.cleaned_data["sort_by"])
