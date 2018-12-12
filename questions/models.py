@@ -214,7 +214,6 @@ class Submission(models.Model):
     code = models.FileField(upload_to=get_code_upload_url)
 
     total_score = models.DecimalField(default=0,
-                                      editable=False,
                                       max_digits=6,
                                       decimal_places=2,
                                       validators=[MinValueValidator(0.0, "The score can not be negative"),
@@ -261,6 +260,7 @@ class Submission(models.Model):
 
         self.total_score = (achieved_score * 100) / tot_score
         self.save()
+        print("calc")
 
 
 def get_error_upload_url(instance, filename):
@@ -323,10 +323,11 @@ def recalc_question_all_submissions_async(question):
     connection.close()
 
 
-@receiver(post_save, sender=Result)
-def recalc_points(instance, *args, **kwargs):
-    if instance.pass_fail == 1:
-        instance.submission.recalc_score()
+
+# @receiver(post_save, sender=Result)
+# def recalc_points(instance, *args, **kwargs):
+#     if instance.pass_fail == 1:
+#         instance.submission.recalc_score()
 
 
 @receiver(post_delete, sender=TestCase)

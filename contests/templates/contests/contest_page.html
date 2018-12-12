@@ -1,0 +1,471 @@
+{% extends 'main_page/nav.html' %}
+
+{% load static %}
+
+{% block custom_loaders %}
+    {% load static %}
+    {% load widget_tweaks %}
+{% endblock %}
+
+{% block internal_styles %}
+<style>
+    .tabs .indicator{
+        background-color: #000000;
+      }
+
+      .tabs .tab a:hover{
+        color: black;
+      }
+      .tabs .tab a {
+        color: #000000;
+      }
+
+     .tabs .tab a.active{
+        color: #000000;
+      }
+</style>
+{% endblock %}
+
+
+{% block title %}
+    {{contest.title}}
+{% endblock %}
+
+
+{% block custom_includes %}
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
+
+{% endblock %}
+
+{% block main_content %}
+
+<section>
+
+
+<div class="row" style="background-image: url(https://images.unsplash.com/photo-1489875347897-49f64b51c1f8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80); height: 300px; color: white; padding: 20px; opacity: 0.9">
+	<div class="col l12 s12 m12">
+		<div id = "titlebar">
+			<div align="center" >
+				<h3>{{contest.title}}</h3>
+				<div class="row">
+					<div class="col l4">
+						Starts from: <br> {{contest.start_date}} , {{contest.start_time}}
+					</div>
+					<div class="col offset-l4 l4">
+						Ends on: <br> {{contest.end_date}} , {{contest.end_time}}
+					</div>
+					<div align="center">
+						{{contest.short_description}} <br><br><br>
+                        {% if user.is_authenticated %}
+                            <a class="waves-effect waves-light btn modal-trigger btn-large"
+                            href="javascript:void(0);" data-target="register">Register</a> <br>
+                        {% endif %}
+                        {% if user.is_authenticated == False %}
+                            <a class="waves-effect waves-light btn btn-large"
+                            href="{% url 'registration:login' %}">Login and Register</a> <br>
+                        {% endif %}   
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{% if contest.status == 0 %}
+<div id= "countdown" class="row center" style="font-family: sans-serif;">
+    <h4><br>Contest starts in:</h4>
+    <div class="col offset-l2 l2 card m3">
+        <div class="card-content">
+            <h1><span class="numbers days">00</span></h1> <br> Days
+        </div>
+    </div>
+    <div class="col l2 card m3">
+        <div class="card-content">
+            <h1><span class="numbers hours">00</span></h1> <br> Hours
+        </div>
+    </div>
+    <div class="col l2 card m3">
+        <div class="card-content">
+            <h1><span class="numbers minutes">00</span></h1> <br> Minutes
+        </div>
+    </div>
+    <div class="col l2 card m3">
+        <div class="card-content">
+            <h1><span class="numbers seconds">00</span></h1> <br> Seconds
+        </div>
+    </div>    
+</div>
+{% endif %}
+
+{% if contest.status == 1 %}
+    <center><h4><br>Contest is active</h4></center>
+{% endif %}
+
+
+{% if contest.status == 2 %}
+    <center><h4><br>Contest is completed</h4></center>
+{% endif %}
+
+
+{% if contest.status == 0 %}
+<div class="row">
+	<div class="col l10 offset-l1 m12 s12">
+        <div class="card " style="border: none;">
+            <div class="card-content" style="line-height: 2.3; font-size: 16px">
+            	<div id="organizer">
+                    <b>Organizer:</b><br>
+                    {{contest.author}}
+                </div>
+
+            	<div id='description'>
+            		<b>Description:</b><br>
+            		{{contest.description|safe|linebreaks}}
+            	</div>
+
+            	<div id='eligibility'>
+            		<b>Eligibility:</b><br>
+            		{{contest.eligibility|safe|linebreaks}}
+            	</div>
+
+            	<div id="rules">
+            		<b> Rules:</b><br>
+            		{{contest.rules|safe|linebreaks}}
+            	</div>
+
+            	<div id="prizes">
+            		<b>Prizes</b><br>
+            		{{contest.prizes|safe|linebreaks}}
+            	</div>
+
+            	<div id="contacts">
+            		<b>Contacts for queries:</b><br>
+            		{{contest.contacts|safe|linebreaks}}
+            	</div>
+
+            </div>
+            
+        </div>
+		
+	</div>
+</div>
+{% endif %}
+
+
+{% if contest.status == 1 or contest.status == 2 %}
+
+    {% if user != contest.author %}
+    <div class="row">
+        <div class="col l10 offset-l1 m12 s12">
+            <div class="card" style="border: none;">
+                <ul id="tabs-swipe-demo" class="tabs">
+                    <li class="tab col s6"><a class="active" href="#About">About</a></li>
+                    <li class="tab col s6"><a href="#Leaderboard">Leaderboard</a></li>
+                </ul>
+                <div id="About" class="col s12 grey lighten-4" style="padding: 30px " >
+                        <div id="organizer">
+                            <b>Organizer:</b><br>
+                            {{contest.author}}
+                        </div>
+
+                        <div id='description'>
+                            <b>Description:</b><br>
+                            {{contest.description|safe|linebreaks}}
+                        </div>
+
+                        <div id='eligibility'>
+                            <b>Eligibility:</b><br>
+                            {{contest.eligibility|safe|linebreaks}}
+                        </div>
+
+                        <div id="rules">
+                            <b> Rules:</b><br>
+                            {{contest.rules|safe|linebreaks}}
+                        </div>
+
+                        <div id="prizes">
+                            <b>Prizes</b><br>
+                            {{contest.prizes|safe|linebreaks}}
+                        </div>
+
+                        <div id="contacts">
+                            <b>Contacts for queries:</b><br>
+                            {{contest.contacts|safe|linebreaks}}
+                        </div>
+                </div>
+                <div id="Leaderboard" class="col s12 ">
+                    <table class="striped" id="Leaderboard" class="col s12 ">
+                        <thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>Item Name</th>
+                              <th>Item Price</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <tr>
+                            <td>Alvin</td>
+                            <td>Eclair</td>
+                            <td>$0.87</td>
+                          </tr>
+                          <tr>
+                            <td>Alan</td>
+                            <td>Jellybean</td>
+                            <td>$3.76</td>
+                          </tr>
+                          <tr>
+                            <td>Jonathan</td>
+                            <td>Lollipop</td>
+                            <td>$7.00</td>
+                          </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="row">
+        <div class="col l10 offset-l1 m12 s12">
+            <div class="card" style="border: none;">
+                <ul id="tabs-swipe-demo" class="tabs">
+                    <li class="tab col s4"><a class="active" href="#About_author_view">About</a></li>
+                    <li class="tab col s4"><a href="#Leaderboard_author_view">Leaderboard</a></li>
+                    <li class="tab col s4"><a href="#Participants">Participants</a></li>
+                </ul>
+                <div id="About_author_view" class="col s12 grey lighten-4" style="padding: 30px " >
+                        <div id="organizer">
+                            <b>Organizer:</b><br>
+                            {{contest.author}}
+                        </div>
+
+                        <div id='description'>
+                            <b>Description:</b><br>
+                            {{contest.description|safe|linebreaks}}
+                        </div>
+
+                        <div id='eligibility'>
+                            <b>Eligibility:</b><br>
+                            {{contest.eligibility|safe|linebreaks}}
+                        </div>
+
+                        <div id="rules">
+                            <b> Rules:</b><br>
+                            {{contest.rules|safe|linebreaks}}
+                        </div>
+
+                        <div id="prizes">
+                            <b>Prizes</b><br>
+                            {{contest.prizes|safe|linebreaks}}
+                        </div>
+
+                        <div id="contacts">
+                            <b>Contacts for queries:</b><br>
+                            {{contest.contacts|safe|linebreaks}}
+                        </div>
+                </div>
+                
+                <div id="Leaderboard_author_view" class="col s12 ">
+                <table class="striped">
+
+                    <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Item Name</th>
+                          <th>Item Price</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <td>Alvin</td>
+                        <td>Eclair</td>
+                        <td>$0.87</td>
+                      </tr>
+                      <tr>
+                        <td>Alan</td>
+                        <td>Jellybean</td>
+                        <td>$3.76</td>
+                      </tr>
+                      <tr>
+                        <td>Jonathan</td>
+                        <td>Lollipop</td>
+                        <td>$7.00</td>
+                      </tr>
+                    </tbody>
+
+                </table>
+
+                </div>
+                <div id="Participants" class="col s12 ">
+                    <!--To come-->
+                    To come
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+{% endif %}
+
+
+</section>
+
+{% endblock %}
+
+{% block custom_eof_scripts %}
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+    <script type='text/javascript'
+            src='//platform-api.sharethis.com/js/sharethis.js#property=5beee4514e83990011fd89af&product=sticky-share-buttons'
+            async='async'></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script>
+        // Or with jQuery
+        $(document).ready(function () {
+            $('select').formSelect();
+        });
+        $(document).ready(function () {
+            $('.modal').modal();
+        });
+        $(document).ready(function(){
+            $('.tabs').tabs();
+        });
+        $('ul.tabs').tabs({
+          swipeable: false,
+        });
+        
+    </script>
+
+    {% if contest.status == 0 %}
+    <script>
+    	$(document).ready(function(){
+        function e(){
+            var e = new Date;
+            e.setDate(e.getDate() + 60);
+            dd = e.getDate();
+            mm = e.getMonth() + 1;
+            y = e.getFullYear();
+            futureFormattedDate = mm + "/" + dd + "/" + y;
+            return futureFormattedDate
+        }
+        //
+        $("#countdown").countdown({
+            date: "{{starttime}}", // change date/time here - do not change the format!
+            //09 December 2018 14:23:15
+            format: "on"
+        });
+    });
+    </script>
+    {% endif %}
+
+    {% if contest.status == 1 %}
+    <script>
+    	$(document).ready(function(){
+        function e(){
+            var e = new Date;
+            e.setDate(e.getDate() + 60);
+            dd = e.getDate();
+            mm = e.getMonth() + 1;
+            y = e.getFullYear();
+            futureFormattedDate = mm + "/" + dd + "/" + y;
+            return futureFormattedDate
+        }
+        //
+        $("#countdown").countdown({
+            date: "{{endtime}}", // change date/time here - do not change the format!
+            //09 December 2018 14:23:15
+            format: "on"
+        });
+    });
+    </script>
+    {% endif %}
+
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+    <!-- The script for countdown from 'flat-material-design-countdown' is here. -->
+
+    <!-- ---- -->
+
+    <script>
+    $(document).ready(function()
+    {
+      (function(e){
+            e.fn.countdown = function (t, n){
+                function i(){
+                    eventDate = Date.parse(r.date) / 1e3;
+                    currentDate = Math.floor(e.now() / 1e3);
+                    //
+                    if(eventDate < currentDate){
+                        
+                        clearInterval(interval)
+                        window.location.reload()
+
+                        n.call(this);
+                    }
+                    //
+                    seconds = eventDate - currentDate;
+                    days = Math.floor(seconds / 86400);
+                    seconds -= days * 60 * 60 * 24;
+                    hours = Math.floor(seconds / 3600);
+                    seconds -= hours * 60 * 60;
+                    minutes = Math.floor(seconds / 60);
+                    seconds -= minutes * 60;
+                    //
+                    //
+                    if(r["format"] == "on"){
+                        days = String(days).length >= 2 ? days : "0" + days;
+                        hours = String(hours).length >= 2 ? hours : "0" + hours;
+                        minutes = String(minutes).length >= 2 ? minutes : "0" + minutes;
+                        seconds = String(seconds).length >= 2 ? seconds : "0" + seconds
+                    }
+                    //
+                    if(!isNaN(eventDate)){
+                        thisEl.find(".days").text(days);
+                        thisEl.find(".hours").text(hours);
+                        thisEl.find(".minutes").text(minutes);
+                        thisEl.find(".seconds").text(seconds)
+                    }
+            else{
+              errorMessage = "Invalid date. Example: 27 March 2015 17:00:00";
+                        alert(errorMessage);
+                        console.log(errorMessage);
+                        clearInterval(interval)
+                    }
+                }
+                //
+                var thisEl = e(this);
+                var r = {
+                    date: null,
+                    format: null
+                };
+                //
+                t && e.extend(r, t);
+                i();
+                interval = setInterval(i, 1e3)
+            }
+        })(jQuery);
+        //
+        
+    });
+    </script>
+
+    <!-- ---- -->
+
+    
+{% endblock custom_eof_scripts %}

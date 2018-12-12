@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboard</title>
+</head>
+<body>
+{% for ins in leaderboard %}
+    {{ ins.user.username }}, {{ ins.total_score }}, {{ ins.total_time }} <br>
+{% endfor %}
+</body>
+</html>

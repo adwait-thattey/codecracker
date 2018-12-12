@@ -25,7 +25,7 @@
 
 {% block main_content %}
     <section>
-
+        
         <div class="row">
             <div class="col l7 offset-l1 s12 m8 ">
                 <div class="card green lighten-5">
@@ -131,11 +131,19 @@
                     <div class="card" style="border: none;">
                         <div class="card-content" style="border: none;">
 
+                            {% if user.is_authenticated %}
+                                <span class="card-title center">
+                                    <a class="waves-effect waves-light btn modal-trigger btn-large"
+                                       href="javascript:void(0);" data-target="solve">Solve</a> <br>
+                                </span>
+                            {% endif %}
 
-                            <span class="card-title center">
-                                <a class="waves-effect waves-light btn modal-trigger btn-large"
-                                   href="javascript:void(0);" data-target="solve">Solve</a> <br>
-                            </span>
+                            {% if user.is_authenticated == False %}
+                                <span class="card-title center">
+                                    <a class="waves-effect waves-light btn btn-large"
+                                       href="{% url 'registration:login' %}" >Log in to solve</a>
+                                </span>
+                            {% endif %}
 
                         </div>
                     </div>
@@ -231,7 +239,8 @@
 
 {% block custom_eof_scripts %}
     <script>
-        var disqus_config = function () {
+        var disqus_config = function () 
+        {
             this.page.url = 'http://localhost:8000/questions/{{question.unique_code}}/view/';  // Replace PAGE_URL with your page's canonical URL variable
             this.page.identifier = {{question.unique_code}}; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };
