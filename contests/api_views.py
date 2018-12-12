@@ -11,12 +11,9 @@ from django.contrib.auth.models import User
 
 
 class Create_Contest(APIView):
-    """ def perform_create(self, serializer):
-            serializer.save(owner=self.request.user)
-       """
 
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
-
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                         IsOwnerOrReadOnly,)
     def post(self, request):
             serializer = ContestSerializer(data=request.data)
             if serializer.is_valid():
@@ -27,7 +24,7 @@ class Create_Contest(APIView):
 
 
 class Edit_Contest(APIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     def get_contest(self, unique_code):
         try:
             return Contest.objects.get(unique_code=unique_code)
@@ -54,7 +51,7 @@ class Edit_Contest(APIView):
 
 
 class contest_question_create(APIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+
     def get_contest(self, unique_code):
         try:
             return Contest.objects.get(unique_code=unique_code)
