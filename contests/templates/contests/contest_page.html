@@ -61,13 +61,22 @@
 					<div align="center">
 						{{contest.short_description}} <br><br><br>
                         {% if user.is_authenticated %}
-                            <a class="waves-effect waves-light btn modal-trigger btn-large"
-                            href="javascript:void(0);" data-target="register">Register</a> <br>
+                            {% if user == contest.author %}
+                                <a class="waves-effect waves-light btn modal-trigger btn-large"
+                                href="{% url 'contests:contest-edit' contest.unique_code %}" data-target="register">Edit Contest</a> <br>
+                            {% elif user in contest.participants.all %}
+
+                                <a class="waves-effect waves-light btn modal-trigger btn-large"
+                                href="{% url 'contests:unregister' contest.unique_code %}" data-target="register">Unregister</a> <br>
+                            {% else %}
+                                <a class="waves-effect waves-light btn modal-trigger btn-large"
+                                href="{% url 'contests:register' contest.unique_code %}" data-target="register">Register</a> <br>
+                            {% endif %}
                         {% endif %}
                         {% if user.is_authenticated == False %}
                             <a class="waves-effect waves-light btn btn-large"
                             href="{% url 'registration:login' %}?next=/contests/{{contest.unique_code}}/view">Login and Register</a> <br>
-                        {% endif %}   
+                        {% endif %}
 					</div>
 				</div>
 			</div>
@@ -99,7 +108,7 @@
         <div class="card-content">
             <h1><span class="numbers seconds">00</span></h1> <br> Seconds
         </div>
-    </div>    
+    </div>
 </div>
 {% endif %}
 
@@ -171,9 +180,9 @@
             	</div>
 
             </div>
-            
+
         </div>
-		
+
 	</div>
 </div>
 {% endif %}
@@ -394,7 +403,7 @@
         $('ul.tabs').tabs({
           swipeable: false,
         });
-        
+
     </script>
 
     {% if contest.status == 0 %}
@@ -457,7 +466,7 @@
                     currentDate = Math.floor(e.now() / 1e3);
                     //
                     if(eventDate < currentDate){
-                        
+
                         clearInterval(interval)
                         window.location.reload()
 
@@ -506,11 +515,9 @@
             }
         })(jQuery);
         //
-        
+
     });
     </script>
 
-    <!-- ---- -->
 
-    
 {% endblock custom_eof_scripts %}
