@@ -1,5 +1,5 @@
 from questions.forms import PostQuestionForm, SubmissionForm, TestCaseCreateForm
-from questions.models import Question, Submission, TestCase
+from questions.models import Question, Submission, TestCase, Category
 from django.contrib.auth.models import User
 from django.test import TestCase
 import os
@@ -11,10 +11,11 @@ class TestPostQuestionForm(TestCase):
 
     def setUp(self):
         self.user = User.objects.create(username="testuser002", email="testuser002@ts.com", password="Hello World")
-
+        self.cat = Category.objects.create(name="samcat1", description="Sample Category 1")
     def test_all_details_submitted(self):
         form_instance = PostQuestionForm(data={
             "title": "Sample Title",
+            "category": self.cat,
             "short_description": "Sample Short Description",
             "description": "Sample Description",
             "time_limit": 2,
