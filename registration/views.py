@@ -128,19 +128,19 @@ def logout_view(request):
 
 
 
-def user_submission_date_stats(request):
-    user = request.user
-    # user = get_object_or_404(User, username=username)
-    all_submissions = user.submission_set.all()
-    # all_submissions = Submission.objects
-    submission_dates = all_submissions.values('submitted_on__date').annotate(count=Count('id')).values('submitted_on__date', 'count').order_by('submitted_on__date')
-
-    req_stats = list()
-    for S in submission_dates:
-        D = {"x":S['submitted_on__date'].strftime('%m/%d/%Y'), "y":S['count']}
-        req_stats.append(D)
-
-    return req_stats
+# def user_submission_date_stats(request):
+#     user = request.user
+#     # user = get_object_or_404(User, username=username)
+#     all_submissions = user.submission_set.all()
+#     # all_submissions = Submission.objects
+#     submission_dates = all_submissions.values('submitted_on__date').annotate(count=Count('id')).values('submitted_on__date', 'count').order_by('submitted_on__date')
+#
+#     req_stats = list()
+#     for S in submission_dates:
+#         D = {"x":S['submitted_on__date'].strftime('%m/%d/%Y'), "y":S['count']}
+#         req_stats.append(D)
+#
+#     return req_stats
 
 
 def user_submission_percentage(request):
@@ -207,7 +207,7 @@ def profile(request):
     recent_submissions= submissions[:4]
     form = ProfileEditForm(request.POST, request.FILES, instance=instance)
 
-    submission_date_stats = user_submission_date_stats(request)
+    # submission_date_stats = user_submission_date_stats(request)
     submission_percentage_stats = user_submission_percentage(request)
     user_per_question_attempts = user_per_question_attempts_stats(request)
     user_question_attempts = user_question_attempts_stats(request)
@@ -222,7 +222,7 @@ def profile(request):
         'contests':contests,
         'submissions':submissions,
         "recent_submissions":recent_submissions,
-        "submission_date_stats":submission_date_stats,
+        # "submission_date_stats":submission_date_stats,
         "submission_percentage_stats":submission_percentage_stats,
         "user_per_question_attempts":user_per_question_attempts,
         "user_question_attempts":user_question_attempts,

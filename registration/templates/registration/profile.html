@@ -131,64 +131,67 @@
 
         <!-- Edit Profile modal-->
         <div id="modal1" class="modal">
-          <div class="modal-content">
-            <h4 class="center-align cyan-text text-darken-4">Edit Profile</h4>
-            <div class="row">
-              <form class="col s12" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
+            <div class="modal-content">
+                <h4 class="center-align cyan-text text-darken-4">Edit Profile</h4>
                 <div class="row">
+                    <form class="col s12" method="post">
+                        {% csrf_token %}
+                        <div class="row">
 
-                  <div class="input-field file-field">
-                      <div class="row">
-                          <div>
-                              <div class="btn col l2 m3 s4"
-                                   id="fake_{{ form.picture.id_for_label }}">
-                                  Input File
-                                  {#This is just a fake button. An event listner is added which activates real button#}
-                              </div>
-                          </div>
-                          <div>
-                              <div class="file-path-wrapper col l10 m9 s8">
-                                  <input class="file-path validate" placeholder="unchanged" id="input-file-upload-path">
-                              </div>
-                          </div>
-                          <div style="display: none">
-                              {{ form.picture }}
+                            <div class="input-field col l12 s12">
+                                {{ form.phone_number }}
+                                <label for="{{ form.phone_number.id_for_label }}">Phone Number</label>
+                            </div>
 
-                              <script>
+                            <div class="input-field col s12">
+                                {{ form.institute }}
+                                <label for="{{ form.institute.id_for_label }}">Institute</label>
+                            </div>
 
-                                  document.getElementById('fake_{{ form.picture.id_for_label }}').onclick = function () {
-                                      console.log("open input file box");
-                                      document.getElementById('{{ form.picture.id_for_label }}').click();
-                                  };
+                            <div class="input-field file-field">
+                                <div class="row">
+                                    <div>
+                                        <div class="btn col l2 m3 s4"
+                                             id="fake_{{ form.picture.id_for_label }}">
+                                            Input File
+                                            {#This is just a fake button. An event listner is added which activates real button#}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="file-path-wrapper col l10 m9 s8">
+                                            <input class="file-path validate" placeholder="unchanged"
+                                                   id="input-file-upload-path">
+                                        </div>
+                                    </div>
+                                    <div style="display: none">
+                                        {{ form.picture }}
 
-                                  document.getElementById('input-file-upload-path').onclick = function () {
-                                      console.log("open input file box");
-                                      document.getElementById('{{ form.picture.id_for_label }}').click();
-                                  }
-                              </script>
-                          </div>
+                                        <script>
 
-                      </div>
-                  </div>
+                                            document.getElementById('fake_{{ form.picture.id_for_label }}').onclick = function () {
+                                                console.log("open input file box");
+                                                document.getElementById('{{ form.picture.id_for_label }}').click();
+                                            };
 
+                                            document.getElementById('input-file-upload-path').onclick = function () {
+                                                console.log("open input file box");
+                                                document.getElementById('{{ form.picture.id_for_label }}').click();
+                                            }
+                                        </script>
+                                    </div>
 
-                  <div class="input-field col l12 s12">
-                    {{form.phone_number}}
-                    <label for="{{form.phone_number.id_for_label}}">Phone Number</label>
-                  </div>
+                                </div>
+                            </div>
 
-                  <div class="input-field col s12">
-                    {{form.institute}}
-                    <label for="{{form.institute.id_for_label}}">Institute</label>
-                  </div>
-
-
-                  <div class="input-field col s12">
-                    {{form.about|add_class:"materialize-textarea"}}
-                    <label for="{{form.institute.id_for_label}}">About yourself</label>
-                  </div>
-                  <button type="submit" class="btn waves-effect right cyan darken-4 white-text" name="submit">Edit</button>
+                            <div class="input-field col s12">
+                                {{ form.about|add_class:"materialize-textarea" }}
+                                <label for="{{ form.institute.id_for_label }}">About yourself</label>
+                            </div>
+                            <button type="submit" class="btn waves-effect right cyan darken-4 white-text" name="submit">
+                                Edit
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -437,7 +440,7 @@
     </script>
 
      <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src={% static "apex charts/samples/assets/series1000.js" %}></script>
+    <script src="{% static 'apex charts/samples/assets/series1000.js' %}"></script>
 
     <script>
         var options = {
