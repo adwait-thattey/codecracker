@@ -99,8 +99,7 @@
 
                             <div class="center" id="dropdown">
                                 <ul id='dropdown1' class='dropdown-content' style="width: 300px;">
-                                    <li><a href="#!"><i class="fas fa-user-circle"></i>Profile</a></li>
-                                    <li><a href="#!"><i class="fas fa-clipboard-list"></i>My Questions</a></li>
+                                    <li><a href="{% url "registration:profile" %}"><i class="fas fa-user-circle"></i>Profile</a></li>
                                     <li><a href="{% url "registration:logout" %}"><i class="fas fa-power-off"></i>Log
                                         Out</a></li>
                                 </ul>
@@ -145,8 +144,8 @@
         <div class="fixed-action-btn right click-to-toggle hide-on-large-only" style="right:auto; top:0;">
             <a class="btn-flat btn-large cyan darken-4"><i class="material-icons" id="float">menu</i></a>
             <ul>
-                <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="About Us"
-                       href="{% url "home" %}"><i class="material-icons">people</i></a></li>
+                <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Contests"
+                       href="{% url "contests:browse" %}"><i class="material-icons">people</i></a></li>
                 <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Post"
                        href="{% url "questions:post_question" %}"><i class="material-icons">publish</i></a></li>
                 <li><a class="btn-floating tooltipped cyan darken-4" data-position="right" data-tooltip="Questions"
@@ -180,8 +179,8 @@
                     <ul>
                         <li><a href="{% url "home" %}">Home</a></li>
                         <li><a href="{% url "questions:browse" %}">Questions</a></li>
+                        <li><a href="{% url "contests:browse" %}">Contests</a></li>
                         <li><a href="{% url "questions:post_question" %}">Post</a></li>
-                        <li><a href="{% url "home" %}">About Us</a></li>
                     </ul>
                 </div>
                 <div class="col l3 offset-l1 s12" id="fd1">
@@ -252,7 +251,7 @@
                             {#console.log(result);#}
                             notification_loader.style.display = "none";
                             for (notif of result.notifications) {
-                                single_notif = "<li><a href='" + notif[2] + "'><i class='material-icons'>" + notif[1] + "</i>" + notif[0] + "</a></li>"
+                                single_notif = "<li><div><a href='" + notif[2] + "'><i class='material-icons'>" + notif[1] + "</i>" + notif[0] + "</a></div></li>"
                                 notification_bar.innerHTML += single_notif
                                 {#console.log(single_notif)#}
                             }

@@ -8,27 +8,28 @@
 {% endblock %}
 
 {% block internal_styles %}
-<style>
-    .tabs .indicator{
-        background-color: #000000;
-      }
+    <style>
+        .tabs .indicator {
+            background-color: #000000;
+        }
 
-      .tabs .tab a:hover{
-        color: black;
-      }
-      .tabs .tab a {
-        color: #000000;
-      }
+        .tabs .tab a:hover {
+            color: black;
+        }
 
-     .tabs .tab a.active{
-        color: #000000;
-      }
-</style>
+        .tabs .tab a {
+            color: #000000;
+        }
+
+        .tabs .tab a.active {
+            color: #000000;
+        }
+    </style>
 {% endblock %}
 
 
 {% block title %}
-    {{contest.title}}
+    {{ contest.title }}
 {% endblock %}
 
 
@@ -43,388 +44,394 @@
 
 {% block main_content %}
 
-<section>
+    <section>
 
 
-<div class="row" style="background-image: url(https://images.unsplash.com/photo-1489875347897-49f64b51c1f8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80); height: 300px; color: white; padding: 20px; opacity: 0.9">
-	<div class="col l12 s12 m12">
-		<div id = "titlebar">
-			<div align="center" >
-				<h3>{{contest.title}}</h3>
-				<div class="row">
-					<div class="col l4">
-						Starts from: <br> {{contest.start_date}} , {{contest.start_time}}
-					</div>
-					<div class="col offset-l4 l4">
-						Ends on: <br> {{contest.end_date}} , {{contest.end_time}}
-					</div>
-					<div align="center">
-						{{contest.short_description}} <br><br><br>
-                        {% if user.is_authenticated %}
-                            {% if user == contest.author %}
-                                <a class="waves-effect waves-light btn modal-trigger btn-large"
-                                href="{% url 'contests:contest-edit' contest.unique_code %}" data-target="register">Edit Contest</a> <br>
-                            {% elif user in contest.participants.all %}
+        <div class="row"
+             style="background-image: url(https://images.unsplash.com/photo-1489875347897-49f64b51c1f8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80); height: 300px; color: white; padding: 20px; opacity: 0.9">
+            <div class="col l12 s12 m12">
+                <div id="titlebar">
+                    <div align="center">
+                        <h3>{{ contest.title }}</h3>
+                        <div class="row">
+                            <div class="col l4">
+                                Starts from: <br> {{ contest.start_date }} , {{ contest.start_time }}
+                            </div>
+                            <div class="col offset-l4 l4">
+                                Ends on: <br> {{ contest.end_date }} , {{ contest.end_time }}
+                            </div>
+                            <div align="center">
+                                {{ contest.short_description }} <br><br><br>
+                                {% if user.is_authenticated %}
+                                    {% if user == contest.author %}
+                                        <a class="waves-effect waves-light btn  btn-large"
+                                           href="{% url 'contests:contest-edit' contest.unique_code %}"
+                                           data-target="register">Edit Contest</a> <br>
+                                    {% elif user in contest.participants.all %}
 
-                                <a class="waves-effect waves-light btn modal-trigger btn-large"
-                                href="{% url 'contests:unregister' contest.unique_code %}" data-target="register">Unregister</a> <br>
+                                        <a class="waves-effect waves-light btn  btn-large"
+                                           href="{% url 'contests:unregister' contest.unique_code %}"
+                                           data-target="register">Unregister</a> <br>
+                                    {% else %}
+                                        <a class="waves-effect waves-light btn  btn-large"
+                                           href="{% url 'contests:register' contest.unique_code %}"
+                                           data-target="register">Register</a> <br>
+                                    {% endif %}
+                                {% endif %}
+                                {% if user.is_authenticated == False %}
+                                    <a class="waves-effect waves-light btn btn-large"
+                                       href="{% url 'registration:login' %}?next=/contests/{{ contest.unique_code }}/view">Login
+                                        and Register</a> <br>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% if contest.status == 2 %}
+            <center><h4><br>Contest is completed.</h4><br>You cannot submit your solutions anymore. <br><br></center>
+
+        {% else %}
+
+            <div id="countdown" class="row center" style="font-family: sans-serif;">
+                {% if contest.status == 0 %}
+                    <h4><br>Contest starts in:</h4>
+                {% elif contest.status == 1 %}
+                    <center><h4><br>Contest is LIVE and ends in</h4></center>
+                {% endif %}
+                <div class="col offset-l2 l2 card m3">
+                    <div class="card-content">
+                        <h1><span class="numbers days">00</span></h1> <br> Days
+                    </div>
+                </div>
+                <div class="col l2 card m3">
+                    <div class="card-content">
+                        <h1><span class="numbers hours">00</span></h1> <br> Hours
+                    </div>
+                </div>
+                <div class="col l2 card m3">
+                    <div class="card-content">
+                        <h1><span class="numbers minutes">00</span></h1> <br> Minutes
+                    </div>
+                </div>
+                <div class="col l2 card m3">
+                    <div class="card-content">
+                        <h1><span class="numbers seconds">00</span></h1> <br> Seconds
+                    </div>
+                </div>
+            </div>
+            {#{% endif %}#}
+            {##}
+            {##}
+            {#    <div id= "countdown" class="row center" style="font-family: sans-serif;">#}
+            {#    <div class="col offset-l2 l2 card m3">#}
+            {#        <div class="card-content">#}
+            {#            <h1><span class="numbers days">00</span></h1> <br> Days#}
+            {#        </div>#}
+            {#    </div>#}
+            {#    <div class="col l2 card m3">#}
+            {#        <div class="card-content">#}
+            {#            <h1><span class="numbers hours">00</span></h1> <br> Hours#}
+            {#        </div>#}
+            {#    </div>#}
+            {#    <div class="col l2 card m3">#}
+            {#        <div class="card-content">#}
+            {#            <h1><span class="numbers minutes">00</span></h1> <br> Minutes#}
+            {#        </div>#}
+            {#    </div>#}
+            {#    <div class="col l2 card m3">#}
+            {#        <div class="card-content">#}
+            {#            <h1><span class="numbers seconds">00</span></h1> <br> Seconds#}
+            {#        </div>#}
+            {#    </div>#}
+            {#</div>#}
+            {#{% endif %}#}
+
+
+        {% endif %}
+
+
+
+
+        {% if user != contest.author %}
+            <div class="row">
+                <div class="col l10 offset-l1 m12 s12">
+                    <div class="card" style="border: none;" style="border-top:5px solid rgb(0,96,100)">
+                        <ul id="tabs-for-author" class="tabs">
+                            {% if contest.status == 0 %}
+                                <li class="tab col s12"><a class="active" href="#About">About the contest</a></li>
                             {% else %}
-                                <a class="waves-effect waves-light btn modal-trigger btn-large"
-                                href="{% url 'contests:register' contest.unique_code %}" data-target="register">Register</a> <br>
+                                <li class="tab col s4"><a class="active" href="#About">About</a></li>
+                                <li class="tab col s4"><a href="#Leaderboard">Leaderboard</a></li>
+                                <li class="tab col s4"><a href="#Questions">Questions</a></li>
+                            {% endif %}
+                        </ul>
+                        <div id="About" class="col s12 white" style="padding: 30px ">
+                            <div id="organizer">
+                                <b>Organizer:</b><br>
+                                {{ contest.author|safe|linebreaks }}
+                            </div>
+
+                            <div id='description'>
+                                <b>Description:</b><br>
+                                {{ contest.description|safe|linebreaks }}
+                            </div>
+
+                            <div id='eligibility'>
+                                <b>Eligibility:</b><br>
+                                {{ contest.eligibility|safe|linebreaks }}
+                            </div>
+
+                            <div id="rules">
+                                <b> Rules:</b><br>
+                                {{ contest.rules|safe|linebreaks }}
+                            </div>
+
+                            <div id="prizes">
+                                <b>Prizes</b><br>
+                                {{ contest.prizes|safe|linebreaks }}
+                            </div>
+
+                            <div id="contacts">
+                                <b>Contacts for queries:</b><br>
+                                {{ contest.contacts|safe|linebreaks }}
+                            </div>
+                        </div>
+                        {% if contest.status != 0 %}
+                            <div id="Leaderboard" class="col s12 white">
+                                <table class="striped" class="col s12">
+                                    <thead>
+                                    <tr>
+                                        <th>Participant</th>
+                                        <th>Total Score</th>
+                                        <th>Total time</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                    {% for ins in leaderboard %}
+                                        <tr>
+                                            <td>{{ ins.user.username }}</td>
+                                            <td>{{ ins.total_score }}</td>
+                                            <td>{{ ins.total_time }}</td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                            {% if contest.status == 1 or contest.status == 2 %}
+                                <div id="Questions" class="col s12 white">
+                                    <div class="row">
+                                        <table class="responsive-table">
+                                            <tbody>
+                                            {% for contestquestion in contest.contestquestion_set.all %}
+                                                <tr style="border-left: 4px solid #006064">
+                                                    <th><a href="#" class="cyan-text text-darken-4" id="link">
+                                                        <h6>{{ contestquestion.question.title }}</h6></a></th>
+                                                    <td class="center-align"><i
+                                                            class="far fa-eye fa-sm"></i> {{ contestquestion.question.view_count }}
+                                                    </td>
+                                                    <td class="center-align"><i
+                                                            class="far fa-check-circle fa-sm"></i> {{ contestquestion.question.submission_count }}
+                                                    </td>
+                                                    <td class="center-align"><i
+                                                            class="fas fa-flag-checkered fa-sm"></i> {{ contestquestion.question.difficulty }}
+                                                    </td>
+                                                    <td class="center-align"><i
+                                                            class="fas fa-flag-checkered fa-sm"></i> {{ contestquestion.points }}
+                                                    </td>
+                                                    <td class="right-align">
+                                                        <div class="chip">
+                                                            <img src="{{ contestquestion.question.category.logo.url }}"> {{ contestquestion.question.category }}
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             {% endif %}
                         {% endif %}
-                        {% if user.is_authenticated == False %}
-                            <a class="waves-effect waves-light btn btn-large"
-                            href="{% url 'registration:login' %}?next=/contests/{{contest.unique_code}}/view">Login and Register</a> <br>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+            <!--Author's view-->
+            <div class="row">
+                <div class="col l10 offset-l1 m12 s12">
+                    <div class="card" style="border-top:5px solid rgb(0,96,100)">
+                        <ul id="tabs-swipe-demo" class="tabs">
+                            {% if contest.status == 0 %}
+                                <li class="tab col s4"><a class="active" href="#About_author_view">About</a></li>
+                                <li class="tab col s4"><a href="#Participants">Participants</a></li>
+                                <li class="tab col s4"><a href="#Questions_author_view">Questions</a></li>
+                            {% else %}
+                                <li class="tab col s3"><a class="active" href="#About_author_view">About</a></li>
+                                <li class="tab col s3"><a href="#Participants">Participants</a></li>
+                                <li class="tab col s3"><a href="#Leaderboard_author_view">Leaderboard</a></li>
+                                <li class="tab col s3"><a href="#Questions_author_view">Questions</a></li>
+                            {% endif %}
+                        </ul>
+                        <div id="About_author_view" class="col s12 white" style="padding: 30px; ">
+                            <div id="organizer_">
+                                <b>Organizer:</b><br>
+                                {{ contest.author|safe|linebreaks }}
+                            </div>
+
+                            <div id='description_'>
+                                <b>Description:</b><br>
+                                {{ contest.description|safe|linebreaks }}
+                            </div>
+
+                            <div id='eligibility_'>
+                                <b>Eligibility:</b><br>
+                                {{ contest.eligibility|safe|linebreaks }}
+                            </div>
+
+                            <div id="rules_">
+                                <b> Rules:</b><br>
+                                {{ contest.rules|safe|linebreaks }}
+                            </div>
+
+                            <div id="prizes_">
+                                <b>Prizes</b><br>
+                                {{ contest.prizes|safe|linebreaks }}
+                            </div>
+
+                            <div id="contacts_">
+                                <b>Contacts for queries:</b><br>
+                                {{ contest.contacts|safe|linebreaks }}
+                            </div>
+                        </div>
+                        {% if contest.status != 0 %}
+                            <div id="Leaderboard_author_view" class="col s12 white">
+                                <table class="striped col s12">
+                                    <thead>
+                                    <tr>
+                                        <th>Participant</th>
+                                        <th>Total Score</th>
+                                        <th>Total time</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for ins in leaderboard %}
+                                        <tr>
+                                            <td>{{ ins.user.username }}</td>
+                                            <td>{{ ins.total_score }}</td>
+                                            <td>{{ ins.total_time }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         {% endif %}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 
+                        <div id="Participants" class="col s12 white">
+                            <table class="striped col s12">
+                                <thead>
+                                <tr>
+                                    {% if contest.status != 2 %}
+                                        <div class="row ">
+                                            <form action="{% url 'contests:author-register-user' contest.unique_code %}"
+                                                  method="post">
+                                                <div class="col s2 left valign-wrapper"
+                                                     style="padding-top: 3vh; padding-right:0px;">
+                                                    <button class="waves-effect green btn modal-trigger" href="#modal1"
+                                                            type="submit"
+                                                            onclick="document.getElementById('add-user-form').submit()">
+                                                        Add Participant
+                                                    </button>
+                                                </div>
+                                                <div class="col s2 left valign-wrapper" style="padding-left: 0px;"
+                                                     id="add-user-form">
+                                                    <input type="text" placeholder="Enter Username" name="username">
+                                                    {% csrf_token %}
+                                                </div>
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                    <th>S.No</th>
+                                    <th>UserName</th>
+                                    <th>EmailId</th>
+                                    <th>Institute</th>
+                                </tr>
+                                </thead>
 
+                                <tbody>
 
-{% if contest.status == 0 %}
-<div id= "countdown" class="row center" style="font-family: sans-serif;">
-    <h4><br>Contest starts in:</h4>
-    <div class="col offset-l2 l2 card m3">
-        <div class="card-content">
-            <h1><span class="numbers days">00</span></h1> <br> Days
-        </div>
-    </div>
-    <div class="col l2 card m3">
-        <div class="card-content">
-            <h1><span class="numbers hours">00</span></h1> <br> Hours
-        </div>
-    </div>
-    <div class="col l2 card m3">
-        <div class="card-content">
-            <h1><span class="numbers minutes">00</span></h1> <br> Minutes
-        </div>
-    </div>
-    <div class="col l2 card m3">
-        <div class="card-content">
-            <h1><span class="numbers seconds">00</span></h1> <br> Seconds
-        </div>
-    </div>
-</div>
-{% endif %}
+                                {% for i in contest.participants.all %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.username }}</td>
+                                        <td>{{ i.email }}</td>
+                                        <td>{{ i.userprofile.institute.name }}</td>
+                                    </tr>
+                                {% endfor %}
 
-{% if contest.status == 1 %}
-    <center><h4><br>Contest is active and ends in</h4></center>
-    <div id= "countdown" class="row center" style="font-family: sans-serif;">
-    <div class="col offset-l2 l2 card m3">
-        <div class="card-content">
-            <h1><span class="numbers days">00</span></h1> <br> Days
-        </div>
-    </div>
-    <div class="col l2 card m3">
-        <div class="card-content">
-            <h1><span class="numbers hours">00</span></h1> <br> Hours
-        </div>
-    </div>
-    <div class="col l2 card m3">
-        <div class="card-content">
-            <h1><span class="numbers minutes">00</span></h1> <br> Minutes
-        </div>
-    </div>
-    <div class="col l2 card m3">
-        <div class="card-content">
-            <h1><span class="numbers seconds">00</span></h1> <br> Seconds
-        </div>
-    </div>
-</div>
-{% endif %}
+                                </tbody>
 
+                            </table>
 
-{% if contest.status == 2 %}
-    <center><h4><br>Contest is completed.</h4><br>You can submit questions, but points are not awarded.</center>
-{% endif %}
-
-
-{% if contest.status == 0 %}
-<div class="row">
-	<div class="col l10 offset-l1 m12 s12">
-        <div class="card " style="border: none;">
-            <div class="card-content" style="line-height: 2.3; font-size: 16px">
-            	<div id="organizer">
-                    <b>Organizer:</b><br>
-                    {{contest.author}}
-                </div>
-
-            	<div id='description'>
-            		<b>Description:</b><br>
-            		{{contest.description|safe|linebreaks}}
-            	</div>
-
-            	<div id='eligibility'>
-            		<b>Eligibility:</b><br>
-            		{{contest.eligibility|safe|linebreaks}}
-            	</div>
-
-            	<div id="rules">
-            		<b> Rules:</b><br>
-            		{{contest.rules|safe|linebreaks}}
-            	</div>
-
-            	<div id="prizes">
-            		<b>Prizes</b><br>
-            		{{contest.prizes|safe|linebreaks}}
-            	</div>
-
-            	<div id="contacts">
-            		<b>Contacts for queries:</b><br>
-            		{{contest.contacts|safe|linebreaks}}
-            	</div>
-
-            </div>
-
-        </div>
-
-	</div>
-</div>
-{% endif %}
-
-
-{% if contest.status == 1 or contest.status == 2 %}
-
-    {% if user != contest.author %}
-    <div class="row">
-        <div class="col l10 offset-l1 m12 s12">
-            <div class="card" style="border: none;">
-                <ul id="tabs-swipe-demo" class="tabs">
-                    <li class="tab col s4"><a class="active" href="#About">About</a></li>
-                    <li class="tab col s4"><a href="#Leaderboard">Leaderboard</a></li>
-                    <li class="tab col s4"><a href="#Questions">Questions</a></li>
-                </ul>
-                <div id="About" class="col s12 grey lighten-4" style="padding: 30px " >
-                        <div id="organizer">
-                            <b>Organizer:</b><br>
-                            {{contest.author|safe|linebreaks}}
                         </div>
 
-                        <div id='description'>
-                            <b>Description:</b><br>
-                            {{contest.description|safe|linebreaks}}
-                        </div>
-
-                        <div id='eligibility'>
-                            <b>Eligibility:</b><br>
-                            {{contest.eligibility|safe|linebreaks}}
-                        </div>
-
-                        <div id="rules">
-                            <b> Rules:</b><br>
-                            {{contest.rules|safe|linebreaks}}
-                        </div>
-
-                        <div id="prizes">
-                            <b>Prizes</b><br>
-                            {{contest.prizes|safe|linebreaks}}
-                        </div>
-
-                        <div id="contacts">
-                            <b>Contacts for queries:</b><br>
-                            {{contest.contacts|safe|linebreaks}}
-                        </div>
-                </div>
-                <div id="Leaderboard" class="col s12 ">
-                    <table class="striped" id="Leaderboard" class="col s12 ">
-                        <thead>
-                          <tr>
-                              <th>Participant</th>
-                              <th>Total Score</th>
-                              <th>Total time</th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-
-                        {% for ins in leaderboard %}
-                            <tr>
-                            <td>{{ ins.user.username }}</td>
-                            <td>{{ ins.total_score }}</td>
-                            <td>{{ ins.total_time }}</td>
-                            </tr>
-                        {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-                <div id="Questions" class="col s12">
-                  <div class="row">
-                        <table class="responsive-table">
-                          <tbody>
-                            {% for contestquestion in contest.contestquestion_set.all %}
-                            <tr style="border-left: 4px solid #006064">
-                              <th><a href="#" class="cyan-text text-darken-4" id="link"><h6>{{contestquestion.question.title}}</h6></a></th>
-                              <td class="center-align"><i class="far fa-eye fa-sm"></i> {{contestquestion.question.view_count}}</td>
-                              <td class="center-align"><i class="far fa-check-circle fa-sm"></i> {{contestquestion.question.submission_count}}</td>
-                              <td class="center-align"><i class="fas fa-flag-checkered fa-sm"></i> {{contestquestion.question.difficulty}}</td>
-                              <td class="center-align"><i class="fas fa-flag-checkered fa-sm"></i> {{contestquestion.points}}</td>
-                              <td class="right-align">
-                                <div class="chip">
-                                    <img src="{% static 'registration/img/img1.png' %}"> {{contestquestion.question.category}}
+                        <div id="Questions_author_view" class="col s12 white">
+                            {% if contest.status != 2 %}
+                                <div class="row center">
+                                    <br>
+                                    <button class="waves-effect green btn "><a
+                                            href="{% url 'contests:contest-question-create' contest.unique_code %} "
+                                            style="color: white"> Add a Question</a></button>
                                 </div>
+                            {% endif %}
+                            <div class="row">
+                                <table class="responsive-table">
+                                    <tbody>
+                                    {% for contestquestion in contest.contestquestion_set.all %}
+                                        <tr style="border-left: 4px solid #006064">
+                                            <th>
+                                                <a href="{% url 'questions:view_the_question' contestquestion.question.unique_code %}"
+                                                   class="cyan-text text-darken-4" id="link_">
+                                                    <h6>{{ contestquestion.question.title }}</h6></a></th>
+                                            <td class="center-align"><i
+                                                    class="far fa-eye fa-sm"></i> {{ contestquestion.question.view_count }}
+                                            </td>
+                                            <td class="center-align"><i
+                                                    class="far fa-check-circle fa-sm"></i> {{ contestquestion.question.submission_count }}
+                                            </td>
+                                            <td class="center-align"><i
+                                                    class="fas fa-flag-checkered fa-sm"></i> {{ contestquestion.question.difficulty }}
+                                            </td>
+                                            <td class="center-align"><i
+                                                    class="fas fa-trophy"></i> {{ contestquestion.points }}</td>
+                                            <td class="right-align">
+                                                <div class="chip">
+                                                    <img src="{{ contestquestion.question.category.logo.url }}"> {{ contestquestion.question.category }}
+                                                </div>
 
-                              </td>
-                            </tr>
-                            {% endfor %}
-                          </tbody>
-                        </table>
-                      </div>
-                </div>
-
-
-            </div>
-        </div>
-    </div>
-
-    {% else %}
-    <div class="row">
-        <div class="col l10 offset-l1 m12 s12">
-            <div class="card" style="border: none;">
-                <ul id="tabs-swipe-demo" class="tabs">
-                    <li class="tab col s3"><a class="active" href="#About_author_view">About</a></li>
-                    <li class="tab col s3"><a href="#Leaderboard_author_view">Leaderboard</a></li>
-                    <li class="tab col s3"><a href="#Participants">Participants</a></li>
-                    <li class="tab col s3"><a href="#Questions">Questions</a></li>
-                </ul>
-                <div id="About_author_view" class="col s12 white" style="padding: 30px " >
-                        <div id="organizer">
-                            <b>Organizer:</b><br>
-                            {{contest.author|safe|linebreaks}}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-
-                        <div id='description'>
-                            <b>Description:</b><br>
-                            {{contest.description|safe|linebreaks}}
-                        </div>
-
-                        <div id='eligibility'>
-                            <b>Eligibility:</b><br>
-                            {{contest.eligibility|safe|linebreaks}}
-                        </div>
-
-                        <div id="rules">
-                            <b> Rules:</b><br>
-                            {{contest.rules|safe|linebreaks}}
-                        </div>
-
-                        <div id="prizes">
-                            <b>Prizes</b><br>
-                            {{contest.prizes|safe|linebreaks}}
-                        </div>
-
-                        <div id="contacts">
-                            <b>Contacts for queries:</b><br>
-                            {{contest.contacts|safe|linebreaks}}
-                        </div>
-                </div>
-
-                <div id="Leaderboard_author_view" class="col s12 white">
-
-                <table class="striped" id="Leaderboard" class="col s12 ">
-
-                        <thead>
-                          <tr>
-                              <th>Participant</th>
-                              <th>Total Score</th>
-                              <th>Total time</th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-
-                        {% for ins in leaderboard %}
-                            <tr>
-                            <td>{{ ins.user.username }}</td>
-                            <td>{{ ins.total_score }}</td>
-                            <td>{{ ins.total_time }}</td>
-                            </tr>
-                        {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-                <div id="Participants" class="col s12 white">
-                    <table class="striped col s12" id="Leaderboard">
-                        <thead>
-                          <tr>
-                              <div class="row ">
-                                   <form action="{% url 'contests:author-register-user' contest.unique_code%}" method="post">
-                                    <div class="col s2 left valign-wrapper" style="padding-top: 3vh; padding-right:0px;">
-                                  <button class="waves-effect waves-light green btn modal-trigger" href="#modal1" type="submit" onclick="document.getElementById('add-user-form').submit()">Add Participant</button>
-                                    </div>
-                                  <div class="col s2 left valign-wrapper" style="padding-left: 0px;" id="add-user-form">
-
-                                      <input type="text" placeholder="Enter Username" name="username">
-                                      {% csrf_token %}
-
-                                  </div>
-                                       </form>
-                              </div>
-                              <th>S.No</th>
-                              <th>UserName</th>
-                              <th>EmailId</th>
-                              <th>Institute</th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-
-                        {% for i in contest.participants.all %}
-                            <tr>
-                            <td>{{forloop.counter}}</td>
-                            <td>{{i.username}}</td>
-                            <td>{{i.email}}</td>
-                            <td>{{i.userprofile.institute.name}}</td>
-                            </tr>
-                        {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-                <div id="Questions" class="col s12 white">
-                  <div class="row">
-                        <table class="responsive-table">
-                          <tbody>
-                            {% for contestquestion in contest.contestquestion_set.all %}
-                            <tr style="border-left: 4px solid #006064">
-                              <th><a href="#" class="cyan-text text-darken-4" id="link"><h6>{{contestquestion.question.title}}</h6></a></th>
-                              <td class="center-align"><i class="far fa-eye fa-sm"></i> {{contestquestion.question.view_count}}</td>
-                              <td class="center-align"><i class="far fa-check-circle fa-sm"></i> {{contestquestion.question.submission_count}}</td>
-                              <td class="center-align"><i class="fas fa-flag-checkered fa-sm"></i> {{contestquestion.question.difficulty}}</td>
-                              <td class="center-align"><i class="fas fa-trophy"></i> {{contestquestion.points}}</td>
-                              <td class="right-align">
-                                <div class="chip">
-                                    <img src="{% static 'registration/img/img1.png' %}"> {{contestquestion.question.category}}
-                                </div>
-
-                              </td>
-                            </tr>
-                            {% endfor %}
-                          </tbody>
-                        </table>
-                      </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    {% endif %}
-
-{% endif %}
+        {% endif %}
 
 
-</section>
+    </section>
 
 {% endblock %}
 
@@ -443,59 +450,63 @@
         // Or with jQuery
         $(document).ready(function () {
             $('select').formSelect();
-
-            $('.modal').modal();
-
-            $('.tabs').tabs();
-
-            $('ul.tabs').tabs({
-              swipeable: false,
-            });
         });
+        $(document).ready(function () {
+            $('.modal').modal();
+        });
+        $(document).ready(function () {
+            $('.tabs').tabs();
+        });
+        $('ul.tabs').tabs({
+            swipeable: false,
+        });
+
     </script>
 
     {% if contest.status == 0 %}
-    <script>
-    	$(document).ready(function(){
-        function e(){
-            var e = new Date;
-            e.setDate(e.getDate() + 60);
-            dd = e.getDate();
-            mm = e.getMonth() + 1;
-            y = e.getFullYear();
-            futureFormattedDate = mm + "/" + dd + "/" + y;
-            return futureFormattedDate
-        }
-        //
-        $("#countdown").countdown({
-            date: "{{starttime}}", // change date/time here - do not change the format!
-            //09 December 2018 14:23:15
-            format: "on"
-        });
-    });
-    </script>
+        <script>
+            $(document).ready(function () {
+                function e() {
+                    var e = new Date;
+                    e.setDate(e.getDate() + 60);
+                    dd = e.getDate();
+                    mm = e.getMonth() + 1;
+                    y = e.getFullYear();
+                    futureFormattedDate = mm + "/" + dd + "/" + y;
+                    return futureFormattedDate
+                }
+
+                //
+                $("#countdown").countdown({
+                    date: "{{starttime}}", // change date/time here - do not change the format!
+                    //09 December 2018 14:23:15
+                    format: "on"
+                });
+            });
+        </script>
     {% endif %}
 
     {% if contest.status == 1 %}
-    <script>
-    	$(document).ready(function(){
-        function e(){
-            var e = new Date;
-            e.setDate(e.getDate() + 60);
-            dd = e.getDate();
-            mm = e.getMonth() + 1;
-            y = e.getFullYear();
-            futureFormattedDate = mm + "/" + dd + "/" + y;
-            return futureFormattedDate
-        }
-        //
-        $("#countdown").countdown({
-            date: "{{endtime}}", // change date/time here - do not change the format
-            //09 December 2018 14:23:15 <-- Like this
-            format: "on"
-        });
-    });
-    </script>
+        <script>
+            $(document).ready(function () {
+                function e() {
+                    var e = new Date;
+                    e.setDate(e.getDate() + 60);
+                    dd = e.getDate();
+                    mm = e.getMonth() + 1;
+                    y = e.getFullYear();
+                    futureFormattedDate = mm + "/" + dd + "/" + y;
+                    return futureFormattedDate
+                }
+
+                //
+                $("#countdown").countdown({
+                    date: "{{endtime}}", // change date/time here - do not change the format
+                    //09 December 2018 14:23:15 <-- Like this
+                    format: "on"
+                });
+            });
+        </script>
     {% endif %}
 
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
@@ -505,66 +516,66 @@
     <!-- ---- -->
 
     <script>
-    $(document).ready(function()
-    {
-      (function(e){
-            e.fn.countdown = function (t, n){
-                function i(){
-                    eventDate = Date.parse(r.date) / 1e3;
-                    currentDate = Math.floor(e.now() / 1e3);
-                    //
-                    if(eventDate < currentDate){
+        $(document).ready(function () {
+            (function (e) {
+                e.fn.countdown = function (t, n) {
+                    function i() {
+                        eventDate = Date.parse(r.date) / 1e3;
+                        currentDate = Math.floor(e.now() / 1e3);
+                        //
+                        if (eventDate < currentDate) {
 
-                        clearInterval(interval)
-                        window.location = "{% url 'contests:refresh' contest.unique_code %}";
+                            clearInterval(interval)
+                            window.location = "{% url 'contests:refresh' contest.unique_code %}";
 
-                        n.call(this);
+                            n.call(this);
+                        }
+                        //
+                        seconds = eventDate - currentDate;
+                        days = Math.floor(seconds / 86400);
+                        seconds -= days * 60 * 60 * 24;
+                        hours = Math.floor(seconds / 3600);
+                        seconds -= hours * 60 * 60;
+                        minutes = Math.floor(seconds / 60);
+                        seconds -= minutes * 60;
+                        //
+                        //
+                        if (r["format"] == "on") {
+                            days = String(days).length >= 2 ? days : "0" + days;
+                            hours = String(hours).length >= 2 ? hours : "0" + hours;
+                            minutes = String(minutes).length >= 2 ? minutes : "0" + minutes;
+                            seconds = String(seconds).length >= 2 ? seconds : "0" + seconds
+                        }
+                        //
+                        if (!isNaN(eventDate)) {
+                            thisEl.find(".days").text(days);
+                            thisEl.find(".hours").text(hours);
+                            thisEl.find(".minutes").text(minutes);
+                            thisEl.find(".seconds").text(seconds)
+                        }
+                        else {
+                            errorMessage = "Invalid date. Example: 27 March 2015 17:00:00";
+                            alert(errorMessage);
+                            console.log(errorMessage);
+                            clearInterval(interval)
+                        }
                     }
+
                     //
-                    seconds = eventDate - currentDate;
-                    days = Math.floor(seconds / 86400);
-                    seconds -= days * 60 * 60 * 24;
-                    hours = Math.floor(seconds / 3600);
-                    seconds -= hours * 60 * 60;
-                    minutes = Math.floor(seconds / 60);
-                    seconds -= minutes * 60;
+                    var thisEl = e(this);
+                    var r = {
+                        date: null,
+                        format: null
+                    };
                     //
-                    //
-                    if(r["format"] == "on"){
-                        days = String(days).length >= 2 ? days : "0" + days;
-                        hours = String(hours).length >= 2 ? hours : "0" + hours;
-                        minutes = String(minutes).length >= 2 ? minutes : "0" + minutes;
-                        seconds = String(seconds).length >= 2 ? seconds : "0" + seconds
-                    }
-                    //
-                    if(!isNaN(eventDate)){
-                        thisEl.find(".days").text(days);
-                        thisEl.find(".hours").text(hours);
-                        thisEl.find(".minutes").text(minutes);
-                        thisEl.find(".seconds").text(seconds)
-                    }
-            else{
-              errorMessage = "Invalid date. Example: 27 March 2015 17:00:00";
-                        alert(errorMessage);
-                        console.log(errorMessage);
-                        clearInterval(interval)
-                    }
+                    t && e.extend(r, t);
+                    i();
+                    interval = setInterval(i, 1e3)
                 }
-                //
-                var thisEl = e(this);
-                var r = {
-                    date: null,
-                    format: null
-                };
-                //
-                t && e.extend(r, t);
-                i();
-                interval = setInterval(i, 1e3)
-            }
-        })(jQuery);
-        //
+            })(jQuery);
+            //
 
-    });
+        });
     </script>
 
     <!-- ---- -->

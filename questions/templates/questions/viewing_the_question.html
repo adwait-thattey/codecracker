@@ -28,7 +28,7 @@
         
         <div class="row">
             <div class="col l7 offset-l1 s12 m8 ">
-                <div class="card green lighten-5">
+                <div class="card " style="border-left: 5px solid rgb(0,96,100)">
                     <div class="card-content" style="line-height: 2.3; font-size: 16px">
 
                         <div id="headings">
@@ -107,7 +107,7 @@
             <div class="hide-on-small-only">
                 <div class="col l3 m4">
 
-                    <div class="card teal lighten-5">
+                    <div class="card" style="border-left: 5px solid rgb(0,96,100)">
                         <div class="card-content" style="font-size: medium; padding: 20px;">
                             <b>Author: <span style="color: blue">{{ question.author }}</span></b> <br>
                             <b>Difficulty: {{ question.difficulty }}</b> <br>
@@ -118,10 +118,15 @@
 
                     {% if user.is_authenticated %}
                         {% if user == question.author %}
-                            <div class="card">
+                            <div class="card" style="border-left: 5px solid rgb(0,96,100)">
                                 <div class="card-content center" style="font-size: medium; padding: 20px;">
-                                    <div><a href="{% url 'questions:question-edit' question.unique_code %}"
+                                    {% if question.contestquestion %}
+                                        <div><a href="{% url 'contests:contest-question-edit' question.contestquestion.contest.unique_code question.unique_code %}"
                                             class="btn-large"><i class="fas fa-pencil-alt "> </i>Edit question</a></div>
+                                    {% else %}
+                                        <div><a href="{% url 'questions:question-edit' question.unique_code %}"
+                                            class="btn-large"><i class="fas fa-pencil-alt "> </i>Edit question</a></div>
+                                    {% endif %}
                                     <br>
                                     <div><a href="{% url 'questions:testcase-view' question.unique_code %}"
                                             class="btn-large"><i class="fas fa-scroll"> </i>View testcases</a></div>
@@ -130,7 +135,7 @@
                         {% endif %}
                     {% endif %}
 
-                    <div class="card" style="border: none;">
+                    <div class="card" style="border-left: 5px solid rgb(0,96,100);">
                         <div class="card-content" style="border: none;">
 
                             {% if user.is_authenticated %}
@@ -224,6 +229,7 @@
                             <span style="display:none;">
                             {{ submission_form.code }}
                             </span>
+                        </form>
                     </div>
                     <div class="modal-footer">
                         <a href="javascript:void(0);" class="modal-close waves-effect waves-green btn-flat right"

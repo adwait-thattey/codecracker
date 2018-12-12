@@ -149,9 +149,9 @@ def user_submission_percentage(request):
     submission_set = user.submission_set
     total_submissions = submission_set.count()
     correct_submissions = submission_set.filter(total_score__gte=99).count()
-
+    wrong_submissions = total_submissions - correct_submissions
     req_stats = [
-         correct_submissions, total_submissions
+         correct_submissions, wrong_submissions
     ]
 
     return req_stats
@@ -178,8 +178,9 @@ def user_question_attempts_stats(request):
 
     correct_question_count = len(submission_set.filter(total_score__gte = 99).values('question').annotate(count=Count('id')).values('question', 'count').order_by('question'))
 
+    wrong_question_count = total_question_count - correct_question_count
     ret_stats = [
-         correct_question_count, total_question_count
+         correct_question_count, wrong_question_count
     ]
 
     return ret_stats
@@ -205,17 +206,21 @@ def profile(request):
     contests= Contest.objects.filter(author= request.user)
     submissions= Submission.objects.filter(user= request.user).order_by('-submitted_on')
     recent_submissions= submissions[:4]
-    form = ProfileEditForm(request.POST, request.FILES, instance=instance)
 
+    if request.method == "POST":
+        form = ProfileEditForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            instance = form.save()
+            return redirect('registration:profile')
+    else:
+        form = ProfileEditForm(instance=instance)
     # submission_date_stats = user_submission_date_stats(request)
     submission_percentage_stats = user_submission_percentage(request)
     user_per_question_attempts = user_per_question_attempts_stats(request)
     user_question_attempts = user_question_attempts_stats(request)
     avg_attempts_per_question = user_avg_attempts_per_question(request)
 
-    if form.is_valid():
-        instance = form.save()
-        return redirect('registration:profile')
+
     context = {
         'form': form,
         'questions':questions,

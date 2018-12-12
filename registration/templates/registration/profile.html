@@ -96,10 +96,10 @@
         <div class="col s12 l12">
             <div class="card hoverable" id="profile">
                 <div class="card-image">
-                    <img src="{% static 'registration/img/profile_bg.jpg' %}" class="responsive-img" id="img1">
+                    <img src="{% static 'registration/img/user_profile_bg.jpg' %}" class="responsive-img" id="img1">
                     <button data-target="modal1"
                             class="btn-large modal-trigger btn-floating halfway-fab waves-effect waves-light cyan darken-4">
-                        <i class="material-icons">add</i></button>
+                        <i class="material-icons">edit</i></button>
                 </div>
                 <div class="row">
                     <div class="col s12 l2 m2 center-align">
@@ -134,9 +134,44 @@
             <div class="modal-content">
                 <h4 class="center-align cyan-text text-darken-4">Edit Profile</h4>
                 <div class="row">
-                    <form class="col s12" method="post">
+                    <form class="col s12" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
+
+                          <div class="input-field file-field">
+                              <div class="row">
+                                  <div>
+                                      <div class="btn col l2 m3 s4"
+                                           id="fake_{{ form.picture.id_for_label }}">
+                                          Upload photo
+                                          {#This is just a fake button. An event listner is added which activates real button#}
+                                      </div>
+                                  </div>
+                                  <div>
+                                      <div class="file-path-wrapper col l10 m9 s8">
+                                          <input class="file-path validate" placeholder="unchanged"
+                                                 id="input-file-upload-path">
+                                      </div>
+                                  </div>
+                                  <div style="display: none">
+                                      {{ form.picture }}
+
+                                      <script>
+
+                                          document.getElementById('fake_{{ form.picture.id_for_label }}').onclick = function () {
+                                              console.log("open input file box");
+                                              document.getElementById('{{ form.picture.id_for_label }}').click();
+                                          };
+
+                                          document.getElementById('input-file-upload-path').onclick = function () {
+                                              console.log("open input file box");
+                                              document.getElementById('{{ form.picture.id_for_label }}').click();
+                                          }
+                                      </script>
+                                  </div>
+
+                              </div>
+                          </div>
 
                             <div class="input-field col l12 s12">
                                 {{ form.phone_number }}
@@ -146,41 +181,6 @@
                             <div class="input-field col s12">
                                 {{ form.institute }}
                                 <label for="{{ form.institute.id_for_label }}">Institute</label>
-                            </div>
-
-                            <div class="input-field file-field">
-                                <div class="row">
-                                    <div>
-                                        <div class="btn col l2 m3 s4"
-                                             id="fake_{{ form.picture.id_for_label }}">
-                                            Input File
-                                            {#This is just a fake button. An event listner is added which activates real button#}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="file-path-wrapper col l10 m9 s8">
-                                            <input class="file-path validate" placeholder="unchanged"
-                                                   id="input-file-upload-path">
-                                        </div>
-                                    </div>
-                                    <div style="display: none">
-                                        {{ form.picture }}
-
-                                        <script>
-
-                                            document.getElementById('fake_{{ form.picture.id_for_label }}').onclick = function () {
-                                                console.log("open input file box");
-                                                document.getElementById('{{ form.picture.id_for_label }}').click();
-                                            };
-
-                                            document.getElementById('input-file-upload-path').onclick = function () {
-                                                console.log("open input file box");
-                                                document.getElementById('{{ form.picture.id_for_label }}').click();
-                                            }
-                                        </script>
-                                    </div>
-
-                                </div>
                             </div>
 
                             <div class="input-field col s12">
@@ -244,7 +244,7 @@
                     </div>
                 </div>
 
-                <!--User Submissions NOT YET DONE-->
+                <!--User Submissions -->
                 <div class="col s12 l12">
                     <div class="card hoverable">
                         <div class="card-content cyan darken-4">
@@ -261,7 +261,8 @@
                                         </tr>
                                         {% for recent_submission in recent_submissions %}
                                             <tr>
-                                                <td><i class="fas fa-arrow-right"></i><a href="#"
+                                                <td><i class="fas fa-arrow-right"></i>
+                                                  <a href="{% url 'questions:submission-result' recent_submission.question.unique_code recent_submission.user.username recent_submission.attempt_number %}"
                                                                                          id="link"> {{ recent_submission.question.title }}
                                                     :</a></td>
                                                 <td class="right-align">{{ recent_submission.total_score }}</td>
@@ -274,6 +275,42 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- User stats -->
+                <div class="col s12 l12">
+                    <div class="card hoverable">
+                        <div class="card-content cyan darken-4">
+                            <h5><p class="left-align white-text">Stats</p></h5>
+                        </div>
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s12 l12">
+                                    <table class="responsive-table">
+                                      <tbody>
+                                        <tr>
+                                          <td><i class="fas fa-arrow-right"></i> Total Questions</td>
+                                          <td class="right-align">{{ user_question_attempts.0|add:user_question_attempts.1 }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td><i class="fas fa-arrow-right"></i> Correct Questions</td>
+                                          <td class="right-align">{{ user_question_attempts.0 }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td><i class="fas fa-arrow-right"></i> Total Submissions</td>
+                                          <td class="right-align">{{ submission_percentage_stats.0|add:submission_percentage_stats.1 }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td><i class="fas fa-arrow-right"></i> Correct Submissions</td>
+                                          <td class="right-align">{{ submission_percentage_stats.0 }}</td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -281,7 +318,7 @@
         <div class="col s12 l8">
             <div class="card hoverable">
                 <div class="card-content cyan darken-4">
-                    <h6><p class="center-align">Explore your activities!!</p></h6>
+                    <h5><p class="center-align white-text">Explore your activities!!</p></h5>
                 </div>
                 <div class="card-tabs">
                     <!-- links -->
@@ -295,6 +332,7 @@
                         <li class="tab"><a href="#stats_path"><i class="far fa-chart-bar fa-lg"></i> Statistics</a></li>
                     </ul>
                 </div>
+
                 <div class="card-content grey lighten-4">
                     <div id="submissions_part">
                         <div class="row">
@@ -302,7 +340,7 @@
                                 <div class="col s12 l6">
                                     <div class="card hoverable" style="border-top: 4px solid #006064;">
                                         <div class="card-content">
-                                            <span class="card-title center-align"><b><a href="#"
+                                            <span class="card-title center-align"><b><a href="{% url 'questions:submission-result' submission.question.unique_code submission.user.username submission.attempt_number %}"
                                                                                         id="link"> {{ submission.question.title }}</a></b></span>
                                             <table class="responsive-table striped">
                                                 <tbody>
@@ -333,7 +371,7 @@
                                 <tbody>
                                 {% for question in questions %}
                                     <tr style="border-left: 4px solid #006064">
-                                        <th><a href="#" class="cyan-text text-darken-4" id="link">
+                                        <th><a href="{% url 'questions:view_the_question' question.unique_code %}" class="cyan-text text-darken-4" id="link">
                                             <h6>{{ question.title }}</h6></a></th>
                                         <td class="center-align"><i
                                                 class="far fa-eye fa-sm"></i> {{ question.view_count }}</td>
@@ -384,7 +422,7 @@
                                                     <td class="center-align"><b>End_End:</b> {{ contest.end_time }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="left-align"><a href="#" id="link">Get Into Contest</a>
+                                                    <td class="left-align"><a href="{% url 'contests:view-contest' contest.unique_code %}" id="link">Get Into Contest</a>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -395,31 +433,58 @@
                                 </div>
                                 </div>
                             {% endfor %}
-                </div>
-            </div>
+<!-- Graphs part -->
+                      <div id="stats_path">
+                          <div class="row">
+                                <!-- <div class="col s12 l8 offset-l2">
 
-                <div id="stats_path">
-                        <div class="row">
-                            <div class="col s12 l8 offset-l2">
-                                <!-- Graphs part -->
-                                <h3 style="text-align: center">Timeline Of User</h3>
-                                <div id="chart">
-                                    <div id="timeline-chart"></div>
+                                    <h3 style="text-align: center">Timeline Of User</h3>
+                                  <div id="chart">
+                                      <div id="timeline-chart"></div>
+                                  </div>
+
+                                  <h3>Submission Percentage</h3>
+                                  <div id="chart1"></div>
+                                      <h3>Average submissions of user per Question</h3>
+                                      <center>
+                                  <div id="chart2"></div>
+                                    </center>
+                                  </div> -->
+                                  <!-- chart -->
+                                  <div class="col s12 l12">
+                                     <div class="card hoverable" style="border-top: 4px solid #006064;">
+                                        <span class="card-title center-align blue-text"><b>Submission Timeline</b></span>
+                                         <div class="card-content">
+                                           <div id="chart">
+                                               <div id="timeline-chart"></div>
+                                           </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                                  <!-- chart-1 -->
+                                  <div class="col s12 l6">
+                                     <div class="card hoverable small" style="border-top: 4px solid #006064;">
+                                       <span class="card-title center-align blue-text"><b>Submission Stats</b></span>
+                                         <div class="card-content">
+                                             <div id="chart2"></div>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <!-- chart-2 -->
+                                 <div class="col s12 l6">
+                                    <div class="card hoverable small" style="border-top: 4px solid #006064;">
+                                      <span class="card-title center-align blue-text"><b>Questions stats</b></span>
+                                        <div id="chart1"></div>
+                                        <div class="card-content">
+                                          <!-- Any content -->
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <h3>Submission Percentage</h3>
-                                <div id="chart1"></div>
-                                <h3>Average submissions of user per Question</h3>
-                                <center>
-                                    <div id="chart2"></div>
-                                </center>
                             </div>
                         </div>
                 </div>
-
+            </div>
         </div>
-    </div>
-    </div>
     </div>
 {% endblock main_content %}
 
@@ -570,7 +635,7 @@
                     type: 'pie',
                 },
                 labels: ['Correct questions', 'Wrong questions'],
-                series:{{ submission_percentage_stats }},
+                series:{{ user_question_attempts }},
                  responsive: [{
                     breakpoint: 480,
                     options: {
@@ -646,7 +711,7 @@
                     type: 'pie',
                 },
                 labels: ['Correct Submissions', 'Wrong Submissions'],
-                series: {{ user_question_attempts }},
+                series: {{ submission_percentage_stats }},
                  responsive: [{
                     breakpoint: 480,
                     options: {
