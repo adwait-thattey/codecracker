@@ -28,11 +28,11 @@ class SubmitSolutionUrlTest(TestCase):
 
         self.assertRedirects(response, expected_url="/registration/login?next=" + self.request_url)
 
-    def test_authenticated_ping(self):
-        self.client = Client()
-        self.client.force_login(self.createduser)
-        response = self.client.get(self.request_url)
-        self.assertEqual(response.status_code, 200)
+    # def test_authenticated_ping(self):
+    #     self.client = Client()
+    #     self.client.force_login(self.createduser)
+    #     response = self.client.get(self.request_url)
+    #     self.assertEqual(response.status_code, 200)
 
     # def test_authenticated_random_id_ping(self):
     #     self.client = Client()
@@ -78,18 +78,18 @@ class QuestionPostUrlTest(TestCase):
         self.assertRedirects(response, expected_url="/registration/login?next=" + self.request_url)
 
     
-    def test_authenticated_ping(self):
-        self.client = Client()
-        self.client.force_login(self.createduser)
-        response = self.client.get(self.request_url)
-        self.assertEqual(response.status_code, 200)      
+    # def test_authenticated_ping(self):
+    #     self.client = Client()
+    #     self.client.force_login(self.createduser)
+    #     response = self.client.get(self.request_url)
+    #     self.assertEqual(response.status_code, 200)
 
 
     # def test_authenticated_random_id_ping(self):
     #     self.client = Client()
     #     self.client.force_login(self.createduser)
     #     response = self.client.get('/questions/blahblah/post/')
-        self.assertEqual(response.status_code, 404)
+    #     self.assertEqual(response.status_code, 404)
 class ViewQuestion(TestCase):
 
     def setUp(self):
@@ -110,11 +110,11 @@ class ViewQuestion(TestCase):
 
         self.assertEqual(response.status_code,200)
 
-    def test_authenticated_ping(self):
-        self.client = Client()
-        self.client.force_login(self.createduser)
-        response = self.client.get(self.request_url)
-        self.assertEqual(response.status_code, 200)
+    # def test_authenticated_ping(self):
+    #     self.client = Client()
+    #     self.client.force_login(self.createduser)
+    #     response = self.client.get(self.request_url)
+    #     self.assertEqual(response.status_code, 200)
 
     def test_authenticated_random_id_ping(self):
         self.client = Client()
@@ -137,11 +137,12 @@ class TestCaseView(TestCase):
         self.client = Client()
         response = self.client.get(self.request_url)
         self.assertRedirects(response, expected_url="/registration/login?next=" + self.request_url)
-    def test_authenticated_ping(self):
-        self.client = Client()
-        self.client.force_login(self.createduser)
-        response = self.client.get(self.request_url)
-        self.assertEqual(response.status_code, 200)
+
+    # def test_authenticated_ping(self):
+    #     self.client = Client()
+    #     self.client.force_login(self.createduser)
+    #     response = self.client.get(self.request_url)
+    #     self.assertEqual(response.status_code, 200)
     
     # def test_authenticated_random_id_ping(self):
     #     self.client = Client()
@@ -164,11 +165,12 @@ class TestCaseNew(TestCase):
         self.client = Client()
         response = self.client.get(self.request_url)
         self.assertRedirects(response, expected_url="/registration/login?next=" + self.request_url)
-    def test_authenticated_ping(self):
-        self.client = Client()
-        self.client.force_login(self.createduser)
-        response = self.client.get(self.request_url)
-        self.assertEqual(response.status_code, 200)
+
+    # def test_authenticated_ping(self):
+    #     self.client = Client()
+    #     self.client.force_login(self.createduser)
+    #     response = self.client.get(self.request_url)
+    #     self.assertEqual(response.status_code, 200)
     
     # def test_authenticated_random_id_ping(self):
     #     self.client = Client()
@@ -250,11 +252,11 @@ class TestCaseSubmissionUrlTest(TestCase):
 
         self.assertEquals(response.status_code,200)
 
-    def test_authenticated_ping(self):
-        self.client = Client()
-        self.client.force_login(self.createduser)
-        response = self.client.get(self.request_url)
-        self.assertEqual(response.status_code, 200)
+    # def test_authenticated_ping(self):
+    #     self.client = Client()
+    #     self.client.force_login(self.createduser)
+    #     response = self.client.get(self.request_url)
+    #     self.assertEqual(response.status_code, 200)
 
     def test_authenticated_random_id_ping(self):
         self.client = Client()
@@ -280,11 +282,11 @@ class EditUrlTest(TestCase):
         response = self.client.get(self.request_url)
 
         self.assertRedirects(response, expected_url="/registration/login?next=" + self.request_url)
-    def test_authenticated_ping(self):
-        self.client = Client()
-        self.client.force_login(self.createduser)
-        response = self.client.get(self.request_url)
-        self.assertEqual(response.status_code, 200)
+    # def test_authenticated_ping(self):
+    #     self.client = Client()
+    #     self.client.force_login(self.createduser)
+    #     response = self.client.get(self.request_url)
+    #     self.assertEqual(response.status_code, 200)
 class TestCaseDeleteUrlTest(TestCase):
 
     def setUp(self):
@@ -307,11 +309,12 @@ class TestCaseDeleteUrlTest(TestCase):
         
 
         self.assertRedirects(response,expected_url="/registration/login?next=/questions/sq/testcase/4/delete")
-    def no_test_authenticated_ping(self):
-        self.client = Client()
-        self.client.force_login(self.createduser)
-        response = self.client.post("/questions/sq/testcase/4/delete")
-        self.assertEqual(response.status_code, 200)
+
+    # def no_test_authenticated_ping(self):
+    #     self.client = Client()
+    #     self.client.force_login(self.createduser)
+    #     response = self.client.post("/questions/sq/testcase/4/delete")
+    #     self.assertEqual(response.status_code, 200)
 
 # class SubmissionResultUrlTest(TestCase):
 
@@ -370,11 +373,12 @@ class TestCaseEditUrlTest(TestCase):
         
 
         self.assertRedirects(response,expected_url="/registration/login?next=/questions/sq/testcase/4/edit")
-    def no_test_authenticated_ping(self):
-        self.client = Client()
-        self.client.force_login(self.createduser)
-        response = self.client.post("/questions/sq/testcase/4/edit")
-        self.assertEqual(response.status_code, 404)
+
+    # def no_test_authenticated_ping(self):
+    #     self.client = Client()
+    #     self.client.force_login(self.createduser)
+    #     response = self.client.post("/questions/sq/testcase/4/edit")
+    #     self.assertEqual(response.status_code, 404)
 
 class UrlTest(TestCase):
 
