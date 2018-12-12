@@ -1,0 +1,37 @@
+{% extends "main_page/nav.html" %}
+{% load static %}
+
+{% block title %}
+	    Recovery Mail Sent
+{% endblock %}
+	    {% block main_content %}
+		<main>
+		<div class="container">
+			<div class="pass_reset ">
+			<div class="row">
+				<div style="font-size: 25px">
+				    <p>Please activate your account email activation link sent to your mail.</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="{% static 'common_assests/materialize/js/materialize.js' %}"></script>
+    <script>
+    $(document).ready(function () {
+        $('.dropdown-button').dropdown({
+            constrainWidth: false,
+            hover: true,
+            belowOrigin: true,
+            alignment: 'left'
+        });
+
+        $('.button-collapse').sideNav();
+
+
+        // JAVASCRIPT START HERE //
+
+    });
+</script>
+</main>
+	{% endblock %}
