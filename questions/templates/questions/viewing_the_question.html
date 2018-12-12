@@ -141,7 +141,7 @@
                             {% if user.is_authenticated == False %}
                                 <span class="card-title center">
                                     <a class="waves-effect waves-light btn btn-large"
-                                       href="{% url 'registration:login' %}" >Log in to solve</a>
+                                       href="{% url 'registration:login' %}?next=/questions/{{question.unique_code}}" >Log in to solve</a>
                                 </span>
                             {% endif %}
 

@@ -66,7 +66,7 @@
                         {% endif %}
                         {% if user.is_authenticated == False %}
                             <a class="waves-effect waves-light btn btn-large"
-                            href="{% url 'registration:login' %}">Login and Register</a> <br>
+                            href="{% url 'registration:login' %}?next=/contests/{{contest.unique_code}}/view">Login and Register</a> <br>
                         {% endif %}   
 					</div>
 				</div>
