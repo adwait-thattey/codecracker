@@ -84,3 +84,4 @@ class Phone_number_validatorTest(TestCase):
     def test_phone_number_has_characters(self):
         dummy_number = "9999999abc"
         self.assertRaises(ValidationError, phone_number_validator, dummy_number)
+

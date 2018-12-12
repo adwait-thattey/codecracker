@@ -8,6 +8,8 @@ decorator==4.3.0
 defusedxml==0.5.0
 Django==2.1.2
 django-ckeditor==5.6.1
+django-common-helpers==0.9.2
+django-cron==0.5.1
 django-js-asset==1.1.0
 django-widget-tweaks==1.4.3
 djangorestframework==3.9.0

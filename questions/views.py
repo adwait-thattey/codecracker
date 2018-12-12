@@ -1,18 +1,20 @@
 from time import sleep
-
 from django.http import JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-
 from questions.docker import Docker
 from questions.models import Question, Submission, Result, TestCase, Category, QuestionView
 from questions.utils import run_in_background
 from .forms import SubmissionForm, TestCaseCreateForm, PostQuestionForm, QuestionsFilterForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .background_tasks import RunAndAssert, LimitThreads
+from .background_tasks import RunAndAssert, LimitThreads, SubmissionRunnerController, RunAndReCalc, Scheduler
 
 from django.forms import modelformset_factory
+from registration.views import email_confirmation_required
+
+
+
 
 
 # Create your views here.
@@ -22,11 +24,14 @@ def start_code_run_sequence(submission):
 
     for testcase in submission.question.testcase_set.all():
         R = Result.objects.create(testcase=testcase, submission=submission)
-        thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
-        thread_temp.start()
+
+    controller = SubmissionRunnerController(thread_id=submission.id, submission=submission)
+
+    controller.start()
 
 
 @login_required
+@email_confirmation_required
 def post_question(request):
     if (request.method == "POST"):
         form = PostQuestionForm(request.POST)
@@ -42,11 +47,12 @@ def post_question(request):
 
 
 @login_required
+@email_confirmation_required
 def edit_question(request, question_unique_id=None):
     instance = get_object_or_404(Question, unique_code=question_unique_id)
     if instance.author != request.user:
         return PermissionDenied("You can not edit this question!")
-    form = PostQuestionForm(request.POST or None, instance=instance)
+    form = PostQuestionForm(request.POST or None, instance=instance, initial={"category":instance.category})
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -63,24 +69,21 @@ def rerun_all_testcase_submissions(testcase):
     R_set = Result.objects.filter(testcase=testcase)
     R_set.delete()
 
-    def chunker(seq, size):
-        return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+    thread_list = list()
+    for submission in testcase.question.submission_set.all():
+        R = Result.objects.create(testcase=testcase, submission=submission)
+        thread_temp = RunAndReCalc(thread_id=testcase.id, result_instance=R)
+        thread_list.append(thread_temp)
 
-    for submission_chunk in chunker(testcase.question.submission_set.all(), 10):
-        thread_list = list()
-        for submission in submission_chunk:
-            R = Result.objects.create(testcase=testcase, submission=submission)
-            thread_temp = RunAndAssert(thread_id=testcase.id, result_instance=R)
-            thread_list.append(thread_temp)
-
-        thread_chunk = LimitThreads(thread_id=0, thread_list=thread_list)
-        thread_chunk.run()
+    thread_chunk = Scheduler(threadlist=thread_list)
+    thread_chunk.run()
 
     # TODO Send mail after all submissions have been re-run
     print("done!")
 
 
 @login_required
+@email_confirmation_required
 def submit_solution(request, question_unique_id):
     # question
     question = get_object_or_404(Question, unique_code=question_unique_id)
@@ -103,6 +106,7 @@ def submit_solution(request, question_unique_id):
 
 
 @login_required
+@email_confirmation_required
 def submission_result(request, question_unique_id, username, submission_attempt):
     submission = get_object_or_404(Submission,
                                    user__username=username,
@@ -166,7 +170,7 @@ def browse_questions(request):
     # Just did this to make sure clean is called
 
     if "category" in question_filter_form.cleaned_data:
-        if question_filter_form.cleaned_data["category"]:
+        if question_filter_form.cleaned_data["category"]: #make sure incoming value is not none
             questions = questions.filter(category=question_filter_form.cleaned_data["category"])
     if "sort_by" in question_filter_form.cleaned_data:
         # print("sortby",question_filter_form.cleaned_data["sort_by"])
@@ -213,6 +217,7 @@ def view_the_question(request, question_unique_id):
 
 
 @login_required
+@email_confirmation_required
 def create_testcase(request, question_unique_id):
     question = get_object_or_404(Question, unique_code=question_unique_id)
     if question.author != request.user:
@@ -253,6 +258,7 @@ def create_testcase(request, question_unique_id):
 
 
 @login_required
+@email_confirmation_required
 def edit_testcase(request, question_unique_id, test_case_number):
     question = get_object_or_404(Question, unique_code=question_unique_id)
     if question.author != request.user:
@@ -282,6 +288,7 @@ def edit_testcase(request, question_unique_id, test_case_number):
 
 
 @login_required
+@email_confirmation_required
 def view_testcases(request, question_unique_id):
     question = get_object_or_404(Question, unique_code=question_unique_id)
 
@@ -298,6 +305,7 @@ def redirect_to_view_testcases(request, question_unique_id):
 
 
 @login_required
+@email_confirmation_required
 def delete_test_case(request, question_unique_id, test_case_number):
     question = get_object_or_404(Question, unique_code=question_unique_id)
     if question.author != request.user:
@@ -345,6 +353,7 @@ def redirect_to_browse(request):
     return redirect('questions:browse')
 
 
+
 def get_question_titles(request):
     q_titles = list(Question.objects.all().values_list('title'))
 
@@ -353,3 +362,14 @@ def get_question_titles(request):
     }
 
     return JsonResponse(ret_dict)
+
+#
+#
+# API Views below
+#
+#
+
+
+def say_hello():
+    return HttpResponse("Hello")
+

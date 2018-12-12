@@ -1,4 +1,5 @@
 from django.urls import path
+from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 app_name = "questions"
@@ -21,7 +22,7 @@ urlpatterns = [
     path('<slug:question_unique_id>/testcase/<int:test_case_number>/delete', views.delete_test_case,
          name="delete-testcase"),
     
-
+    
     # path('<slug:question_unique_id>/testcases/edit', views.edit_testcases, name="testcase-edit"),
     path('ajax/submission-result', views.ajax_get_submission_results, name="ajax-submission-result"),
     path('ajax/rerun_test_case_submissions/<slug:question_unique_id>', views.ajax_call_rerun_all_testcase_submissions,
@@ -30,3 +31,5 @@ urlpatterns = [
     path('ajax/get_questions_titles', views.get_question_titles, name="ajax-get_question_titles"),
 
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

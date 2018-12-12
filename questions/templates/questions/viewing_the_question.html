@@ -25,7 +25,7 @@
 
 {% block main_content %}
     <section>
-
+        
         <div class="row">
             <div class="col l7 offset-l1 s12 m8 ">
                 <div class="card green lighten-5">
@@ -55,7 +55,7 @@
                                 {{ question.category.name }}
                             </div>
                             <div id="description">
-                                {{ question.description|safe }}
+                                {{ question.description|safe|linebreaks }}
 
                             </div>
 
@@ -63,32 +63,32 @@
                         <div id="input_format">
                             <b>Input Format</b> <br>
                             <p>
-                                {{ question.input_format }}
+                                {{ question.input_format|linebreaks }}
 
                             </p>
                         </div>
                         <div id="constraints">
                             <b>Constraints</b> <br>
                             <p>
-                                {{ question.constraints }}
+                                {{ question.constraints|linebreaks }}
                             </p>
                         </div>
                         <div id="output_format">
                             <b>Output Format</b> <br>
                             <p>
-                                {{ question.output_format }}
+                                {{ question.output_format|linebreaks }}
                             </p>
                         </div>
                         <div id="sample_input">
                             <b>Sample Input 0</b> <br>
                             <p>
-                                {{ question.sample_input }}
+                                {{ question.sample_input|linebreaks }}
                             </p>
                         </div>
                         <div id="sample_output">
                             <b>Sample Output 0</b> <br>
                             <p>
-                                {{ question.sample_output }}
+                                {{ question.sample_output|linebreaks }}
                             </p>
                         </div>
                         <div id="explanation">
@@ -131,11 +131,19 @@
                     <div class="card" style="border: none;">
                         <div class="card-content" style="border: none;">
 
+                            {% if user.is_authenticated %}
+                                <span class="card-title center">
+                                    <a class="waves-effect waves-light btn modal-trigger btn-large"
+                                       href="javascript:void(0);" data-target="solve">Solve</a> <br>
+                                </span>
+                            {% endif %}
 
-                            <span class="card-title center">
-                                <a class="waves-effect waves-light btn modal-trigger btn-large"
-                                   href="javascript:void(0);" data-target="solve">Solve</a> <br>
-                            </span>
+                            {% if user.is_authenticated == False %}
+                                <span class="card-title center">
+                                    <a class="waves-effect waves-light btn btn-large"
+                                       href="{% url 'registration:login' %}?next=/questions/{{question.unique_code}}" >Log in to solve</a>
+                                </span>
+                            {% endif %}
 
                         </div>
                     </div>
@@ -146,13 +154,17 @@
 
             <div class="hide-on-med-and-up">
                 <div class="col s12">
-                    <div class="card">
-                        <div class="card-content center" style="font-size: medium; padding: 20px;">
-                            <div><a class="btn-large"><i class="fas fa-pencil-alt "> </i> Edit question</a></div>
-                            <br>
-                            <div><a class="btn-large"><i class="fas fa-scroll"> </i> View testcases</a></div>
-                        </div>
-                    </div>
+                    {% if user.is_authenticated %}
+                        {% if user == question.author %}
+                            <div class="card">
+                                <div class="card-content center" style="font-size: medium; padding: 20px;">
+                                    <div><a href="{% url 'questions:question-edit' question.unique_code %}" class="btn-large"><i class="fas fa-pencil-alt "> </i>Edit question</a></div>
+                                    <br>
+                                    <div><a href="{% url 'questions:testcase-view' question.unique_code %}" class="btn-large"><i class="fas fa-scroll"> </i>View testcases</a></div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
                     <div class="card">
                         <div class="card-content">
 
@@ -227,7 +239,8 @@
 
 {% block custom_eof_scripts %}
     <script>
-        var disqus_config = function () {
+        var disqus_config = function () 
+        {
             this.page.url = 'http://localhost:8000/questions/{{question.unique_code}}/view/';  // Replace PAGE_URL with your page's canonical URL variable
             this.page.identifier = {{question.unique_code}}; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };

@@ -1,7 +1,9 @@
+
 from django.http import request
 
-from registration.forms import RegisterForm, UserProfileForm
+from registration.forms import RegisterForm, ProfileEditForm, UserProfileForm
 from registration.models import UserProfile, Institute
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 
@@ -75,6 +77,72 @@ class TestUserProfileForm(TestCase):
 
         self.assertEqual(form_instance.is_valid(), False)
         self.assertNotEqual(form_instance.errors.get("designation"), None)
+
+class ProfileEditFormTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create(first_name="test", last_name="user", username="testuser",
+                                        email="testuser002@ts.com")
+
+        self.name = Institute.objects.create(name="sample institution")
+
+    def test_all_details_submitted(self):
+        form_instance = ProfileEditForm(data={
+            "phone_number": 99999999,
+            "institute": self.name.id,
+            "picture":"/profiles/default.png",
+            "about": "sample about",
+        })
+
+        self.assertEqual(form_instance.is_valid(), True)
+
+        ProfileEdit = form_instance.save(commit=False)
+
+        ProfileEdit.save()
+
+    def test_missing_phone_number(self):
+        form_instance = ProfileEditForm(data={
+            "institute": self.name.id,
+            "picture":"/profiles/default.png",
+            "about": "sample about",
+        })
+
+        #form is valid because phone number is not a required field
+        self.assertEqual(form_instance.is_valid(), True)
+        self.assertEqual(form_instance.errors.get("phone_number"), None)
+
+    def test_missing_institute(self):
+        form_instance = ProfileEditForm(data={
+            "phone_number": 99999999,
+            "picture": "/profiles/default.png",
+            "about": "sample about",
+        })
+
+        # form is not valid because institute is  a required field
+        self.assertEqual(form_instance.is_valid(), False)
+        self.assertEqual(form_instance.errors.get("institute"), None)
+
+    def test_missing_picture(self):
+        form_instance = ProfileEditForm(data={
+            "phone_number": 99999999,
+            "institute": self.name.id,
+            "about": "sample about",
+        })
+
+        # form is not valid because institute is  a required field
+        self.assertEqual(form_instance.is_valid(), False)
+        self.assertEqual(form_instance.errors.get("picture"), None)
+
+    def test_missing_about(self):
+        form_instance = ProfileEditForm(data={
+            "phone_number": 99999999,
+            "institute": self.name.id,
+            "picture": "/profiles/default.png",
+        })
+
+        # form is not valid because institute is  a required field
+        self.assertEqual(form_instance.is_valid(), False)
+        self.assertEqual(form_instance.errors.get("picture"), None)
 
 class TestRegisterForm(TestCase):
 
