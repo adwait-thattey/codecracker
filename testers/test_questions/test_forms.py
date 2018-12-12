@@ -2,6 +2,9 @@ from questions.forms import PostQuestionForm, SubmissionForm, TestCaseCreateForm
 from questions.models import Question, Submission, TestCase, Category
 from django.contrib.auth.models import User
 from django.test import TestCase
+import os
+from django.conf import settings
+from django.core.files import File
 
 
 class TestPostQuestionForm(TestCase):
@@ -198,9 +201,91 @@ class TestPostQuestionForm(TestCase):
         self.assertEqual(form_instance.is_valid(), False)
 
 
-class TestSubmissionForm(TestCase):
-    pass
+'''class TestSubmissionForm(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username="testuser002", email="testuser002@ts.com", password="Hello World")
+    def test_all_details_submitted(self):
+        f = os.path.join(settings.MEDIA_ROOT, 'code_tests', 'correct_code.py')
+        # F = File(open(f))
+        form_instance = SubmissionForm(data={
+            "language":"PY3",
+            "code":F
+        })
 
+        self.assertEqual(form_instance.is_valid(), True)
 
+        question = form_instance.save(commit=False)
+        question.author = self.user
+        question.save()
+
+        model_instance = Submission.objects.get(language="Samplelangauage")
+
+        self.assertEqual(model_instance.code, "Samplecode")
+
+     def test_missing_langauage(self):
+         form_instance = SubmissionForm(data={
+             "code": "Samplecode",
+
+         })
+
+         self.assertEqual(form_instance.is_valid(), False)
+         self.assertNotEqual(form_instance.errors.get("language"), None)
+
+     def test_missing_code(self):
+         form_instance = SubmissionForm(data={
+             "language": "Samplelangauage",
+
+         })
+
+         self.assertEqual(form_instance.is_valid(), False)        
+         self.assertNotEqual(form_instance.errors.get("code"), None)
 class TestTestCaseForm(TestCase):
-    pass
+    def setUp(self):
+        self.user = User.objects.create(username="testuser002", email="testuser002@ts.com", password="Hello World")
+    def test_all_details_submitted(self):
+        
+        form_instance = TestCaseCreateForm(data={
+            "input_file":"Sampleinputfile",
+            "output_file":"Sampleoutputfile",
+            "points":2,
+        })
+
+        self.assertEqual(form_instance.is_valid(), True)
+
+        question = form_instance.save(commit=False)
+        question.author = self.user
+        question.save()
+
+        model_instance = TestCase.objects.get(input_file="Sampleinputfile")
+
+        self.assertEqual(model_instance.output_file, "Sampleoutputfile")
+        self.assertEqual(model_instance.points, 2)
+
+    def test_missing_input_file(self):
+        form_instance = TestCaseCreateForm(data={
+            "output_file": "Sampleoutputfile",
+            "points":2,
+
+        })
+
+        self.assertEqual(form_instance.is_valid(), False)
+        self.assertNotEqual(form_instance.errors.get("input_file"), None)        
+
+    def test_missing_output_file(self):
+        form_instance = TestCaseCreateForm(data={
+            "input_file": "Sampleinputfile",
+            "points":2,
+
+        })
+        self.assertEqual(form_instance.is_valid(), False)
+        self.assertNotEqual(form_instance.errors.get("output_file"), None)
+    def test_missing_points(self):
+        form_instance = TestCaseCreateForm(data={
+            "input_file": "Sampleinputfile",
+            "output_file":"Sampleoutputfile",
+
+        })
+
+        self.assertEqual(form_instance.is_valid(), False)        
+
+        self.assertNotEqual(form_instance.errors.get("points"), None)'''

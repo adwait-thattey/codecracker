@@ -1,7 +1,6 @@
-from django.http import request
-
 from registration.forms import RegisterForm, ProfileEditForm
 from registration.models import UserProfile, Institute
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 

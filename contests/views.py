@@ -1,3 +1,4 @@
+
 from time import sleep
 
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
@@ -14,7 +15,6 @@ from registration.views import email_confirmation_required
 from datetime import datetime
 from datetime import timedelta
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-
 
 
 # Create your views here.
@@ -165,4 +165,12 @@ def browse_contests(request):
     # print(question_page)
     return render(request, "contests/browse_contests.html",
                   {"contests": contests_page, "filter_form": contest_filter_form})
+
+
+def participants(request, contest_unique_id):
+    contest = get_object_or_404(Contest,unique_code=contest_unique_id)
+    participants = contest.participants.all()
+
+    return render(request,"contests/p1.html",{'d1':participants})
+
 
