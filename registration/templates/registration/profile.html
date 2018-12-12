@@ -3,84 +3,130 @@
 {% load widget_tweaks %}
 
 {% block internal_styles %}
-  <style>
-    .tabs .indicator{
-      background-color: rgba(0,0,0,1);
-    }
+     <link rel="stylesheet" href="{% static 'apex charts/samples/assets/styles.css' %}">
+    <style>
+        .tabs .indicator {
+            background-color: rgba(0, 0, 0, 1);
+        }
 
-    .tabs .tab a:hover{
-      color: rgba(255,255,255,1);
-    }
+        .tabs .tab a:hover {
+            color: rgba(255, 255, 255, 1);
+        }
 
-    .tabs .tab a {
-      color: #000000;
-    }
+        .tabs .tab a {
+            color: #000000;
+        }
 
-   .tabs .tab a.active{
-      color: rgba(255,255,255,1);
-    }
+        .tabs .tab a.active {
+            color: rgba(255, 255, 255, 1);
+        }
 
-    #card{
-      border-top: 5px solid rgba(100, 150, 255, 0.9);
-    }
+        #card {
+            border-top: 5px solid rgba(100, 150, 255, 0.9);
+        }
 
-    .input-field label{
-      color: #009688;
-    }
+        .input-field label {
+            color: #009688;
+        }
 
-    #img2{
-      height: 100px;
-      width: 100px;
-      border-radius: 50%;
-    }
+        #img2 {
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+        }
 
-    #img1{
-      height: 350px;
-    }
+        #img1 {
+            height: 350px;
+        }
 
-    #uppercase{
-      text-transform:uppercase;
-    }
+        #uppercase {
+            text-transform: uppercase;
+        }
 
-    #link:hover{
-      text-decoration:underline;
-      transition: 1s;
-    }
-  </style>
+        #link:hover {
+            text-decoration: underline;
+            transition: 1s;
+        }
+
+
+
+
+         #chart {
+            max-width: 650px;
+            margin: 35px auto;
+        }
+
+        .toolbar {
+            margin-left: 45px;
+        }
+
+        #chart1 {
+
+            max-width: 380px;
+            margin: 35px auto;
+        }
+
+        {#button {#}
+        {#    background: #fff;#}
+        {#    color: #222;#}
+        {#    border: 1px solid #e7e7e7;#}
+        {#    border-bottom: 2px solid #ddd;#}
+        {#    border-radius: 2px;#}
+        {#    padding: 4px 17px;#}
+        {#}#}
+        {##}
+        {#button.active {#}
+        {#    color: #fff;#}
+        {#    background: #008FFB;#}
+        {#    border: 1px solid blue;#}
+        {#    border-bottom: 2px solid blue;#}
+        {#}#}
+        {##}
+        {#button:focus {#}
+        {#    outline: 0;#}
+        {#}
+        }
+    </style>
 {% endblock internal_styles %}
 
 
-  {% block main_content %}
-      <div class="row">
+{% block main_content %}
+    <div class="row">
         <!--profile header-->
-          <div class="col s12 l12">
+        <div class="col s12 l12">
             <div class="card hoverable" id="profile">
-              <div class="card-image">
-                <img src="{% static 'registration/img/profile_bg.jpg' %}" class="responsive-img" id="img1">
-                <button data-target="modal1" class="btn-large modal-trigger btn-floating halfway-fab waves-effect waves-light cyan darken-4"><i class="material-icons">add</i></button>
-              </div>
+                <div class="card-image">
+                    <img src="{% static 'registration/img/profile_bg.jpg' %}" class="responsive-img" id="img1">
+                    <button data-target="modal1"
+                            class="btn-large modal-trigger btn-floating halfway-fab waves-effect waves-light cyan darken-4">
+                        <i class="material-icons">add</i></button>
+                </div>
                 <div class="row">
-                  <div class="col s12 l2 m2 center-align">
-                    <p><img src="{{ user.userprofile.picture.url }}" class="responsive-img" id="img2"></p>
-                  </div>
-                  <div class="col s12 l3 m3 center-align">
-                    <br><h7 class="card-title cyan-text text-darken-4" id="uppercase"><b>{{user.username}}</b></h7>
-                    <p class="medium-small black-text">Joined({{user.date_joined}})</p>
-                  </div>
-                  <div class="col s12 l2 m2 center-align">
-                    <br><h7 class="card-title cyan-text text-darken-4"><b>{{ user.submission_set.count }}</b></h7>
-                    <p class="medium-small black-text">Submissions</p>
-                  </div>
-                  <div class="col s12 l2 m2 center-align">
-                    <br><h7 class="card-title cyan-text text-darken-4"><b>{{ user.question_set.count }}</b></h7>
-                    <p class="medium-small black-text">Posted Questions</p>
-                  </div>
-                  <div class="col s12 l2 m2 center-align">
-                    <br><h7 class="card-title cyan-text text-darken-4"><b>{{ user.contest_set.count }}</b></h7>
-                    <p class="medium-small black-text">Hosted Contests</p>
-                  </div>
-              </div>
-          </div>
+                    <div class="col s12 l2 m2 center-align">
+                        <p><img src="{{ user.userprofile.picture.url }}" class="responsive-img" id="img2"></p>
+                    </div>
+                    <div class="col s12 l3 m3 center-align">
+                        <br>
+                        <h7 class="card-title cyan-text text-darken-4" id="uppercase"><b>{{ user.username }}</b></h7>
+                        <p class="medium-small black-text">Joined({{ user.date_joined }})</p>
+                    </div>
+                    <div class="col s12 l2 m2 center-align">
+                        <br>
+                        <h7 class="card-title cyan-text text-darken-4"><b>{{ user.submission_set.count }}</b></h7>
+                        <p class="medium-small black-text">Submissions</p>
+                    </div>
+                    <div class="col s12 l2 m2 center-align">
+                        <br>
+                        <h7 class="card-title cyan-text text-darken-4"><b>{{ user.question_set.count }}</b></h7>
+                        <p class="medium-small black-text">Posted Questions</p>
+                    </div>
+                    <div class="col s12 l2 m2 center-align">
+                        <br>
+                        <h7 class="card-title cyan-text text-darken-4"><b>{{ user.contest_set.count }}</b></h7>
+                        <p class="medium-small black-text">Hosted Contests</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Edit Profile modal-->
@@ -144,220 +190,528 @@
                   </div>
                   <button type="submit" class="btn waves-effect right cyan darken-4 white-text" name="submit">Edit</button>
                 </div>
-              </form>
             </div>
-        </div>
         </div>
 
         <!--After profile header left part-->
         <div class="col s12 l4">
-          <div class="row">
-          <div class="col s12 l12">
-            <div class="card hoverable"style="background-color:rgba(0,96,100,1)">
-              <div class="card-content white-text">
-                <div class="row">
-                  <div class="col s12 l12 left-align">
-                    <h5>About Me!</h5>
-                    {{user.userprofile.about}}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!--User short information-->
-          <div class="col s12 l12">
-            <div class="card hoverable" style="border: 3px solid rgba(0,96,100,1)">
-              <div class="card-content">
-                <div class="row">
-                  <div class="col s12 l12">
-                    <table class="responsive-table">
-                      <tbody>
-                        <tr>
-                          <td><i class="far fa-user fa-lg"></i> <b>Username :</b></td>
-                          <td class="right-align" id="uppercase">{{user.username}}</td>
-                        </tr>
-                        <tr>
-                          <td><i class="far fa-envelope fa-lg"></i> <b>Email :</b></td>
-                          <td class="right-align">{{user.email}}</td>
-                        </tr>
-                        <tr>
-                          <td><i class="fas fa-mobile-alt fa-lg"></i> <b>Phone Number :</b></td>
-                          <td class="right-align">{{user.userprofile.phone_number}}</td>
-                        </tr>
-                        <tr>
-                          <td><i class="fas fa-university fa-lg"></i> <b>Institute :</b></td>
-                          <td class="right-align">{{user.userprofile.institute}}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        <!--User Submissions NOT YET DONE-->
-        <div class="col s12 l12">
-          <div class="card hoverable">
-            <div class="card-content cyan darken-4">
-                <h5><p class="left-align white-text">Recent Submissions</p></h5>
-            </div>
-            <div class="card-content">
-              <div class="row">
-                <div class="col s12 l12">
-                  <table class="responsive-table">
-                    <tbody>
-                      <tr>
-                        <th> Questions</th>
-                        <th class="right-align">Points</th>
-                      </tr>
-                      {% for recent_submission in recent_submissions %}
-                      <tr>
-                        <td><i class="fas fa-arrow-right"></i><a href="#" id="link"> {{recent_submission.question.title}} :</a></td>
-                        <td class="right-align">{{recent_submission.total_score}}</td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-      <!--After profile header left part-->
-      <div class="col s12 l8">
-        <div class="card hoverable">
-          <div class="card-content cyan darken-4">
-              <h6><p class="center-align white-text"><b>Explore your activities!!</b></p></h6>
-          </div>
-          <div class="card-tabs">
-            <!-- links -->
-            <ul class="tabs tabs-fixed-width cyan darken-4">
-              <li class="tab"><a href="#submissions_part"><i class="far fa-check-circle fa-lg"></i> My Submissions</a></li>
-              <li class="tab"><a href="#questions_part"><i class="far fa-list-alt fa-lg"></i> My Questions</a></li>
-              <li class="tab"><a href="#contests_part"><i class="fas fa-trophy fa-lg"></i> My Contests</a></li>
-              <li class="tab"><a href="#stats_path"><i class="far fa-chart-bar fa-lg"></i> Statistics</a></li>
-            </ul>
-          </div>
-          <div class="card-content grey lighten-4">
-            <div id="submissions_part">
-              <div class="row">
-                {% for submission in submissions %}
-                <div class="col s12 l6">
-                  <div class="card hoverable" style="border-top: 4px solid #006064;">
-                    <div class="card-content">
-                      <span class="card-title center-align"><b><a href="#" id="link"> {{submission.question.title}}</a></b></span>
-                      <table class="responsive-table striped">
-                          <tbody>
-                            <tr>
-                              <th class="left-align"> Attempted_No :</th>
-                              <td class="right-align"> {{submission.attempt_number}}</td>
-                            </tr>
-                            <tr>
-                              <th class="left-align"> Submited_Time :</th>
-                              <td class="right-align"> {{submission.submitted_on}}</td>
-                            </tr>
-                            <tr>
-                              <th class="left-align"> Total_Score :</th>
-                              <td class="right-align"> {{submission.total_score}}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                    </div>
-                  </div>
-                </div>
-                {% endfor %}
-              </div>
-          </div>
-
-        <div id="questions_part">
-              <div class="row">
-                <table class="responsive-table">
-                  <tbody>
-                    {% for question in questions %}
-                    <tr style="border-left: 4px solid #006064">
-                      <th><a href="#" class="cyan-text text-darken-4" id="link"><h6>{{question.title}}</h6></a></th>
-                      <td class="center-align"><i class="far fa-eye fa-sm"></i> {{question.view_count}}</td>
-                      <td class="center-align"><i class="far fa-check-circle fa-sm"></i> {{question.submission_count}}</td>
-                      <td class="center-align"><i class="fas fa-flag-checkered fa-sm"></i> {{question.difficulty}}</td>
-                      <td class="right-align">
-                        <div class="chip">
-                            <img src="{% static 'registration/img/img1.png' %}"> {{question.category}}
-                        </div>
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-        </div>
-
-          <div id="contests_part">
             <div class="row">
-              {% for contest in contests %}
-              <div class="col s12 l6">
-                <div class="card hoverable">
-                  <div class="card-image waves-effect waves-block waves-light">
-                    <img class="activator" src="{% static 'registration/img/img1.png' %}">
-                  </div>
-                  <div class="card-content">
-                    <span class="card-title activator black-text"><b>{{contest.title}}</b><i class="material-icons right">more_vert</i></span>
-                    <p class="grey-text text-darken-1">{{contest.short_description}}</p>
-                  </div>
-                  <div class="card-reveal" style="border-top: 3px solid rgba(0,96,100,1)">
-                    <span class="card-title cyan-text text-darken-4"><b>{{contest.title}}</b><i class="material-icons right">close</i></span>
-                    <table class="responsive-table striped">
-                      <tbody>
-                        <tr>
-                          <td class="center-align"><b>Start_Date:</b> {{contest.start_date}}</td>
-                          <td class="center-align"><b>End_Date:</b> {{contest.end_date}}</td>
-                        </tr>
-                        <tr>
-                          <td class="center-align"><b>Start_Time:</b> {{contest.start_time}}</td>
-                          <td class="center-align"><b>End_End:</b>   {{contest.end_time}}</td>
-                        </tr>
-                        <tr>
-                          <td class="left-align"><a href="#" id="link">Get Into Contest</a></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                <div class="col s12 l12">
+                    <div class="card hoverable" style="background-color:rgba(0,96,100,1)">
+                        <div class="card-content white-text">
+                            <div class="row">
+                                <div class="col s12 l12 left-align">
+                                    <h5>About Me!</h5>
+                                    {{ user.userprofile.about }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
 
-    <div id="stats_path">
-      <!-- Graphs part -->
-    </div>
+                <!--User short information-->
+                <div class="col s12 l12">
+                    <div class="card hoverable" style="border: 3px solid rgba(0,96,100,1)">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s12 l12">
+                                    <table class="responsive-table">
+                                        <tbody>
+                                        <tr>
+                                            <td><i class="far fa-user fa-lg"></i> <b>Username :</b></td>
+                                            <td class="right-align" id="uppercase">{{ user.username }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="far fa-envelope fa-lg"></i> <b>Email :</b></td>
+                                            <td class="right-align">{{ user.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-mobile-alt fa-lg"></i> <b>Phone Number :</b></td>
+                                            <td class="right-align">{{ user.userprofile.phone_number }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-university fa-lg"></i> <b>Institute :</b></td>
+                                            <td class="right-align">{{ user.userprofile.institute }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--User Submissions NOT YET DONE-->
+                <div class="col s12 l12">
+                    <div class="card hoverable">
+                        <div class="card-content cyan darken-4">
+                            <h5><p class="left-align white-text">Recent Submissions</p></h5>
+                        </div>
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s12 l12">
+                                    <table class="responsive-table">
+                                        <tbody>
+                                        <tr>
+                                            <th> Questions</th>
+                                            <th class="right-align">Points</th>
+                                        </tr>
+                                        {% for recent_submission in recent_submissions %}
+                                            <tr>
+                                                <td><i class="fas fa-arrow-right"></i><a href="#"
+                                                                                         id="link"> {{ recent_submission.question.title }}
+                                                    :</a></td>
+                                                <td class="right-align">{{ recent_submission.total_score }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--After profile header left part-->
+        <div class="col s12 l8">
+            <div class="card hoverable">
+                <div class="card-content cyan darken-4">
+                    <h6><p class="center-align">Explore your activities!!</p></h6>
+                </div>
+                <div class="card-tabs">
+                    <!-- links -->
+                    <ul class="tabs tabs-fixed-width cyan darken-4">
+                        <li class="tab"><a href="#submissions_part"><i class="far fa-check-circle fa-lg"></i> My
+                            Submissions</a></li>
+                        <li class="tab"><a href="#questions_part"><i class="far fa-list-alt fa-lg"></i> My Questions</a>
+                        </li>
+                        <li class="tab"><a href="#contests_part"><i class="fas fa-trophy fa-lg"></i> My Contests</a>
+                        </li>
+                        <li class="tab"><a href="#stats_path"><i class="far fa-chart-bar fa-lg"></i> Statistics</a></li>
+                    </ul>
+                </div>
+                <div class="card-content grey lighten-4">
+                    <div id="submissions_part">
+                        <div class="row">
+                            {% for submission in submissions %}
+                                <div class="col s12 l6">
+                                    <div class="card hoverable" style="border-top: 4px solid #006064;">
+                                        <div class="card-content">
+                                            <span class="card-title center-align"><b><a href="#"
+                                                                                        id="link"> {{ submission.question.title }}</a></b></span>
+                                            <table class="responsive-table striped">
+                                                <tbody>
+                                                <tr>
+                                                    <th class="left-align"> Attempted_No :</th>
+                                                    <td class="right-align"> {{ submission.attempt_number }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="left-align"> Submited_Time :</th>
+                                                    <td class="right-align"> {{ submission.submitted_on }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="left-align"> Total_Score :</th>
+                                                    <td class="right-align"> {{ submission.total_score }}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div id="questions_part">
+                        <div class="row">
+                            <table class="responsive-table">
+                                <tbody>
+                                {% for question in questions %}
+                                    <tr style="border-left: 4px solid #006064">
+                                        <th><a href="#" class="cyan-text text-darken-4" id="link">
+                                            <h6>{{ question.title }}</h6></a></th>
+                                        <td class="center-align"><i
+                                                class="far fa-eye fa-sm"></i> {{ question.view_count }}</td>
+                                        <td class="center-align"><i
+                                                class="far fa-check-circle fa-sm"></i> {{ question.submission_count }}
+                                        </td>
+                                        <td class="center-align"><i
+                                                class="fas fa-flag-checkered fa-sm"></i> {{ question.difficulty }}</td>
+                                        <td class="right-align">
+                                            <div class="chip">
+                                                <img src="{% static 'registration/img/img1.png' %}"> {{ question.category }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="contests_part">
+                        <div class="row">
+                            {% for contest in contests %}
+                                <div class="col s12 l6">
+                                    <div class="card hoverable">
+                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <img class="activator" src="{% static 'registration/img/img1.png' %}">
+                                        </div>
+                                        <div class="card-content">
+                                            <span class="card-title activator black-text"><b>{{ contest.title }}</b><i
+                                                    class="material-icons right">more_vert</i></span>
+                                            <p class="grey-text text-darken-1">{{ contest.short_description }}</p>
+                                        </div>
+                                        <div class="card-reveal" style="border-top: 3px solid rgba(0,96,100,1)">
+                                            <span class="card-title cyan-text text-darken-4"><b>{{ contest.title }}</b><i
+                                                    class="material-icons right">close</i></span>
+                                            <table class="responsive-table striped">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="center-align"><b>Start_Date:</b> {{ contest.start_date }}
+                                                    </td>
+                                                    <td class="center-align"><b>End_Date:</b> {{ contest.end_date }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="center-align"><b>Start_Time:</b> {{ contest.start_time }}
+                                                    </td>
+                                                    <td class="center-align"><b>End_End:</b> {{ contest.end_time }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left-align"><a href="#" id="link">Get Into Contest</a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                            {% endfor %}
+                </div>
+            </div>
+
+                <div id="stats_path">
+                        <div class="row">
+                            <div class="col s12 l8 offset-l2">
+                                <!-- Graphs part -->
+                                <h3 style="text-align: center">Timeline Of User</h3>
+                                <div id="chart">
+                                    <div id="timeline-chart"></div>
+                                </div>
+
+                                <h3>Submission Percentage</h3>
+                                <div id="chart1"></div>
+                                <h3>Average submissions of user per Question</h3>
+                                <center>
+                                    <div id="chart2"></div>
+                                </center>
+                            </div>
+                        </div>
+                </div>
 
         </div>
-      </div>
     </div>
-</div>
-<br><br>
-  {% endblock main_content %}
+    </div>
+    </div>
+{% endblock main_content %}
 
-  {% block custom_eof_scripts %}
-  <script>
-  $(document).ready(function(){
-    $('ul.tabs').tabs({
-      swipeable: false,
-    });
+{% block custom_eof_scripts %}
+    <script>
+        $(document).ready(function () {
+            $('ul.tabs').tabs({
+                swipeable: false,
+            });
 
-    $('.modal').modal();
+            $('.modal').modal();
 
-    $('select').formSelect();
+            $('select').formSelect();
 
-    $('#textarea1').val();
-      M.textareaAutoResize($('#textarea1'));
-  });
-</script>
-  {% endblock custom_eof_scripts %}
+            $('#textarea1').val();
+            M.textareaAutoResize($('#textarea1'));
+        });
+    </script>
+
+     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src={% static "apex charts/samples/assets/series1000.js" %}></script>
+
+    <script>
+        var options = {
+            annotations: {
+                yaxis: [{
+                    y: 1,
+                    borderColor: '#999',
+                    label: {
+                        show: true,
+                        text: 'Support',
+                        style: {
+                            color: "#fff",
+                            background: '#00E396'
+                        }
+                    }
+                }],
+                xaxis: [{
+                    x:new Date('{{ current }}').getTime(),
+                    borderColor: '#999',
+                    yAxisIndex: 0,
+                    label: {
+                        show: true,
+                        text: 'Rally',
+                        style: {
+                            color: "#fff",
+                            background: '#775DD0'
+                        }
+                    }
+                }]
+            },
+            chart: {
+                type: 'area',
+                height: 350,
+            },
+            dataLabels: {
+                enabled: false
+            },
+            series: [{
+                {#data: [{x:'05/06/2017',y:35},{ x: '05/15/2018', y: 54 }, { x: '05/08/2018', y: 17 },{x:'08/06/2018',y:3},]#}
+                {#data:[{{ submission_date_stats }}]#}
+                data:[]
+            }],
+            markers: {
+                size: 0,
+                style: 'hollow',
+            },
+            xaxis: {
+                type: 'datetime',
+                min: undefined,
+                tickAmount: 6,
+            },
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy'
+                }
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.9,
+                    stops: [0, 100]
+                }
+            },
+
+        }
+
+                    {##}
+                    {#var chart = new ApexCharts(#}
+                    {#   document.querySelector("#timeline-chart"),#}
+                    {#   options#}
+                    {#);#}
+                    {##}
+                    {#chart.render();#}
+
+
+    </script>
+
+
+    <script>
+        var dataseries = {}
+
+        function user_submission_date_stats() {
+            console.log("requesting stats")
+
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'stats:user-submission-stats' user.username %}",
+                data: {},
+                dataType: 'json',
+                success: function (result) {
+                    dataseries = result.stats;
+                    console.log(result.stats);
+                    options.series = [
+                        {
+                            data: result.stats
+
+                            {#data: [{x:'05/06/2017',y:35},{ x: '05/15/2018', y: 54 }, { x: '05/08/2018', y: 17 } , { x: '05/28/2018', y: 26 },{x:'05/06/2015',y:35},{ x: '08/15/2016', y: 54 }, { x: '01/01/2018', y: 17 } , { x: '05/28/2017', y: 2 }]#}
+
+                        },
+                    ];
+
+                    var chart = new ApexCharts(
+                        document.querySelector("#timeline-chart"),
+                        options
+                    );
+
+                    chart.render();
+
+
+                }
+            });
+        };
+        window.onload = function () {
+            interval_id = setTimeout(user_submission_date_stats, 1500);
+
+        }
+
+    </script>
+
+
+        <script>
+            var options1 = {
+                chart: {
+                    width: 380,
+                    type: 'pie',
+                },
+                labels: ['Correct questions', 'Wrong questions'],
+                series:{{ submission_percentage_stats }},
+                 responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'left'
+                        }
+                    }
+                }]
+            };
+
+
+
+
+
+
+            var chart1 = new ApexCharts(
+                document.querySelector("#chart1"),
+                options1
+            );
+
+            chart1.render();
+
+        </script>
+{##}
+{##}
+{##}
+{#    <script>#}
+{#        var dataseries = []#}
+{##}
+{#        function user_submission_percentage_stats() {#}
+{#            console.log("requesting percentage stats");#}
+{##}
+{#            $.ajax({#}
+{#                type: 'GET',#}
+{#                url: "{% url 'stats:user-submission-percentage-stats' user.username %}",#}
+{#                data: {},#}
+{#                dataType: 'json',#}
+{#                success: function (result) {#}
+{#                    dataseries = result.stats;#}
+{#                    console.log("1");#}
+{#                    console.log(result.stats);#}
+                    {#options1.series = result.stats;#}
+{#                    options1.series = [30,70];#}
+{##}
+{#                    var chart = new ApexCharts(#}
+{#                        document.querySelector("chart1"),#}
+{#                        options1#}
+{#                    );#}
+{##}
+{#                    chart.render();#}
+{##}
+{##}
+{#                }#}
+{#            });#}
+{#        };#}
+{#        window.onload = function () {#}
+{#            interval_id = setTimeout(user_submission_percentage_stats, 2000);#}
+{##}
+{#        }#}
+{##}
+{#    </script>#}
+{##}
+{##}
+{##}
+
+        <script>
+            var options2 = {
+                chart: {
+                    width: 380,
+                    type: 'pie',
+                },
+                labels: ['Correct Submissions', 'Wrong Submissions'],
+                series: {{ user_question_attempts }},
+                 responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+
+
+
+
+
+            var chart1 = new ApexCharts(
+                document.querySelector("#chart2"),
+                options2
+            );
+
+            chart1.render();
+
+        </script>
+
+
+
+
+{#    <script>#}
+{#        var dataseries = []#}
+{##}
+{#        function user_question_attempts_stats() {#}
+{#            console.log("requesting percentage stats")#}
+{##}
+{#            $.ajax({#}
+{#                type: 'GET',#}
+{#                url: "{% url 'stats:user-question-attempts-stats' user.username %}",#}
+{#                data: {},#}
+{#                dataType: 'json',#}
+{#                success: function (result) {#}
+{#                    dataseries = result.stats;#}
+{#                    console.log(result.stats);#}
+                    {#options1.series = result.stats;#}
+{#                    options2.series = [30,70];#}
+{##}
+{#                    var chart = new ApexCharts(#}
+{#                        document.querySelector("chart2"),#}
+{#                        options2#}
+{#                    );#}
+{##}
+{#                    chart.render();#}
+{##}
+{##}
+{#                }#}
+{#            });#}
+{#        };#}
+{#        window.onload = function () {#}
+{#            interval_id = setTimeout(user_question_attempts_stats, 1500);#}
+{##}
+{#        }#}
+{##}
+{#    </script>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+
+{% endblock custom_eof_scripts %}

@@ -221,7 +221,7 @@ class Submission(models.Model):
                                                                     "Total Score must be calculated as a percentage of 100")
                                                   ]
                                       )
-    submitted_on = models.DateTimeField(auto_now_add=True)
+    submitted_on = models.DateTimeField()
 
     attempt_number = models.IntegerField(default=0, validators=[MinValueValidator(0)], editable=False)
 
