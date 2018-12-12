@@ -31,15 +31,13 @@ class Contest(models.Model):
 
     description = RichTextUploadingField(help_text="Give a brief or detailed description for your contest")
 
-    eligibility = models.CharField(null=True, help_text="What is the eligibility criteria for participants?",
-                                   max_length=200)
+    eligibility = models.TextField(null=True, help_text="What is the eligibility criteria for participants?",)
 
-    rules = models.CharField(null=True, help_text="What are the rules that all participants must follow?",
-                             max_length=200)
+    rules = models.TextField(null=True, help_text="What are the rules that all participants must follow?",)
 
-    prizes = models.CharField(null=True, help_text="Mention prizes for diff positions/winners (If any)", max_length=200)
+    prizes = models.TextField(null=True, help_text="Mention prizes for diff positions/winners (If any)", max_length=200)
 
-    contacts = models.EmailField(null=True,
+    contacts = models.TextField(null=True, 
                                  help_text="Give your email, phone etc. so that people can contact you if they need to")
 
     start_date = models.DateField(verbose_name="Start Date")

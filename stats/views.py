@@ -34,10 +34,9 @@ def user_submission_percentage(request, username):
     total_submissions = submission_set.count()
     correct_submissions = submission_set.filter(total_score__gte=99).count()
 
-    req_stats = {
-        "correct_submissions": correct_submissions,
-        "total_submissions": total_submissions
-    }
+    req_stats = [
+         correct_submissions, total_submissions
+    ]
 
     return JsonResponse({"stats":req_stats}, safe=False)
 
@@ -62,10 +61,9 @@ def user_question_attempts_stats(request, username):
 
     correct_question_count = len(submission_set.filter(total_score__gte = 99).values('question').annotate(count=Count('id')).values('question', 'count').order_by('question'))
 
-    ret_stats = {
-        "correct_questions": correct_question_count,
-        "total_questions": total_question_count
-    }
+    ret_stats = [
+         correct_question_count, total_question_count
+    ]
 
     return JsonResponse({"stats":ret_stats}, safe=False)
 

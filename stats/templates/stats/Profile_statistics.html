@@ -58,13 +58,6 @@
     <section>
 
         <div id="chart">
-            <div class="toolbar">
-                <button id="one_month">1M</button>
-                <button id="six_months">6M</button>
-                <button id="one_year" class="active">1Y</button>
-                <button id="ytd">YTD</button>
-                <button id="all">ALL</button>
-            </div>
             <div id="timeline-chart"></div>
         </div>
 
@@ -150,79 +143,6 @@
         }
 
 
-        var resetCssClasses = function (activeEl) {
-            var els = document.querySelectorAll("button");
-            Array.prototype.forEach.call(els, function (el) {
-                el.classList.remove('active');
-            });
-
-            activeEl.target.classList.add('active')
-        }
-
-        document.querySelector("#one_month").addEventListener('click', function (e) {
-            resetCssClasses(e)
-            chart.updateOptions({
-                xaxis: {
-                    {#min: new Date('28 Jan 2013').getTime(),#}
-                    {#max: new Date('27 Feb 2013').getTime(),#}
-                    min: new Date('{{ one_month }}').getTime(),
-                    max:new Date('{{ current }}').getTime(),
-
-                }
-            })
-        })
-
-        document.querySelector("#six_months").addEventListener('click', function (e) {
-            resetCssClasses(e)
-            chart.updateOptions({
-                xaxis: {
-                {#    min: new Date('27 Sep 2012').getTime(),#}
-                {#    max: new Date('27 Feb 2013').getTime(),#}
-                    min:new Date('{{ six_months }}').getTime(),
-                    max:new Date('{{ current }}').getTime(),
-                }
-            })
-        })
-
-        document.querySelector("#one_year").addEventListener('click', function (e) {
-            resetCssClasses(e)
-            chart.updateOptions({
-                xaxis: {
-                    {#min: new Date('27 Feb 2012').getTime(),#}
-                    {#max: new Date('27 Feb 2013').getTime(),#}
-                    min:new Date('{{ one_year }}').getTime(),
-                    max:new Date('{{ current }}').getTime(),
-
-
-                }
-            })
-
-        })
-
-        document.querySelector("#ytd").addEventListener('click', function (e) {
-            resetCssClasses(e)
-            chart.updateOptions({
-                xaxis: {
-                    {#min: new Date('01 Jan 2013').getTime(),#}
-                    {#max: new Date('27 Feb 2013').getTime(),#}
-                    min:new Date('{{ ytd }}').getTime(),
-                    max:new Date('{{ current }}').getTime(),
-
-
-                }
-            })
-        })
-
-        document.querySelector("#all").addEventListener('click', function (e) {
-            resetCssClasses(e)
-            chart.updateOptions({
-                xaxis: {
-                    min: undefined,
-                    max: undefined,
-                }
-            })
-        })
-
         document.querySelector("#ytd").addEventListener('click', function () {
 
         })
@@ -248,9 +168,9 @@
                     console.log(result.stats);
                     options.series = [
                         {
-                            data: result.stats
+                            {#data: result.stats#}
 
-                            {#data: [{x:'05/06/2017',y:35},{ x: '05/15/2018', y: 54 }, { x: '05/08/2018', y: 17 } , { x: '05/28/2018', y: 26 },{x:'05/06/2015',y:35},{ x: '08/15/2016', y: 54 }, { x: '01/01/2018', y: 17 } , { x: '05/28/2017', y: 2 }]#}
+                            data: [{x:'05/06/2017',y:35},{ x: '05/15/2018', y: 54 }, { x: '05/08/2018', y: 17 } , { x: '05/28/2018', y: 26 },{x:'05/06/2015',y:35},{ x: '08/15/2016', y: 54 }, { x: '01/01/2018', y: 17 } , { x: '05/28/2017', y: 2 }]
 
                         },
                     ];
