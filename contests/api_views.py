@@ -20,7 +20,7 @@ class Create_Contest(APIView):
     def post(self, request):
             serializer = ContestSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save()
+                serializer.save(author=request.user)
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

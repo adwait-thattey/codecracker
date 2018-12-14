@@ -139,7 +139,7 @@ class Notification(models.Model):
 
                             )
 
-    link = models.CharField(verbose_name="link", help_text="USE ONLY NAME. NOT FULL TEXT", max_length=50)
+    link = models.CharField(verbose_name="link", help_text="USE ONLY NAME. NOT FULL TEXT", max_length=200)
     seen = models.BooleanField(default=False)
     time_stamp = models.DateTimeField(verbose_name="time_stamp",
                                       auto_now_add=True)
