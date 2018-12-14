@@ -67,7 +67,7 @@ class UserProfile(models.Model):
 
     picture = models.ImageField(upload_to=get_profile_picture_upload_path, default="/profiles/default.png")
 
-    about = models.TextField(verbose_name="About User", max_length=500, null=True)
+    about = models.TextField(verbose_name="About User", max_length=500, null=True, blank=True)
 
     def __str__(self):
         return self.user.get_full_name() + "<" + self.user.username + ">"
@@ -139,7 +139,7 @@ class Notification(models.Model):
 
                             )
 
-    link = models.CharField(verbose_name="link", help_text="USE ONLY NAME. NOT FULL TEXT", max_length=50)
+    link = models.CharField(verbose_name="link", help_text="USE ONLY NAME. NOT FULL TEXT", max_length=200)
     seen = models.BooleanField(default=False)
     time_stamp = models.DateTimeField(verbose_name="time_stamp",
                                       auto_now_add=True)
@@ -151,8 +151,15 @@ class Notification(models.Model):
         ordering = ['-time_stamp']
 
 
-@receiver(signals.post_save, sender=Notification)
-def parse_notification_url(sender, instance, created, **kwargs):
-    if created:
-        instance.link = reverse(instance.link)
-        instance.save()
+def send_notification(user=None, username=None, content="", icon="", link=""):
+    if user == None:
+        if username == None:
+            print("ERROR: You must provide either user or username")
+        else:
+            user = DefaultUser.objects.filter(username=username)
+            if user.exists() is False:
+                print("ERROR: User with given username does not exist")
+            else:
+                user = user[0]
+
+    Notification.objects.create(user=user, content=content, icon=icon, link=link)

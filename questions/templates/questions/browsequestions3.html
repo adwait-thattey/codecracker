@@ -106,6 +106,7 @@
 
                 <div style="width:1000px;margin-top:25px;">
                     <div class="infinite-container" id="all_questions">
+
                         {% for question in questions %}
                             <div class="infinite-item">
                                 <ul class="collapsible popout">
@@ -113,7 +114,7 @@
                                         <div class="collapsible-header grey lighten-5 black-text valign-wrapper"
                                              style="height: 15vh; border-left: 7px solid #006064;">
                                             <div class="row" style="margin: 0;min-width:100%;">
-                                                <div class="col s5 left-align cyan-text text-darken-4">
+                                                <div class="col s4 left-align cyan-text text-darken-4">
                                                     <span class="flow-text left">{{ question.title }}</span>
                                                 </div>
                                                 <div class="col s5 right-align">
@@ -127,7 +128,7 @@
                                                        style="color:black;padding-right: 40%;"><span
                                                             style="font-size: large;font-weight: normal">{{ question.difficulty }}</span></i>
                                                 </div>
-                                                <div class="col s2 rignt-align">
+                                                <div class="col s3 rignt-align">
                                                     <div class="chip">
                                                         <img src="{{ question.category.logo.url }}"
                                                              alt="ContactPerson">{{ question.category.name }}

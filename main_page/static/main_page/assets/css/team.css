@@ -112,7 +112,8 @@ section .section-title {
     min-height:100px;
 }
 .backside .card {
-  height: 10px;
+  height: 176px;
+    width:250px;
 }
 
 .backside .card a {
@@ -122,7 +123,7 @@ section .section-title {
 
 .frontside .card .card-title,
 .backside .card .card-title {
-    color: white !important;
+    color: black !important;
 }
 
 .frontside .card .card-body img {

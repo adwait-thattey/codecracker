@@ -4,7 +4,9 @@ import time
 from collections import deque
 
 from django.conf import settings
+from django.urls import reverse
 
+from registration.models import send_notification
 from .docker import Docker
 from django.db import connection
 
@@ -112,7 +114,7 @@ class RunAndAssert(threading.Thread):
 
     def teardown(self):
         self.docker_instance.delete_dir()
-        connection.close()
+        # connection.close()
         global CURRENT_PARALLEL_THREADS
         CURRENT_PARALLEL_THREADS -= 1
         print(CURRENT_PARALLEL_THREADS)
@@ -181,7 +183,7 @@ class ThreadRunner(threading.Thread):
     def run(self):
 
         for th in self.thread_list:
-            while CURRENT_PARALLEL_THREADS > settings.CODE_THREAD_LIMIT:
+            while CURRENT_PARALLEL_THREADS >= settings.CODE_THREAD_LIMIT:
                 pass
             th.start()
 
@@ -206,3 +208,9 @@ class SubmissionRunnerController(threading.Thread):
         tr.run()
 
         self.submission.recalc_score()
+
+        send_notification(user=self.submission.user,
+                          content=f"submission for {self.submission.question.unique_code} has finished.",
+                          link=reverse("questions:submission-result", args=[self.submission.question.unique_code, self.submission.user.username, self.submission.attempt_number ]),
+                          icon="check"
+                        )

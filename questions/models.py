@@ -258,7 +258,10 @@ class Submission(models.Model):
             if result.pass_fail == 1:
                 achieved_score += thisscore
 
-        self.total_score = (achieved_score * 100) / tot_score
+        if tot_score == 0:
+            self.total_score = 100
+        else:
+            self.total_score = (achieved_score * 100) / tot_score
         self.save()
         print("calc")
 

@@ -1,6 +1,8 @@
+from django.urls import reverse
 from django_cron import CronJobBase, Schedule
 from datetime import datetime
 from contests.models import Contest
+from registration.models import send_notification
 
 
 class ContestStatus(CronJobBase):
@@ -17,9 +19,36 @@ class ContestStatus(CronJobBase):
             if datetime.now() > datetime.combine(c.start_date, c.start_time):
                 c.status = 1
                 c.save()
+                send_notification(user=c.author,
+                                  content=f"Your contest {c.unique_code} has started",
+                                  link=reverse("contests:view-contest",
+                                               args=[c.unique_code]),
+                                  icon="assistant_photo"
+                                  )
 
+                for p in c.participants.all():
+                    send_notification(user=p,
+                                      content=f"Your contest {c.unique_code} has started",
+                                      link=reverse("contests:view-contest",
+                                                   args=[c.unique_code]),
+                                      icon="assistant_photo"
+                                      )
         contests = Contest.objects.filter(status=1)
         for c in contests:
             if datetime.now() > datetime.combine(c.end_date, c.end_time):
                 c.status = 2
                 c.save()
+                send_notification(user=c.author,
+                                  content=f"Your contest {c.unique_code} has ended",
+                                  link=reverse("contests:view-contest",
+                                               args=[c.unique_code]),
+                                  icon="assistant_photo"
+                                  )
+
+                for p in c.participants.all():
+                    send_notification(user=p,
+                                      content=f"Your contest {c.unique_code} has ended",
+                                      link=reverse("contests:view-contest",
+                                                   args=[c.unique_code]),
+                                      icon="assistant_photo"
+                                      )

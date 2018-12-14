@@ -4,8 +4,11 @@ from time import sleep
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+
 from contests.models import Contest, ContestQuestion, LeaderBoard
 from questions.models import Question
+from registration.models import send_notification
 from .forms import HostContestForm, ContestQuestionForm, ContestFilterForm
 from questions.forms import PostQuestionForm
 from django.core.exceptions import PermissionDenied
@@ -63,7 +66,7 @@ def contest_question_edit(request, contest_unique_id, question_unique_id):
         contest_question_form = form.save(commit=False)
         contest_question_form.save()
         contest_question_points.save()
-        return redirect('questions:view_the_question', question.unique_code)
+        return redirect('questions:view_the_question', question_instance.unique_code)
     context = {
         'form': form,
         'cq': contest_question_points
@@ -201,10 +204,38 @@ def refresh_contest_state(request, contest_unique_id):
         if datetime.now() > datetime.combine(contest.start_date, contest.start_time):
             contest.status=1
             contest.save()
+            send_notification(user=contest.author,
+                              content=f"Your contest {contest.unique_code} has started",
+                              link=reverse("contests:view-contest",
+                                           args=[contest.unique_code]),
+                              icon="assistant_photo"
+                              )
+
+            for p in contest.participants.all():
+                send_notification(user=p,
+                                  content=f"Your contest {contest.unique_code} has started",
+                                  link=reverse("contests:view-contest",
+                                               args=[contest.unique_code]),
+                                  icon="assistant_photo"
+                                  )
     elif contest.status == 1:
         if datetime.now() > datetime.combine(contest.end_date, contest.end_time):
             contest.status=2
             contest.save()
+            send_notification(user=contest.author,
+                              content=f"Your contest {contest.unique_code} has ended",
+                              link=reverse("contests:view-contest",
+                                           args=[contest.unique_code]),
+                              icon="assistant_photo"
+                              )
+
+            for p in contest.participants.all():
+                send_notification(user=p,
+                                  content=f"Your contest {contest.unique_code} has ended",
+                                  link=reverse("contests:view-contest",
+                                               args=[contest.unique_code]),
+                                  icon="assistant_photo"
+                                  )
 
     return redirect('contests:view-contest', contest_unique_id)
 

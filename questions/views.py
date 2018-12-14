@@ -3,6 +3,8 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.urls import reverse
+
 from questions.docker import Docker
 from questions.models import Question, Submission, Result, TestCase, Category, QuestionView
 from questions.utils import run_in_background
@@ -12,7 +14,7 @@ from .background_tasks import RunAndAssert, LimitThreads, SubmissionRunnerContro
 
 from django.forms import modelformset_factory
 from registration.views import email_confirmation_required
-
+from registration.models import send_notification
 
 
 
@@ -42,7 +44,7 @@ def post_question(request):
             return redirect('questions:testcase-view', question.unique_code)
     else:
         form = PostQuestionForm()
-    print(form.errors)
+    # print(form.errors)
     return render(request, "questions/post_question.html", {'form': form})
 
 
@@ -79,7 +81,12 @@ def rerun_all_testcase_submissions(testcase):
     thread_chunk.run()
 
     # TODO Send mail after all submissions have been re-run
-    print("done!")
+
+    send_notification(user=testcase.question.author,
+                      content=f"All submissions for {testcase.question.unique_code} - #{testcase.number} have been re-run",
+                      link=reverse('questions:view_the_question', args=[testcase.question.unique_code]),
+                      icon="autorenew"
+                      )
 
 
 @login_required
@@ -190,7 +197,7 @@ def browse_questions(request):
             # print("query", question_filter_form.cleaned_data["query"])
             questions = questions.filter(title__contains=question_filter_form.cleaned_data["query"])
     if "reverse" in question_filter_form.cleaned_data:
-        print(question_filter_form.cleaned_data["reverse"])
+        # print(question_filter_form.cleaned_data["reverse"])
         if question_filter_form.cleaned_data["reverse"]:
             questions = questions.reverse()
 

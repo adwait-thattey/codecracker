@@ -19,7 +19,9 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
-from django.conf.urls import handler500
+from django.conf.urls import handler500, url
+from rest_framework.documentation import include_docs_urls
+
 from main_page import views as main_views
 from rest_framework_jwt.views import obtain_jwt_token
 
@@ -51,6 +53,7 @@ urlpatterns = [
 
     path('api-token-auth/', obtain_jwt_token),
     path('api/', include('api.urls')),
+    path('docs/', include_docs_urls(title="CodeCracker REST API"))
 ]
 
 urlpatterns += staticfiles_urlpatterns()
@@ -61,3 +64,13 @@ if settings.DEBUG:
 
 # handler404 = 'main_views.error_404'
 handler500 = main_views.error_500
+
+# if settings.DEBUG == False:
+#     urlpatterns += patterns('',
+#         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+#             'document_root': settings.MEDIA_ROOT,
+#         }),
+#         url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
+#             'document_root': settings.STATIC_ROOT,
+#         }),
+# )

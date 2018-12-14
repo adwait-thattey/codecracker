@@ -4,7 +4,11 @@
 
 {% block internal_styles %}
   <style>
-    a:hover{
+    .card-content a:hover{
+      text-decoration: underline;
+    }
+
+    p a:hover{
       text-decoration: underline;
     }
 
@@ -88,7 +92,7 @@
             <div class="back">
               <div class="row">
                 <div class="col s12">
-                    <p class="center"><a href="#">{{category.name}}</a></p>
+                    <p class="center"><a href="{% url 'questions:browse' %}?category={{ category.id }}">{{category.name}}</a></p>
                     <p class="center grey-text text-darken-2">{{category.description}}</p>
                 </div>
               </div>
@@ -117,12 +121,14 @@
               <table class="responsive-table striped">
                 <tbody>
                   <tr>
-                    <th class="center-align"> Start_Date : {{contest.start_date}}</th>
-                    <th class="center-align"> End_Date : {{contest.end_date}}</th>
+                    <th class="left-align"> Start Date : {{contest.start_date}}</th>
+                      <th class="left-align"> Start Time : {{contest.start_time}}</th>
+
                   </tr>
                   <tr>
-                    <th class="center-align"> Start_Time : {{contest.start_time}}</th>
-                    <th class="center-align"> End_End : {{contest.end_time}}</th>
+
+                      <th class="left-align"> End Date : {{contest.end_date}}</th>
+                      <th class="left-align"> End Time : {{contest.end_time}}</th>
                   </tr>
                   <tr>
                     <td class="left-align"><i class="fas fa-arrow-right fa-sm"></i><a href="{% url 'contests:view-contest' contest.unique_code %}" id="link"> Get Into Contest</a></td>
