@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block internal_styles %}
-     <link rel="stylesheet" href="{% static 'apex charts/samples/assets/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'apex_charts/samples/assets/styles.css' %}">
     <style>
         .tabs .indicator {
             background-color: rgba(0, 0, 0, 1);
@@ -49,9 +49,7 @@
         }
 
 
-
-
-         #chart {
+        #chart {
             max-width: 650px;
             margin: 35px auto;
         }
@@ -73,18 +71,21 @@
         {#    border-bottom: 2px solid #ddd;#}
         {#    border-radius: 2px;#}
         {#    padding: 4px 17px;#}
-        {#}#}
+        {
+        #}#}
         {##}
         {#button.active {#}
         {#    color: #fff;#}
         {#    background: #008FFB;#}
         {#    border: 1px solid blue;#}
         {#    border-bottom: 2px solid blue;#}
-        {#}#}
+        {
+        #}#}
         {##}
         {#button:focus {#}
         {#    outline: 0;#}
-        {#}
+        {
+        #}
         }
     </style>
 {% endblock internal_styles %}
@@ -138,40 +139,40 @@
                         {% csrf_token %}
                         <div class="row">
 
-                          <div class="input-field file-field">
-                              <div class="row">
-                                  <div>
-                                      <div class="btn col l2 m3 s4"
-                                           id="fake_{{ form.picture.id_for_label }}">
-                                          Upload photo
-                                          {#This is just a fake button. An event listner is added which activates real button#}
-                                      </div>
-                                  </div>
-                                  <div>
-                                      <div class="file-path-wrapper col l10 m9 s8">
-                                          <input class="file-path validate" placeholder="unchanged"
-                                                 id="input-file-upload-path">
-                                      </div>
-                                  </div>
-                                  <div style="display: none">
-                                      {{ form.picture }}
+                            <div class="input-field file-field">
+                                <div class="row">
+                                    <div>
+                                        <div class="btn col l2 m3 s4"
+                                             id="fake_{{ form.picture.id_for_label }}">
+                                            Upload photo
+                                            {#This is just a fake button. An event listner is added which activates real button#}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="file-path-wrapper col l10 m9 s8">
+                                            <input class="file-path validate" placeholder="unchanged"
+                                                   id="input-file-upload-path">
+                                        </div>
+                                    </div>
+                                    <div style="display: none">
+                                        {{ form.picture }}
 
-                                      <script>
+                                        <script>
 
-                                          document.getElementById('fake_{{ form.picture.id_for_label }}').onclick = function () {
-                                              console.log("open input file box");
-                                              document.getElementById('{{ form.picture.id_for_label }}').click();
-                                          };
+                                            document.getElementById('fake_{{ form.picture.id_for_label }}').onclick = function () {
+                                                console.log("open input file box");
+                                                document.getElementById('{{ form.picture.id_for_label }}').click();
+                                            };
 
-                                          document.getElementById('input-file-upload-path').onclick = function () {
-                                              console.log("open input file box");
-                                              document.getElementById('{{ form.picture.id_for_label }}').click();
-                                          }
-                                      </script>
-                                  </div>
+                                            document.getElementById('input-file-upload-path').onclick = function () {
+                                                console.log("open input file box");
+                                                document.getElementById('{{ form.picture.id_for_label }}').click();
+                                            }
+                                        </script>
+                                    </div>
 
-                              </div>
-                          </div>
+                                </div>
+                            </div>
 
                             <div class="input-field col l12 s12">
                                 {{ form.phone_number }}
@@ -262,9 +263,9 @@
                                         {% for recent_submission in recent_submissions %}
                                             <tr>
                                                 <td><i class="fas fa-arrow-right"></i>
-                                                  <a href="{% url 'questions:submission-result' recent_submission.question.unique_code recent_submission.user.username recent_submission.attempt_number %}"
-                                                                                         id="link"> {{ recent_submission.question.title }}
-                                                    :</a></td>
+                                                    <a href="{% url 'questions:submission-result' recent_submission.question.unique_code recent_submission.user.username recent_submission.attempt_number %}"
+                                                       id="link"> {{ recent_submission.question.title }}
+                                                        :</a></td>
                                                 <td class="right-align">{{ recent_submission.total_score }}</td>
                                             </tr>
                                         {% endfor %}
@@ -286,24 +287,24 @@
                             <div class="row">
                                 <div class="col s12 l12">
                                     <table class="responsive-table">
-                                      <tbody>
+                                        <tbody>
                                         <tr>
-                                          <td><i class="fas fa-arrow-right"></i> Total Questions</td>
-                                          <td class="right-align">{{ user_question_attempts.0|add:user_question_attempts.1 }}</td>
+                                            <td><i class="fas fa-arrow-right"></i> Total Questions</td>
+                                            <td class="right-align">{{ user_question_attempts.0|add:user_question_attempts.1 }}</td>
                                         </tr>
                                         <tr>
-                                          <td><i class="fas fa-arrow-right"></i> Correct Questions</td>
-                                          <td class="right-align">{{ user_question_attempts.0 }}</td>
+                                            <td><i class="fas fa-arrow-right"></i> Correct Questions</td>
+                                            <td class="right-align">{{ user_question_attempts.0 }}</td>
                                         </tr>
                                         <tr>
-                                          <td><i class="fas fa-arrow-right"></i> Total Submissions</td>
-                                          <td class="right-align">{{ submission_percentage_stats.0|add:submission_percentage_stats.1 }}</td>
+                                            <td><i class="fas fa-arrow-right"></i> Total Submissions</td>
+                                            <td class="right-align">{{ submission_percentage_stats.0|add:submission_percentage_stats.1 }}</td>
                                         </tr>
                                         <tr>
-                                          <td><i class="fas fa-arrow-right"></i> Correct Submissions</td>
-                                          <td class="right-align">{{ submission_percentage_stats.0 }}</td>
+                                            <td><i class="fas fa-arrow-right"></i> Correct Submissions</td>
+                                            <td class="right-align">{{ submission_percentage_stats.0 }}</td>
                                         </tr>
-                                      </tbody>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -340,8 +341,9 @@
                                 <div class="col s12 l6">
                                     <div class="card hoverable" style="border-top: 4px solid #006064;">
                                         <div class="card-content">
-                                            <span class="card-title center-align"><b><a href="{% url 'questions:submission-result' submission.question.unique_code submission.user.username submission.attempt_number %}"
-                                                                                        id="link"> {{ submission.question.title }}</a></b></span>
+                                            <span class="card-title center-align"><b><a
+                                                    href="{% url 'questions:submission-result' submission.question.unique_code submission.user.username submission.attempt_number %}"
+                                                    id="link"> {{ submission.question.title }}</a></b></span>
                                             <table class="responsive-table striped">
                                                 <tbody>
                                                 <tr>
@@ -371,7 +373,8 @@
                                 <tbody>
                                 {% for question in questions %}
                                     <tr style="border-left: 4px solid #006064">
-                                        <th><a href="{% url 'questions:view_the_question' question.unique_code %}" class="cyan-text text-darken-4" id="link">
+                                        <th><a href="{% url 'questions:view_the_question' question.unique_code %}"
+                                               class="cyan-text text-darken-4" id="link">
                                             <h6>{{ question.title }}</h6></a></th>
                                         <td class="center-align"><i
                                                 class="far fa-eye fa-sm"></i> {{ question.view_count }}</td>
@@ -422,7 +425,9 @@
                                                     <td class="center-align"><b>End_End:</b> {{ contest.end_time }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="left-align"><a href="{% url 'contests:view-contest' contest.unique_code %}" id="link">Get Into Contest</a>
+                                                    <td class="left-align"><a
+                                                            href="{% url 'contests:view-contest' contest.unique_code %}"
+                                                            id="link">Get Into Contest</a>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -430,58 +435,60 @@
                                         </div>
                                     </div>
                                 </div>
-                                </div>
-                                </div>
                             {% endfor %}
-<!-- Graphs part -->
-                      <div id="stats_path">
-                          <div class="row">
-                                <!-- <div class="col s12 l8 offset-l2">
+                        </div>
+                    </div>
 
-                                    <h3 style="text-align: center">Timeline Of User</h3>
-                                  <div id="chart">
-                                      <div id="timeline-chart"></div>
-                                  </div>
 
-                                  <h3>Submission Percentage</h3>
-                                  <div id="chart1"></div>
-                                      <h3>Average submissions of user per Question</h3>
-                                      <center>
-                                  <div id="chart2"></div>
-                                    </center>
-                                  </div> -->
-                                  <!-- chart -->
-                                  <div class="col s12 l12">
-                                     <div class="card hoverable" style="border-top: 4px solid #006064;">
-                                        <span class="card-title center-align blue-text"><b>Submission Timeline</b></span>
-                                         <div class="card-content">
-                                           <div id="chart">
-                                               <div id="timeline-chart"></div>
-                                           </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                                  <!-- chart-1 -->
-                                  <div class="col s12 l6">
-                                     <div class="card hoverable small" style="border-top: 4px solid #006064;">
-                                       <span class="card-title center-align blue-text"><b>Submission Stats</b></span>
-                                         <div class="card-content">
-                                             <div id="chart2"></div>
-                                         </div>
-                                     </div>
-                                 </div>
-                                 <!-- chart-2 -->
-                                 <div class="col s12 l6">
-                                    <div class="card hoverable small" style="border-top: 4px solid #006064;">
-                                      <span class="card-title center-align blue-text"><b>Questions stats</b></span>
-                                        <div id="chart1"></div>
-                                        <div class="card-content">
-                                          <!-- Any content -->
+                    <!-- Graphs part -->
+                    <div id="stats_path">
+                        <div class="row">
+                            <!-- <div class="col s12 l8 offset-l2">
+
+                                <h3 style="text-align: center">Timeline Of User</h3>
+                              <div id="chart">
+                                  <div id="timeline-chart"></div>
+                              </div>
+
+                              <h3>Submission Percentage</h3>
+                              <div id="chart1"></div>
+                                  <h3>Average submissions of user per Question</h3>
+                                  <center>
+                              <div id="chart2"></div>
+                                </center>
+                              </div> -->
+                            <!-- chart -->
+                            <div class="col s12 l12">
+                                <div class="card hoverable" style="border-top: 4px solid #006064;">
+                                    <span class="card-title center-align blue-text"><b>Submission Timeline</b></span>
+                                    <div class="card-content">
+                                        <div id="chart">
+                                            <div id="timeline-chart"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- chart-1 -->
+                            <div class="col s12 l6">
+                                <div class="card hoverable small" style="border-top: 4px solid #006064;">
+                                    <span class="card-title center-align blue-text"><b>Submission Stats</b></span>
+                                    <div class="card-content">
+                                        <div id="chart2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- chart-2 -->
+                            <div class="col s12 l6">
+                                <div class="card hoverable small" style="border-top: 4px solid #006064;">
+                                    <span class="card-title center-align blue-text"><b>Questions stats</b></span>
+                                    <div id="chart1"></div>
+                                    <div class="card-content">
+                                        <!-- Any content -->
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -504,8 +511,8 @@
         });
     </script>
 
-     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src="{% static 'apex charts/samples/assets/series1000.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="{% static 'apex_charts/samples/assets/series1000.js' %}"></script>
 
     <script>
         var options = {
@@ -523,7 +530,7 @@
                     }
                 }],
                 xaxis: [{
-                    x:new Date('{{ current }}').getTime(),
+                    x: new Date('{{ current }}').getTime(),
                     borderColor: '#999',
                     yAxisIndex: 0,
                     label: {
@@ -546,7 +553,7 @@
             series: [{
                 {#data: [{x:'05/06/2017',y:35},{ x: '05/15/2018', y: 54 }, { x: '05/08/2018', y: 17 },{x:'08/06/2018',y:3},]#}
                 {#data:[{{ submission_date_stats }}]#}
-                data:[]
+                data: []
             }],
             markers: {
                 size: 0,
@@ -574,13 +581,13 @@
 
         }
 
-                    {##}
-                    {#var chart = new ApexCharts(#}
-                    {#   document.querySelector("#timeline-chart"),#}
-                    {#   options#}
-                    {#);#}
-                    {##}
-                    {#chart.render();#}
+        {##}
+        {#var chart = new ApexCharts(#}
+        {#   document.querySelector("#timeline-chart"),#}
+        {#   options#}
+        {#);#}
+        {##}
+        {#chart.render();#}
 
 
     </script>
@@ -628,158 +635,150 @@
     </script>
 
 
-        <script>
-            var options1 = {
-                chart: {
-                    width: 380,
-                    type: 'pie',
-                },
-                labels: ['Correct questions', 'Wrong questions'],
-                series:{{ user_question_attempts }},
-                 responsive: [{
-                    breakpoint: 480,
-                    options: {
-                        chart: {
-                            width: 200
-                        },
-                        legend: {
-                            position: 'left'
-                        }
+    <script>
+        var options1 = {
+            chart: {
+                width: 380,
+                type: 'pie',
+            },
+            labels: ['Correct questions', 'Wrong questions'],
+            series:{{ user_question_attempts }},
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'left'
                     }
-                }]
-            };
+                }
+            }]
+        };
 
 
+        var chart1 = new ApexCharts(
+            document.querySelector("#chart1"),
+            options1
+        );
 
+        chart1.render();
 
+    </script>
+    {##}
+    {##}
+    {##}
+    {#    <script>#}
+    {#        var dataseries = []#}
+    {##}
+    {#        function user_submission_percentage_stats() {#}
+    {#            console.log("requesting percentage stats");#}
+    {##}
+    {#            $.ajax({#}
+    {#                type: 'GET',#}
+    {#                url: "{% url 'stats:user-submission-percentage-stats' user.username %}",#}
+    {#                data: {},#}
+    {#                dataType: 'json',#}
+    {#                success: function (result) {#}
+    {#                    dataseries = result.stats;#}
+    {#                    console.log("1");#}
+    {#                    console.log(result.stats);#}
+    {#options1.series = result.stats;#}
+    {#                    options1.series = [30,70];#}
+    {##}
+    {#                    var chart = new ApexCharts(#}
+    {#                        document.querySelector("chart1"),#}
+    {#                        options1#}
+    {#                    );#}
+    {##}
+    {#                    chart.render();#}
+    {##}
+    {##}
+    {#                }#}
+    {#            });#}
+    {#        };#}
+    {#        window.onload = function () {#}
+    {#            interval_id = setTimeout(user_submission_percentage_stats, 2000);#}
+    {##}
+    {#        }#}
+    {##}
+    {#    </script>#}
+    {##}
+    {##}
+    {##}
 
-
-            var chart1 = new ApexCharts(
-                document.querySelector("#chart1"),
-                options1
-            );
-
-            chart1.render();
-
-        </script>
-{##}
-{##}
-{##}
-{#    <script>#}
-{#        var dataseries = []#}
-{##}
-{#        function user_submission_percentage_stats() {#}
-{#            console.log("requesting percentage stats");#}
-{##}
-{#            $.ajax({#}
-{#                type: 'GET',#}
-{#                url: "{% url 'stats:user-submission-percentage-stats' user.username %}",#}
-{#                data: {},#}
-{#                dataType: 'json',#}
-{#                success: function (result) {#}
-{#                    dataseries = result.stats;#}
-{#                    console.log("1");#}
-{#                    console.log(result.stats);#}
-                    {#options1.series = result.stats;#}
-{#                    options1.series = [30,70];#}
-{##}
-{#                    var chart = new ApexCharts(#}
-{#                        document.querySelector("chart1"),#}
-{#                        options1#}
-{#                    );#}
-{##}
-{#                    chart.render();#}
-{##}
-{##}
-{#                }#}
-{#            });#}
-{#        };#}
-{#        window.onload = function () {#}
-{#            interval_id = setTimeout(user_submission_percentage_stats, 2000);#}
-{##}
-{#        }#}
-{##}
-{#    </script>#}
-{##}
-{##}
-{##}
-
-        <script>
-            var options2 = {
-                chart: {
-                    width: 380,
-                    type: 'pie',
-                },
-                labels: ['Correct Submissions', 'Wrong Submissions'],
-                series: {{ submission_percentage_stats }},
-                 responsive: [{
-                    breakpoint: 480,
-                    options: {
-                        chart: {
-                            width: 200
-                        },
-                        legend: {
-                            position: 'bottom'
-                        }
+    <script>
+        var options2 = {
+            chart: {
+                width: 380,
+                type: 'pie',
+            },
+            labels: ['Correct Submissions', 'Wrong Submissions'],
+            series: {{ submission_percentage_stats }},
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
                     }
-                }]
-            }
+                }
+            }]
+        }
+
+
+        var chart1 = new ApexCharts(
+            document.querySelector("#chart2"),
+            options2
+        );
+
+        chart1.render();
+
+    </script>
 
 
 
 
-
-
-            var chart1 = new ApexCharts(
-                document.querySelector("#chart2"),
-                options2
-            );
-
-            chart1.render();
-
-        </script>
-
-
-
-
-{#    <script>#}
-{#        var dataseries = []#}
-{##}
-{#        function user_question_attempts_stats() {#}
-{#            console.log("requesting percentage stats")#}
-{##}
-{#            $.ajax({#}
-{#                type: 'GET',#}
-{#                url: "{% url 'stats:user-question-attempts-stats' user.username %}",#}
-{#                data: {},#}
-{#                dataType: 'json',#}
-{#                success: function (result) {#}
-{#                    dataseries = result.stats;#}
-{#                    console.log(result.stats);#}
-                    {#options1.series = result.stats;#}
-{#                    options2.series = [30,70];#}
-{##}
-{#                    var chart = new ApexCharts(#}
-{#                        document.querySelector("chart2"),#}
-{#                        options2#}
-{#                    );#}
-{##}
-{#                    chart.render();#}
-{##}
-{##}
-{#                }#}
-{#            });#}
-{#        };#}
-{#        window.onload = function () {#}
-{#            interval_id = setTimeout(user_question_attempts_stats, 1500);#}
-{##}
-{#        }#}
-{##}
-{#    </script>#}
-{##}
-{##}
-{##}
-{##}
-{##}
+    {#    <script>#}
+    {#        var dataseries = []#}
+    {##}
+    {#        function user_question_attempts_stats() {#}
+    {#            console.log("requesting percentage stats")#}
+    {##}
+    {#            $.ajax({#}
+    {#                type: 'GET',#}
+    {#                url: "{% url 'stats:user-question-attempts-stats' user.username %}",#}
+    {#                data: {},#}
+    {#                dataType: 'json',#}
+    {#                success: function (result) {#}
+    {#                    dataseries = result.stats;#}
+    {#                    console.log(result.stats);#}
+    {#options1.series = result.stats;#}
+    {#                    options2.series = [30,70];#}
+    {##}
+    {#                    var chart = new ApexCharts(#}
+    {#                        document.querySelector("chart2"),#}
+    {#                        options2#}
+    {#                    );#}
+    {##}
+    {#                    chart.render();#}
+    {##}
+    {##}
+    {#                }#}
+    {#            });#}
+    {#        };#}
+    {#        window.onload = function () {#}
+    {#            interval_id = setTimeout(user_question_attempts_stats, 1500);#}
+    {##}
+    {#        }#}
+    {##}
+    {#    </script>#}
+    {##}
+    {##}
+    {##}
+    {##}
+    {##}
 
 {% endblock custom_eof_scripts %}

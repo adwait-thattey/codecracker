@@ -191,23 +191,23 @@ WSGI_APPLICATION = 'ase1_prj.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'codecracker',
-        'USER': 'codecracker',
-        'PASSWORD': 'Crack The Code',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'codecracker',
+#         'USER': 'codecracker',
+#         'PASSWORD': 'Crack The Code',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -245,7 +245,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 # Media Files
 
@@ -267,7 +269,7 @@ EMAIL_HOST_PASSWORD = "Hello World"
 
 #Thread Limit
 
-CODE_THREAD_LIMIT = 2
+CODE_THREAD_LIMIT = 8
 
 # Docker conf
 
