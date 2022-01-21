@@ -19,7 +19,7 @@ djangorestframework-jwt==1.11.0
 docopt==0.6.2
 gunicorn==19.9.0
 idna==2.7
-ipython==7.2.0
+ipython==7.16.3
 ipython-genutils==0.2.0
 isort==4.3.4
 itypes==1.1.0
